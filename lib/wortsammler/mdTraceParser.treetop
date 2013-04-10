@@ -1,0 +1,55 @@
+
+grammar TraceInMarkdown
+
+    rule top
+        (document '' )
+        {def getLabel ; "top" ; end}
+    end
+
+    rule document
+       ( (noMarkupText / trace / markupAbort)*  '')
+        {def getLabel ; "document" ; end}
+    end
+
+    rule noMarkupText
+       [^\[]+  { def as_xml; wrap('noMarkupText',super); end } 
+    end
+    
+    rule markupAbort
+       "["     
+    end
+
+	rule trace
+		traceId s? traceHead s? traceBody uptraces:traceUpLink  
+		 {def getLabel ; "trace" ; end} 
+	end
+	
+	rule traceId 
+	   "[" payload:label "]" 
+	end
+	
+	
+	rule label
+		[a-zA-Z]+ "_" [a-zA-Z]+ "_" [0-9]+ 
+	end
+	
+	rule traceHead
+		 '**' payload:(!'*' . / '\*')+ '**' 
+	end
+	
+	rule traceBody
+	   "{" payload:(nestedBody / [^{}])+ "}" 
+	end
+	
+	rule nestedBody
+	   "{" (nestedBody / [^{}])+ "}" 
+	end
+	
+	rule traceUpLink
+	    "(" payload:(","? s? label)* ")" 
+	end
+
+    rule s
+       [\s]+  
+    end
+end

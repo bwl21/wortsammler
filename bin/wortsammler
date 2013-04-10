@@ -1,2 +1,4 @@
 #!/usr/bin/env ruby
-puts "the wortsammler main program"
+# 
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), "..", "lib")
+require "wortsammler/exe.wortsammler.rb"

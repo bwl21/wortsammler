@@ -1,15 +1,28 @@
 
-manifestfiles = Dir["ZSUPP_Manifest/*.yaml"]
+##
+# 
+# (c) 2013 Bernhard Weichel
+# 
+#
 
-manifestfiles.each{|file|
-  desc "process #{file}"
-  task file do
+
+##
+# generate a task for each manifest file
+# 
+Dir["../ZSUPP_Manifests/*.yaml"].each{|file|
+  taskdesc=File.basename(file, ".yaml")
+  taskname=taskdesc.split("_")[0]
+  desc "generate #{taskdesc}"
+  task taskname do
     cmd="wortsammler --compile #{file}"
     sh cmd
   end
 }
 
+##
+# the default task
 
-task :default do |i|
-  debugger
+desc "print this help"
+task :default do
+  system "rake -T"
 end
