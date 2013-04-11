@@ -43,9 +43,10 @@ Wortsammler options validator
 
 Wortsammler beautifier features
   beautifies all markdown files in a folder
-  claims undefined document path
   beautifies a single file
+  beautifies input files in a manifest
   claims missing input
+  claims undefined document path
 
 Wortsammler conversion
   converts a single file to output format
@@ -54,5 +55,5 @@ Wortsammler conversion
   investigates the existence of a manifest
   extracts the traceables according to a manifest
 
-Finished in 27.63 seconds
-43 examples, 0 failures
+Finished in 27.03 seconds
+44 examples, 0 failures

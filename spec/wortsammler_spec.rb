@@ -60,10 +60,6 @@ describe "Wortsammler beautifier features" do
     }
   end
 
-  it "claims undefined document path" do
-    system "#{wortsammler} -bi this-path-does-not-exist"
-    $?.success?.should == false
-  end
 
   it "beautifies a single file" do
     tempdir=Dir.mktmpdir
@@ -78,9 +74,24 @@ describe "Wortsammler beautifier features" do
     beautified_result.should include("# this is headline")
   end
 
+  it "beautifies input files in a manifest" do
+    FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
+      manifest="../ZSUPP_Manifests/sample_the-sample-document.yaml"
+      cmd= "#{wortsammler} -bm #{manifest}"
+      system cmd
+    }
+    $?.success?.should==true
+  end
+
   it "claims missing input" do
     system "#{wortsammler} -b"
     $?.success?.should==false
+  end
+
+
+  it "claims undefined document path" do
+    system "#{wortsammler} -bi this-path-does-not-exist"
+    $?.success?.should == false
   end
 
 end

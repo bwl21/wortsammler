@@ -14,7 +14,7 @@ Dir["../ZSUPP_Manifests/*.yaml"].each{|file|
   taskname=taskdesc.split("_")[0]
   desc "generate #{taskdesc}"
   task taskname do
-    cmd="wortsammler -cpm #{file}"
+    cmd="wortsammler -cbpm #{file}"
     sh cmd
   end
 }
