@@ -1,28 +1,51 @@
-# readme
+# Wortsammler
 
-Wortsammler (colloquial German for *collector of words*) is an
-environment to maintain doucmentation in markdown and publish it in
-various formats for different audiences.
+Wortsammler (colloquial German for *word collector*) is an environment
+to maintain doucmentation in markdown and publish it in various formats
+for different audiences. It originated in some project specific hacks
+wrapping around [pandoc][]. But now I refactored it since I use it in
+more than two projects now and think it might be beneficial for others
+as well.
 
-Typical application of Wortsammler is user manuals, software
-documentation etc.
-
-Basically Wortsammler comprises of
-
--   a directory structure for source document sources
--   a manifest file to control the publication process
--   a tool to produce the doucments
+Typical application of Wortsammler is user manuals, project documents,
+user manuals.
 
 Particular features of wortsammler are
 
 -   various output formats
 -   support of requirement management
 -   generate documents for different audiences based on single sources
+-   support for snippets
+-   include parts from other PDF files (only for pdf output yet)
+
+Basically Wortsammler comprises of
+
+-   a directory structure for source document sources
+-   a manifest file to control the publication process
+    -   involved input files
+    -   expected output formats
+    -   expected editions
+    -   Requirements tracing (upstream / downstream)
+
+-   a command line tool to produce the doucments (`wortsammler`)
 
 Wortsammler is built on top of other open source tools, in particular:
 
 -   pandoc
 -   LaTeX
+-   ruby and a bunch of gems
+
+I did not invent new markdown syntax to implement the features mentioned
+aforehead. In other words, any wortsammler flavored markdown file should
+reasonably be processed in standalone pandoc. I implemented particular
+patterns which are boiled down to either vanilla pandoc markdown or to
+LaTeX / HTML.
+
+The features are based on three appraoches:
+
+1.  particular pattern in existing markdown
+2.  embedded HTML/LaTeX
+3.  specific syntax in strikethrouh sections (e.g. ~~ED simple~~)
 
 ## Installation
 
@@ -30,10 +53,32 @@ Wortsammler is built on top of other open source tools, in particular:
 
 In order to use Wortsammler, you need to install the prerequisites:
 
-    ruby 1.9.3
-    tex
+-   ruby 1.9.3 of course
+-   pandoc 1.9.4.2 or above
+
+    I plan to upgrade to 1.11.1 asap
+
+-   tex, in particular xelatex 3.1415926-2.4-0.9998
 
 ## getting started
+
+### display the options
+
+    Wortsammler -h
+
+### process markdown files
+
+    Wortsammler -pi readme.md -o.  
+       -- generates readme.pdf
+
+    Wortsammler -pi readme.md -f pdf:docx:html -o. 
+        -- generates readme.pdf, readme.html, readme.docx
+
+    Wortsammler -bi readme.md
+        -- beautifies readme.md (normalizes the markdown)
+
+    Wortsammler -bi .
+        -- recursively beautifies all markdown files in the current folder    
 
 ### initialize a project
 
@@ -42,14 +87,45 @@ In order to use Wortsammler, you need to install the prerequisites:
 This command generates the proposed directory structure, a first
 document manifest and a rake file to do the processing.
 
+The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
+
 ### generate document
 
-    rake 
+    rake -T           -- show all rake tasks
+    rake sample       -- format the sample document
 
-## Contributing
+## known issues
 
-1.  Fork it
-2.  Create your feature branch (`git checkout -b my-new-feature`)
-3.  Commit your changes (`git commit -am 'Add some feature'`)
-4.  Push to the branch (`git push origin my-new-feature`)
-5.  Create new Pull Request
+-   as usual documentation is not complete
+-   requirement collection only works via manifest
+-   some features (in particular referencing) should use pandoc 1.11
+    features
+-   HTML and DOCX styling does not work
+-   It extends `String`
+-   Specific syntax in strikethrough is still processed as one line
+    which is not very robust
+-   as of now the "framework" is hard to use in other applications
+
+## future plans
+
+-   provide a sublime text package
+-   improve documentation (it is flying around in German and needs to be
+    consolidated)
+-   support epub
+
+## contributing
+
+1.  play with it
+2.  give feedback to <bernhard.weichel@googlemail.com> and/or create
+    issues
+3.  Fork it
+4.  Create your feature branch (`git checkout -b my-new-feature`)
+5.  Commit your changes (`git commit -am 'Add some feature'`)
+6.  Push to the branch (`git push origin my-new-feature`)
+7.  Create new Pull Request
+
+## thanks to
+
+-   John Mc Farlane for [pandoc][]
+
+  [pandoc]: http://johnmacfarlane.net/pandoc/

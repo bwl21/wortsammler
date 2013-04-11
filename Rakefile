@@ -24,9 +24,14 @@ task :doc do
 	sh "yard doc"
 end
 
-task :build => :doc
+task :build => :doc do
+	sh "wortsammler -bi README.md"
+	sh "wortsammler -pi README.md -o ."
+end
 
 desc "run tests"
 task :test => [:clean, :spec]
 
-task :default => :doc
+task :default do
+	rake -T
+end	
