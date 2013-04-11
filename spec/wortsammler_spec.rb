@@ -5,17 +5,16 @@ wortsammlerbin = "'#{File.expand_path("bin")}'"
 wortsammler    = "'#{File.expand_path(File.join("bin", "wortsammler"))}'"
 testprojectdir = "testproject/30_Sources"
 
-describe "Wortsammler" do
+describe "Wortsammler generic issues" do
 
   it "provides a help" do
     result = `#{wortsammler} -h`
     result.should include("Usage: Wortsammler [options]")
     $?.success?.should==true
-
   end
 
   it "can create a new project folder" do
-    system "#{wortsammler} --init #{testprojectdir}"
+    system "#{wortsammler} -n #{testprojectdir}"
     $?.success?.should==true
 
     Dir["#{testprojectdir}/**/*"].should include "#{testprojectdir}/001_Main"
@@ -23,9 +22,25 @@ describe "Wortsammler" do
 
   it "does not initialize into an existing project folder" do
     tempdir=Dir.mktmpdir
-    `#{wortsammler} --init #{tempdir}`
+    `#{wortsammler} -n #{tempdir}`
     $?.success?.should==false
   end
+end
+
+describe "Wortsammler options validator" do
+  it "rejects no processing" do
+    system "#{wortsammler} -i."
+    $?.success?.should==false
+  end
+
+  it "rejeccts inputs without outputs" do
+    system "#{wortsammler} -pi ." do
+      $?.success?.should==false
+    end
+  end
+end
+
+describe "Wortsammler beautifier features" do
 
   it "beautifies all markdown files in a folder" do
     tempdir=Dir.mktmpdir
@@ -36,7 +51,7 @@ describe "Wortsammler" do
       File.open("#{tempdir}/#{i}.md", "w"){|f|f.puts mdtext}
     }
 
-    system "#{wortsammler} --beautify_path #{tempdir}"
+    system "#{wortsammler} -bi #{tempdir}"
     $?.success?.should==true
 
     cycles.times{|i|
@@ -46,7 +61,7 @@ describe "Wortsammler" do
   end
 
   it "claims undefined document path" do
-    system "#{wortsammler} -b this-path-does-not-exist"
+    system "#{wortsammler} -bi this-path-does-not-exist"
     $?.success?.should == false
   end
 
@@ -56,19 +71,28 @@ describe "Wortsammler" do
     mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
 
     File.open(mdfile, "w"){|f|f.puts mdtext}
-    system "#{wortsammler} -b #{mdfile}"
+    system "#{wortsammler} -bi #{mdfile}"
     $?.success?.should==true
 
     beautified_result=File.open(mdfile).readlines.join
     beautified_result.should include("# this is headline")
   end
 
+  it "claims missing input" do
+    system "#{wortsammler} -b"
+    $?.success?.should==false
+  end
+
+end
+
+describe "Wortsammler conversion" do
+
   it "converts a single file to output format" do
     tempdir=Dir.mktmpdir
     mdfile="#{tempdir}/single.md"
     mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
     File.open(mdfile, "w"){|f| f.puts mdtext}
-    system "#{wortsammler} -i #{mdfile} -o #{tempdir} -f latex:pdf:html:docx"
+    system "#{wortsammler} -pi #{mdfile} -o #{tempdir} -f latex:pdf:html:docx"
     $?.success?.should==true
 
 
@@ -77,23 +101,23 @@ describe "Wortsammler" do
                                                            "single.latex",
                                                            "single.md",
                                                            "single.pdf"
-                                                         ]
+                                                           ]
   end
 
   it "converts all files within a folder output format" do
     tempdir=Dir.mktmpdir
-    system "#{wortsammler} -i . -o #{tempdir} -f latex:pdf:html:docx"
+    system "#{wortsammler} -pi . -o #{tempdir} -f latex:pdf:html:docx"
     $?.success?.should==true
 
 
-    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["main.docx", 
-      "main.html", 
-      "main.latex", 
-      "main.pdf",
-       "README.docx", 
-       "README.html", 
-       "README.latex", 
-       "README.pdf"]
+    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["main.docx",
+                                                           "main.html",
+                                                           "main.latex",
+                                                           "main.pdf",
+                                                           "README.docx",
+                                                           "README.html",
+                                                           "README.latex",
+                                                           "README.pdf"]
 
   end
 

@@ -1,11 +1,10 @@
-﻿
+﻿require 'debugger'
 require "optparse"                       # for option parser
 require 'wortsammler/log_helper'
 require 'wortsammler/init_project.rb'
 require 'wortsammler/class.proolib.rb'
 require 'wortsammler/class.Traceable.rb'
 require 'wortsammler/class.Traceable.md.rb'
-
 require 'wortsammler/version.rb'
 
 
@@ -17,11 +16,21 @@ optparse = OptionParser.new do|opts|
   # of the help screen.
   opts.banner = ["This is Wortsammler #{Wortsammler::VERSION}",
                  "",
-                 "Usage: Wortsammler [options]"
+                 "Usage: Wortsammler [options]",
+                 "",
+                 "examples:",
+                 "",
+                 "   wortsammler -cbpm mymanifest.yaml",
+                 "       -- beautify collect process files from mymanifest.yaml",
+                 "",
+                 "   wortsammler -cbpi .",
+                 "       -- beautify collect process files in current folder"
                  ].join("\n")
 
   ##
   # Define the options, and what they do
+
+  opts.separator ""
 
   # This displays the help screen, all programs are
   # assumed to have this option.
@@ -37,26 +46,27 @@ optparse = OptionParser.new do|opts|
     options[:verbose] = true
   end
 
+  opts.separator nil
+
   options[:init] = false
-  opts.on( '-i', '--init DIR', 'create a project folder in DIR' ) do|file|
+  opts.on( "-n", '--init DIR', 'create a project folder in DIR' ) do|file|
     options[:init] = file
   end
 
-  options[:beautify_path] = false
-  opts.on( '-b', '--beautify_path PATH', 'bautify markdown on PATH  a project folder or a single document' ) do|file|
-    options[:beautify_path] = file
-  end
 
-  options[:beautify_doc] = false
-  opts.on( nil, '--beautify_doc', 'bautify markdownfiles of mentioned in document manifest' ) do
-    options[:beautify_doc] = true
-  end
-
+  opts.separator nil
 
   options[:input_path] = false
-  opts.on( '-i', '--input PATH', 'format input file on PATH a (project folder or single document)') do|path|
+  opts.on( '-i', '--input PATH', 'set input file/project folder for processing') do|path|
     options[:input_path] = path
   end
+
+  options[:manifest] = false
+  opts.on( '-m', '--manifest PATH', 'set mainfest file for processing' ) do|file|
+    options[:manifest] = file
+  end
+
+  opts.separator nil
 
   options[:outputformats] = ['pdf']
   opts.on( '-f', '--format formatList', 'set the outputformat to formatList' ) do|formatlist|
@@ -68,10 +78,8 @@ optparse = OptionParser.new do|opts|
     options[:outputfolder] = path
   end
 
-  options[:manifest] = false
-  opts.on( '-m', '--manifest PATH', 'set mainfest input to PATH' ) do|file|
-    options[:manifest] = file
-  end
+
+  opts.separator nil
 
   options[:collect] = false
   opts.on( '-c', '--collect', 'collect traceables by manifest' ) do
@@ -83,6 +91,12 @@ optparse = OptionParser.new do|opts|
     options[:process] = true
   end
 
+
+  options[:beautify] = false
+  opts.on( "-b", '--beautify', 'bautify markdownfiles' ) do
+    options[:beautify] = true
+  end
+
 end
 
 ##
@@ -92,7 +106,7 @@ begin
   optparse.parse!
 rescue OptionParser::ParseError => option
   $log.error "Invalid option #{option}"
-  exit
+  exit false
 
 rescue RegexpError => error
   $log.error "#{error}"
@@ -133,125 +147,147 @@ module Wortsammler
     #
     # load the manifest
     #
+    config=nil
     if config_file=options[:manifest] then
       config =  ProoConfig.new(config_file)
     end
 
     ##
-    #
-    # beautify markdown files on path
-    #
-    #
-    if clean_path = options[:beautify_path] then
-      cleaner = PandocBeautifier.new($log)
-      unless File.exists? clean_path then
-        $log.error "cannot beautify non existing path '#{clean_path}'"
-        exit(false)
-      end
-      if File.file?(clean_path)  #(RS_Mdc)
-        cleaner.beautify(clean_path)
-      elsif File.exists?(clean_path)
-        files=Dir["#{clean_path}/**/*.md", "#{clean_path}/**/*.markdown"]
-        files.each{|f| cleaner.beautify(f)}
-      else
-        nil
-      end
-    end
-
-    ##
-    #
-    # beautify markdown files by manifest
+    # process input path
     #
     #
-    if options[:beautify_doc] then
-
-      if config.nil? then
-        $log.error "no manifest specified. Please use -m to specify a manifest"
-        exit(0)
-      else
-        cleaner = PandocBeautifier.new($log)
-        config.files.each{|f| cleaner.beautify(f)}
-      end
-    end
-
-
-    ##
-    # process documents in the manifest
-    #
-    if options[:collect] then
-      if config.nil? then
-        $log.error "no manifest specified to collect traces. Please use -m to specify a manifest"
-        exit(0)
-      else
-        Wortsammler.collect_traces(config)
-      end
-    end
-
-    ##
-    # process documents in the manifest
-    #
-    if options[:process] then
-      if config.nil? then
-        $log.error "no manifest specified to prorcess document. Please use -m to specify a manifest"
-        exit(0)
-      else
-
-        PandocBeautifier.new.generateDocument(config.input,
-                                              config.outdir,
-                                              config.outname,
-                                              config.format,
-                                              config.vars,
-                                              config.editions,
-                                              config.snippets,
-                                              config)
-      end
-    end
-
-    ##
-    # take output formats
-    #
-    if options[:outputformats] then
-      outputformats = options[:outputformats]
-    end
-
-    ##
-    # take output folder
-    #
-    if options[:outputfolder] then
-      outputfolder = options[:outputfolder]
-    end
-
-    ##
-    #
-    # beautify markdown files on path
-    #
-    #
-    if input_path = options[:input_path] then
-      if outputfolder.nil? then
-        $log.error "no outputfolder specified"
-        exit(0)
-      end
-
-      unless File.exists?(outputfolder) then
-        $log.info "creating folder '#{outputfolder}'"
-        FileUtils.mkdir_p(outputfolder)
-      end
-
-      cleaner = PandocBeautifier.new($log)
+    input_files=nil
+    if input_path = options[:input_path]
       unless File.exists? input_path then
-        $log.error "cannot process non existing path '#{input_path}'"
+        $log.error "path does not exist path '#{input_path}'"
         exit(false)
       end
       if File.file?(input_path)  #(RS_Mdc)
-        cleaner.render_single_document(input_path, outputfolder, outputformats)
+        input_files=[input_path]
       elsif File.exists?(input_path)
-        files=Dir["#{input_path}/**/*.md", "#{input_path}/**/*.markdown"]
-        files.each{|f| cleaner.render_single_document(f, outputfolder, outputformats)}
-      else
-        nil
+        input_files=Dir["#{input_path}/**/*.md", "#{input_path}/**/*.markdown"]
       end
     end
-  end
-end
 
+    ##
+    #
+    # beautify markdown files
+    #
+    #
+    cleaner = PandocBeautifier.new($log)
+
+    if options[:beautify]
+
+
+      # process path
+
+      if input_files then
+        input_files.each{|f| cleaner.beautify(f)}
+      end
+
+      # process manifest
+
+      if config then
+        config.files.each{|f| cleaner.beautify(f)}
+      end
+
+      unless input_files or config
+        $log.error "no input specified. Please use -m or -i to specify input"
+        exit false
+      end
+    end
+
+    ##
+    # process collect in markdown files
+    #
+
+    if options[:collect]
+
+      # collect by path
+
+      if input_files then
+        $log.warn "collect from path not yet implemented"
+      end
+
+      # collect by manifest
+
+      if config then
+        Wortsammler.collect_traces(config)
+      end
+
+      unless input_files or config
+        $log.error "no input specified. Please use -m or -i to specify input"
+        exit false
+      end
+    end
+
+
+
+    ##
+    #  process files
+    #
+    if options[:process]
+
+      if input_files then
+
+        if options[:outputformats] then
+          outputformats = options[:outputformats]
+        end
+
+        if options[:outputfolder] then
+          outputfolder = options[:outputfolder]
+        else
+          $log.error "no output folder specified"
+          exit false
+        end
+
+        unless File.exists?(outputfolder) then
+          $log.info "creating folder '#{outputfolder}'"
+          FileUtils.mkdir_p(outputfolder)
+        end
+
+        input_files.each{|f| cleaner.render_single_document(f, outputfolder, outputformats)}
+      end
+
+      # collect by manifest
+
+      if config then
+        cleaner.generateDocument(config.input,
+                                 config.outdir,
+                                 config.outname,
+                                 config.format,
+                                 config.vars,
+                                 config.editions,
+                                 config.snippets,
+                                 config)
+      end
+
+      unless input_files or config
+        $log.error "no input specified. Please use -m or -i to specify input"
+        exit false
+      end
+    end
+
+  end #execute
+
+
+  def self.verify_options(options)
+    if options[:input_path] or options[:manifest] then
+      unless options[:process] or options[:beautify] or options[:collect] then
+        $log.error "no procesing option (p, b, c) specified"
+        exit false
+      end
+    end
+
+    if options[:input_path] and options[:process] then
+      unless options[:outputfolder] then
+        $log.error "no output folder specified for input path"
+        exit false
+      end
+    end
+  end #verify_options
+
+end # module
+
+Wortsammler.verify_options(options)
 Wortsammler.wortsammler_execute(options)
