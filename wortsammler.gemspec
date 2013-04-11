@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   wortsammler is an environment to manage documentation.
   Basically it comprises of
 
-  * a directory structure for source document sources
+  * a directory structure to organize the document sources
   * a manifest file to control the publication process
   * a tool to produce the doucments
 
@@ -21,6 +21,9 @@ Gem::Specification.new do |spec|
   * support of requirement management
   * generate documents for different audiences based on 
     single sources
+  * text snippets (markdown and xlsx)
+
+  wortsammler is based on ruby, pandoc, latex  
 END_DOC
 
   spec.required_ruby_version = '>= 1.9.3'

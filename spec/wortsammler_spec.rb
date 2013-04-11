@@ -1,7 +1,9 @@
 require 'rake'
 require 'tmpdir'
 
-wortsammler=File.join("bin", "wortsammler")
+wortsammlerbin = "'#{File.expand_path("bin")}'"
+wortsammler    = "'#{File.expand_path(File.join("bin", "wortsammler"))}'"
+testprojectdir = "testproject/30_Sources"
 
 describe "Wortsammler" do
 
@@ -13,10 +15,10 @@ describe "Wortsammler" do
   end
 
   it "shall initialize a project" do
-    system "#{wortsammler} --init testproject/30_Sources"
+    system "#{wortsammler} --init #{testprojectdir}"
     $?.success?.should==true
 
-    Dir["testproject/**/*"].should include "testproject/30_Sources/001_Main"
+    Dir["#{testprojectdir}/**/*"].should include "#{testprojectdir}/001_Main"
   end
 
   it "shall not initialize to an existing directory" do
@@ -44,8 +46,8 @@ describe "Wortsammler" do
   end
 
   it "shall claim undefined document path" do
-        system "#{wortsammler} -b this-path-does-not-exist"
-        $?.success?.should == false
+    system "#{wortsammler} -b this-path-does-not-exist"
+    $?.success?.should == false
   end
 
   it "shall beautify a single file in a folder" do
@@ -72,10 +74,10 @@ describe "Wortsammler" do
   end
 
   it "shall process a manifest" do
-    FileUtils.cd("testproject/30_Sources/ZSUPP_Tools"){|d|
-    manifest="../ZSUPP_Manifests/sample_the-sample-document.yaml"
-    cmd= "../../../#{wortsammler} -pm #{manifest}"
-    system cmd
+    FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
+      manifest="../ZSUPP_Manifests/sample_the-sample-document.yaml"
+      cmd= "#{wortsammler} -pm #{manifest}"
+      system cmd
     }
     $?.success?.should==true
   end
@@ -89,7 +91,18 @@ describe "Wortsammler" do
   it "shall extract the traceables according to a manifest" do
     manifest="testproject/30_Sources/ZSUPP_Manifests/sample_the-sample-document.yaml"
     system "#{wortsammler} -cm #{manifest}"
-    $?.success?.should==true    
+    $?.success?.should==true
   end
 
+  # it "shall run the rake file in the sample document" do
+  #   FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
+  #     path=ENV['PATH']
+  #     ENV['PATH']="#{wortsammlerbin}:#{path}"
+  #     puts ENV['PATH']
+  #     system 'wortsammler -h'
+  #     #cmd= "rake sample"
+  #     #system cmd
+  #   }
+  #   $?.success?.should==true
+  # end
 end

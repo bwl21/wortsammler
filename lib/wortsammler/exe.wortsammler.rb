@@ -178,13 +178,23 @@ module Wortsammler
     ##
     # process documents in the manifest
     #
+    if options[:collect] then
+      if config.nil? then
+        $log.error "no manifest specified to collect traces. Please use -m to specify a manifest"
+        exit(0)
+      else
+        Wortsammler.collect_traces(config)
+      end
+    end
+
+    ##
+    # process documents in the manifest
+    #
     if options[:process] then
       if config.nil? then
         $log.error "no manifest specified to prorcess document. Please use -m to specify a manifest"
         exit(0)
       else
-
-        Wortsammler.collect_traces(config)
 
         PandocBeautifier.new.generateDocument(config.input,
                                               config.outdir,
@@ -194,18 +204,6 @@ module Wortsammler
                                               config.editions,
                                               config.snippets,
                                               config)
-      end
-    end
-
-    ##
-    # process documents in the manifest
-    #
-    if options[:collect] then
-      if config.nil? then
-        $log.error "no manifest specified to collect traces. Please use -m to specify a manifest"
-        exit(0)
-      else
-        Wortsammler.collect_traces(config)
       end
     end
   end
