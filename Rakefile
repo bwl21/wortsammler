@@ -21,12 +21,9 @@ end
 
 desc "create documentation"
 task :doc do
-	sh "yard doc"
-end
-
-task :build => :doc do
 	sh "bin/wortsammler -bi README.md"
 	sh "bin/wortsammler -pi README.md -o ."
+	sh "yard doc"
 end
 
 desc "run tests"
