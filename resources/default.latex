@@ -173,9 +173,9 @@ $endif$
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \chead{\begin{center}\textbf{$title$}\end{center}}
-\lhead{\includegraphics{../ZSUPP_Styles/logo.jpg}}
+%\lhead{\includegraphics{logo.jpg}}
 \rhead{\leftmark}
-\lfoot{www.awm-korntal.de}
+\lfoot{www.weichel21.de}
 \rfoot{\today}
 \renewcommand{\footrulewidth}{0.4pt}
 %

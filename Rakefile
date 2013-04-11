@@ -3,11 +3,12 @@ require 'rake/clean'
 require 'rspec/core/rake_task'
 #require 'ruby-debug'
  
-CLEAN << "testproject" 
+CLEAN << "testproject"
 
 desc "Run specs"
 RSpec::Core::RakeTask.new do |t|
   t.pattern = "./spec/**/*_spec.rb" # don't need this, it's default.
+  t.rspec_opts = ['-d -fd -fd --out ./testresults/wortsammler_testresults.log -fh --out ./testresults/wortsammler_testresults.html']
   # Put spec opts in a file named .rspec in root
 end
  

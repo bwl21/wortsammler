@@ -7,27 +7,27 @@ testprojectdir = "testproject/30_Sources"
 
 describe "Wortsammler" do
 
-  it "shall provide a help" do
+  it "provides a help" do
     result = `#{wortsammler} -h`
     result.should include("Usage: Wortsammler [options]")
     $?.success?.should==true
 
   end
 
-  it "shall initialize a project" do
+  it "can create a new project folder" do
     system "#{wortsammler} --init #{testprojectdir}"
     $?.success?.should==true
 
     Dir["#{testprojectdir}/**/*"].should include "#{testprojectdir}/001_Main"
   end
 
-  it "shall not initialize to an existing directory" do
+  it "does not initialize into an existing project folder" do
     tempdir=Dir.mktmpdir
     `#{wortsammler} --init #{tempdir}`
     $?.success?.should==false
   end
 
-  it "shall beautify all markdown files in a folder" do
+  it "beautifies all markdown files in a folder" do
     tempdir=Dir.mktmpdir
     mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
 
@@ -45,12 +45,12 @@ describe "Wortsammler" do
     }
   end
 
-  it "shall claim undefined document path" do
+  it "claims undefined document path" do
     system "#{wortsammler} -b this-path-does-not-exist"
     $?.success?.should == false
   end
 
-  it "shall beautify a single file in a folder" do
+  it "beautifies a single file" do
     tempdir=Dir.mktmpdir
     mdfile="#{tempdir}/single.md"
     mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
@@ -63,17 +63,41 @@ describe "Wortsammler" do
     beautified_result.should include("# this is headline")
   end
 
-  it "shall convert a single file" do
+  it "converts a single file to output format" do
     tempdir=Dir.mktmpdir
     mdfile="#{tempdir}/single.md"
     mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
-
-    system "#{wortsammler} -i #{mdfile} -f PDF:DOCX"
+    File.open(mdfile, "w"){|f| f.puts mdtext}
+    system "#{wortsammler} -i #{mdfile} -o #{tempdir} -f latex:pdf:html:docx"
     $?.success?.should==true
+
+
+    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["single.docx",
+                                                           "single.html",
+                                                           "single.latex",
+                                                           "single.md",
+                                                           "single.pdf"
+                                                         ]
+  end
+
+  it "converts all files within a folder output format" do
+    tempdir=Dir.mktmpdir
+    system "#{wortsammler} -i . -o #{tempdir} -f latex:pdf:html:docx"
+    $?.success?.should==true
+
+
+    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["main.docx", 
+      "main.html", 
+      "main.latex", 
+      "main.pdf",
+       "README.docx", 
+       "README.html", 
+       "README.latex", 
+       "README.pdf"]
 
   end
 
-  it "shall process a manifest" do
+  it "processes a manifest" do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
       manifest="../ZSUPP_Manifests/sample_the-sample-document.yaml"
       cmd= "#{wortsammler} -pm #{manifest}"
@@ -82,17 +106,18 @@ describe "Wortsammler" do
     $?.success?.should==true
   end
 
-  it "shall investigate the existence of a manifest" do
+  it "investigates the existence of a manifest" do
     manifest="testproject/30_Sources/ZSUPP_Manifests/xxthis-path-does-not-exist.yaml"
     system "#{wortsammler} -m #{manifest}"
     $?.success?.should==false
   end
 
-  it "shall extract the traceables according to a manifest" do
+  it "extracts the traceables according to a manifest" do
     manifest="testproject/30_Sources/ZSUPP_Manifests/sample_the-sample-document.yaml"
     system "#{wortsammler} -cm #{manifest}"
     $?.success?.should==true
   end
+
 
   # it "shall run the rake file in the sample document" do
   #   FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|

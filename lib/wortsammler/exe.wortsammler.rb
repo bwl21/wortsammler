@@ -43,29 +43,29 @@ optparse = OptionParser.new do|opts|
   end
 
   options[:beautify_path] = false
-  opts.on( '-b', '--beautify_path PATH', 'beautfy markdown on PATH  a project folder or a single document' ) do|file|
+  opts.on( '-b', '--beautify_path PATH', 'bautify markdown on PATH  a project folder or a single document' ) do|file|
     options[:beautify_path] = file
   end
 
   options[:beautify_doc] = false
-  opts.on( nil, '--beautify_doc', 'beautfy markdownfiles of mentioned in document manifest' ) do
+  opts.on( nil, '--beautify_doc', 'bautify markdownfiles of mentioned in document manifest' ) do
     options[:beautify_doc] = true
   end
 
 
-  options[:input] = false
-  opts.on( '-i', '--input PATH', 'set the input file to PATH' ) do|file|
-    options[:input] = file
+  options[:input_path] = false
+  opts.on( '-i', '--input PATH', 'format input file on PATH a (project folder or single document)') do|path|
+    options[:input_path] = path
   end
 
-  options[:formats] = false
-  opts.on( '-f', '--format formatList', 'set the input to PATH' ) do|formatlist|
-    options[:formats] = formatlist.split(":")
+  options[:outputformats] = ['pdf']
+  opts.on( '-f', '--format formatList', 'set the outputformat to formatList' ) do|formatlist|
+    options[:outputformats] = formatlist.split(":")
   end
 
-  options[:output] = false
-  opts.on( '-o', '--output PATH', 'set the output to PATH' ) do|formatlist|
-    options[:output] = formatlist
+  options[:outputfolder] = false
+  opts.on( '-o', '--output PATH', 'set the output to PATH' ) do|path|
+    options[:outputfolder] = path
   end
 
   options[:manifest] = false
@@ -204,6 +204,51 @@ module Wortsammler
                                               config.editions,
                                               config.snippets,
                                               config)
+      end
+    end
+
+    ##
+    # take output formats
+    #
+    if options[:outputformats] then
+      outputformats = options[:outputformats]
+    end
+
+    ##
+    # take output folder
+    #
+    if options[:outputfolder] then
+      outputfolder = options[:outputfolder]
+    end
+
+    ##
+    #
+    # beautify markdown files on path
+    #
+    #
+    if input_path = options[:input_path] then
+      if outputfolder.nil? then
+        $log.error "no outputfolder specified"
+        exit(0)
+      end
+
+      unless File.exists?(outputfolder) then
+        $log.info "creating folder '#{outputfolder}'"
+        FileUtils.mkdir_p(outputfolder)
+      end
+
+      cleaner = PandocBeautifier.new($log)
+      unless File.exists? input_path then
+        $log.error "cannot process non existing path '#{input_path}'"
+        exit(false)
+      end
+      if File.file?(input_path)  #(RS_Mdc)
+        cleaner.render_single_document(input_path, outputfolder, outputformats)
+      elsif File.exists?(input_path)
+        files=Dir["#{input_path}/**/*.md", "#{input_path}/**/*.markdown"]
+        files.each{|f| cleaner.render_single_document(f, outputfolder, outputformats)}
+      else
+        nil
       end
     end
   end

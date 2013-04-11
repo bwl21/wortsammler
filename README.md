@@ -1,4 +1,4 @@
-# Wortsammler
+# readme
 
 Wortsammler (colloquial German for *collector of words*) is an
 environment to maintain doucmentation in markdown and publish it in
@@ -30,9 +30,10 @@ Wortsammler is built on top of other open source tools, in particular:
 
 In order to use Wortsammler, you need to install the prerequisites:
 
-TODO add prequisites here
+    ruby 1.9.3
+    tex
 
-## Usage
+## getting started
 
 ### initialize a project
 
