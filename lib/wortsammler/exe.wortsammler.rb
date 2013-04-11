@@ -29,6 +29,8 @@ optparse = OptionParser.new do|opts|
   # Define the options, and what they do
 
   opts.separator nil
+  opts.separator "options:"
+  opts.separator nil
 
   # This displays the help screen, all programs are
   # assumed to have this option.

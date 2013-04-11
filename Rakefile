@@ -25,8 +25,8 @@ task :doc do
 end
 
 task :build => :doc do
-	sh "wortsammler -bi README.md"
-	sh "wortsammler -pi README.md -o ."
+	sh "bin/wortsammler -bi README.md"
+	sh "bin/wortsammler -pi README.md -o ."
 end
 
 desc "run tests"
