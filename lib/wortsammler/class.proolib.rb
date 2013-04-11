@@ -604,6 +604,18 @@ class PandocBeautifier
     end
   end
 
+
+  # 
+  # render a single file 
+  # @param  input [String] path to the inputfile
+  # @param  outdir [String] path to the output directory
+  # @param  format [Array of String] formats
+  # 
+  # @return [nil] no useful return value
+  def render_single_document(input, outdir, format)
+    outname=File.basename(input, ".*")
+    render_document(input, outdir, outname, format, Hash.new)
+  end
   #
   # This renders the final document
   # @param [String] input the input file
@@ -642,19 +654,24 @@ class PandocBeautifier
     outfileText  = "#{outdir}/#{outname}.txt".to_osPath
     outfileSlide = "#{outdir}/#{outname}.slide.html".to_osPath
 
+
+    localvars=vars.clone
+
     #todo: make config required, so it can be reduced to the else part
     if config.nil? then
-      latexStyleFile = File.dirname(File.expand_path(__FILE__))+"/../../ZSUPP_Styles/default.latex"
+      latexStyleFile = File.dirname(File.expand_path(__FILE__))+"/../../resources/default.latex"
       latexStyleFile = File.expand_path(latexStyleFile).to_osPath
     else
       latexStyleFile = config.stylefiles[:latex]
     end
 
-    vars_string=vars.map.map{|key, value| "-V #{key}=#{value.esc}"}.join(" ")
+
+
+    vars_string=localvars.map{|key, value| "-V #{key}=#{value.esc}"}.join(" ")
 
     @log.info("rendering  #{outname} as [#{format.join(', ')}]")
 
-    if $?.success? then
+    begin 
 
       if format.include?("pdf") then
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
@@ -718,7 +735,7 @@ class PandocBeautifier
           "  --ascii -t dzslides --slide-level 2 -o  #{outfileSlide.esc}"
         `#{cmd}`
       end
-    else
+    rescue
 
       @log.error "failed to perform #{cmd}"
       #TODO make a try catch block kere
