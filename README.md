@@ -128,4 +128,47 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 
 -   John Mc Farlane for [pandoc][]
 
+## Installation of the required software
+
+### Ruby
+
+Please use Ruby 1.9.3
+
+-   windows
+    -   download von [http://rubyinstaller.org/downloads/][]
+    -   development kit installieren
+        [DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe][]
+
+        Das braucht man nur, wenn man den Windows-Debugger verwenden
+        muss. In den scripten ist rquire ruby-debug aukommentiert.
+
+-   mac: OSX 10.8 bereits installiert
+
+### pandoc
+
+-   Download [ttp://code.google.com/p/pandoc/downloads/list][]
+-   Installation [http://rubyinstaller.org/downloads/][1]
+-   Homepage [http://johnmacfarlane.net/pandoc/][pandoc]
+
+### TeX
+
+-   mac: download [http://tug.org/mactex/][]
+
+-   windows:
+
+    -   [http://www.exomatik.net/U-Latex/USBTeXEnglish\#toc1][]
+    -   [http://www.miktex.org/2.9/setup][]
+
+    Alternatively you can use
+
+    -   [usbtex][]
+
   [pandoc]: http://johnmacfarlane.net/pandoc/
+  [http://rubyinstaller.org/downloads/]: http://rubyforge.org/frs/%20download.php/76277/rubyinstaller-1.8.7-p370.exe
+  [DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe]: https://github.com/downloads/oneclick/rubyinstaller/DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe
+  [ttp://code.google.com/p/pandoc/downloads/list]: http://code.google.com/p/pandoc/downloads/list
+  [1]: http://rubyinstaller.org/downloads/
+  [http://tug.org/mactex/]: http://tug.org/mactex/
+  [http://www.exomatik.net/U-Latex/USBTeXEnglish\#toc1]: http://www.exomatik.net/U-Latex/USBTeXEnglish#toc1
+  [http://www.miktex.org/2.9/setup]: http://www.miktex.org/2.9/setup
+  [usbtex]: http://www.exomatik.net/U-Latex/USBTeXEnglish
