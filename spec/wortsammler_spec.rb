@@ -1,5 +1,6 @@
 require 'rake'
 require 'tmpdir'
+require 'pry'
 
 wortsammlerbin = "'#{File.expand_path("bin")}'"
 wortsammler    = "'#{File.expand_path(File.join("bin", "wortsammler"))}'"
@@ -41,6 +42,7 @@ describe "Wortsammler options validator" do
 end
 
 describe "Wortsammler beautifier features" do
+
 
   it "beautifies all markdown files in a folder" do
     tempdir=Dir.mktmpdir
@@ -115,7 +117,22 @@ describe "Wortsammler conversion" do
                                                            ]
   end
 
-  it "converts all files within a folder output format" do
+  it "converts a single file to default output format" do
+    tempdir=Dir.mktmpdir
+    mdfile="#{tempdir}/single.md"
+    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    File.open(mdfile, "w"){|f| f.puts mdtext}
+    system "#{wortsammler} -pi #{mdfile} -o #{tempdir}"
+    $?.success?.should==true
+
+
+    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["single.md",
+                                                           "single.pdf"
+                                                           ]
+  end
+
+
+  it "converts all files within a folder to output format" do
     tempdir=Dir.mktmpdir
     system "#{wortsammler} -pi . -o #{tempdir} -f latex:pdf:html:docx"
     $?.success?.should==true
