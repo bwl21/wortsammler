@@ -296,7 +296,9 @@ end
 
 #
 # This class provides the major functionalites
+# 
 # Note that it is called PandocBeautifier for historical reasons
+# 
 # provides methods to Process a pandoc file
 #
 
@@ -604,13 +606,20 @@ class PandocBeautifier
     end
   end
 
-
-  # 
-  # render a single file 
-  # @param  input [String] path to the inputfile
-  # @param  outdir [String] path to the output directory
-  # @param  format [Array of String] formats
-  # 
+
+
+  # 
+
+  # render a single file 
+
+  # @param  input [String] path to the inputfile
+
+  # @param  outdir [String] path to the output directory
+
+  # @param  format [Array of String] formats
+
+  # 
+
   # @return [nil] no useful return value
   def render_single_document(input, outdir, format)
     outname=File.basename(input, ".*")
@@ -663,6 +672,7 @@ class PandocBeautifier
       latexStyleFile = File.expand_path(latexStyleFile).to_osPath
     else
       latexStyleFile = config.stylefiles[:latex]
+      css_style_file = config.stylefiles[:css]
     end
 
 
@@ -705,7 +715,7 @@ class PandocBeautifier
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
 
         cmd="pandoc -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
-          " -o  #{outfileDocx.esc}"
+          "-s pandoc.css -o  #{outfileDocx.esc}"
         `#{cmd}`
       end
 

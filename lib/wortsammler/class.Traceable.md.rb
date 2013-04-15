@@ -54,13 +54,13 @@ class TraceableSet
                }.join("\n\n")
     end
 
-# this generates the todo - list
-
-# TODO: add this method
-
-# this method processes all traces in a particular file
-# @param [String] mdFile name of the Markdown file which shall
-#                 be scanned.
+    # 
+    # This factory method processes all traces in a particular markdown file
+    # and returns a TraceableSet
+    # 
+    # @param  mdFile [String] name of the markdown File which shall be scanned
+    # 
+    # @return [TraceableSet] The set of traceables found in the markdown file
     def self.processTracesInMdFile(mdFile)
         
         parser=TraceInMarkdownParser.new
