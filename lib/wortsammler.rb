@@ -199,8 +199,11 @@ module Wortsammler
                              config.vars,
                              config.editions,
                              config.snippets,
+                             config.frontmatter,
                              config)
+
     nil
+
   end
 
 

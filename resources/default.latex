@@ -1,5 +1,4 @@
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$]{$documentclass$}
-list environment by rj
 {\catcode`\@=11\relax%
 \gdef\itemize{%
   \ifnum \@itemdepth >\thr@@\@toodeep\else

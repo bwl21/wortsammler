@@ -1,4 +1,4 @@
-﻿#
+#
 # This script converts the trace-References in a markdown file
 # to hot references.
 #
@@ -18,7 +18,6 @@ require 'nokogiri'
 require "rubyXL"
 
 
-#require 'ruby-debug' #if not RUBY_PLATFORM=="i386-mingw32"
 
 # TODO: make these patterns part of the configuration
 
@@ -38,7 +37,7 @@ INCLUDE_PDF_PATTERN   = /^\s+~~PDF\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? 
 
 INCLUDE_MD_PATTERN    = /^\s+~~MD\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? \s* (clearpage|cleardoublepage)?~~/x
 
-SNIPPET_PATTERN       = /~~SN \s+ (\w+)~~/x
+SNIPPET_PATTERN       = /(\s*)~~SN \s+ (\w+)~~/x
 
 
 #
@@ -206,17 +205,18 @@ end
 #
 
 class ProoConfig
-  attr_reader :input,    # An array with the input filenames
-    :outdir,               # directory where to place the output files
-    :outname,              # basis to determine the output files
-    :format,               # array of output formats
-    :traceSortOrder,       # Array of strings to determine the sort ord
-    :vars,                 # hash of variables for pandoc
-    :editions,             # hash of editions for pandoc
-    :snippets,             # Array of strings to determine snippet filenames
+  attr_reader :input,   # An array with the input filenames
+    :outdir,              # directory where to place the output files
+    :outname,             # basis to determine the output files
+    :format,              # array of output formats
+    :traceSortOrder,      # Array of strings to determine the sort ord
+    :vars,                # hash of variables for pandoc
+    :editions,            # hash of editions for pandoc
+    :snippets,            # Array of strings to determine snippet filenames
     :upstream_tracefiles,  # Array of strings to determine upstream tracefile names
     :downstream_tracefile, # String to save downstram filename
-    :reqtracefile_base,    # string to determine the requirements tracing results
+    :reqtracefile_base,   # string to determine the requirements tracing results
+    :frontmatter,          # Array of string to determine input filenames of frontmatter
     :rootdir,              # String directory of the configuration file
     :stylefiles            # Hash of stylefiles path to pandoc latex style file
 
@@ -268,6 +268,8 @@ class ProoConfig
 
     @upstream_tracefiles  = selectedConfig[:upstream_tracefiles] || nil
     @upstream_tracefiles  = @upstream_tracefiles.map{|file| File.expand_path("#{basePath}/#{file}")} unless @upstream_tracefiles.nil?
+    @frontmatter   = selectedConfig[:frontmatter] || nil
+    @frontmatter   = selectedConfig[:frontmatter].map{|file| File.expand_path("#{basePath}/#{file}")}  unless @frontmatter.nil?
     @rootdir        = basePath
 
     stylefiles     = selectedConfig[:stylefiles] || nil
@@ -281,24 +283,21 @@ class ProoConfig
       @stylefiles    = stylefiles.map{ |key,value| {key => expand_path.call(value)} }.reduce(:merge)
     end
 
-    snippets          = selectedConfig[:snippets]
+    snippets       = selectedConfig[:snippets]
     if snippets.nil?
       @snippets       = nil
     else
       @snippets       = snippets.map{|file| File.expand_path("#{basePath}/#{file}")}
     end
   end
-
-
 end
-
 
 
 #
 # This class provides the major functionalites
-# 
+#
 # Note that it is called PandocBeautifier for historical reasons
-# 
+#
 # provides methods to Process a pandoc file
 #
 
@@ -333,7 +332,7 @@ class PandocBeautifier
   # perform the beautify
   # * process the file with pandoc
   # * revoke some quotes introduced by pandoc
-  # @param [String] file the name of the file to be beieautified
+  # @param [String] file the name of the file to be beautified
   def beautify(file)
 
     @log.debug(" Cleaning: \"#{file}\"")
@@ -393,13 +392,20 @@ class PandocBeautifier
   def replace_snippets_in_text(text, snippets)
     changed=false
     text.gsub!(SNIPPET_PATTERN){|m|
-      replacetext=snippets[$1.to_sym]
-      if replacetext
+      unless $1.nil? then
+        replacetext_raw=snippets[$2.to_sym]
+        leading_whitespace=$1.split("\n",100)
+        leading_lines=leading_whitespace[0..-1].join("\n")
+        leading_spaces=leading_whitespace.last || ""
+        replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+      end
+
+      if replacetext_raw
         changed=true
-        @log.debug("replaced snippet #{$1} with #{replacetext}")
+        @log.debug("replaced snippet #{$2} with #{replacetext}")
       else
         replacetext=m
-        @log.warn("Snippet not found: #{$1}")
+        @log.warn("Snippet not found: #{$2}")
       end
       replacetext
     }
@@ -495,9 +501,10 @@ class PandocBeautifier
   # @param [String] output - the the name of the output file
   def collect_document(input, output)
     inputs=input.map{|xx| xx.esc.to_osPath }.join(" ")  # qoute cond combine the inputs
+    inputname=File.basename(input.first)
 
     #now combine the input files
-    @log.info("combining the input files")
+    @log.debug("combining the input files #{inputname} et al")
     cmd="pandoc -s -S -o #{output} --ascii #{inputs}" # note that inputs is already quoted
     system(cmd)
     if $?.success? then
@@ -506,10 +513,10 @@ class PandocBeautifier
   end
 
   #
-  # This loads snippets from xlsx file
-  # @param  file [String] Filename of the xlsx file
+  # This loads snipptes from xlsx file
+  # @param [String] filename of the xlsx file
+  # @return [Hash] a hash with the snippetes
   #
-  # @return [Hash] a hash with the snippets
   def load_snippets_from_xlsx(file)
     temp_filename = "#{@tempdir}/snippett.xlsx"
     FileUtils::copy(file, temp_filename)
@@ -540,6 +547,12 @@ class PandocBeautifier
 
   #
   # This generates the final document
+  #
+  # It actually does this in two steps:
+  #
+  # 1. process front matter to laTeX
+  # 2. process documents
+  #
   # @param [Array of String] input the input files to be processed in the given sequence
   # @param [String] outdir the output directory
   # @param [String] outname the base name of the output file. It is a basename in case the
@@ -549,13 +562,16 @@ class PandocBeautifier
   # @param [Hash] vars - the variables passed to pandoc
   # @param [Hash] editions - the editions to process; default nil - no edition processing
   # @param [Array of String] snippetfiles the list of files containing snippets
-  def generateDocument(input, outdir, outname, format, vars, editions=nil, snippetfiles=nil, config=nil)
-
+  # @param [String] file path to frontmatter the file to processed as frontmatter
+  # @param [ProoConfig] config - the configuration file to be used
+  def generateDocument(input, outdir, outname, format, vars, editions=nil, snippetfiles=nil, frontmatter=nil, config=nil)
 
     # combine the input files
 
-    temp_filename = "#{@tempdir}/x.md".to_osPath
+    temp_filename    = "#{@tempdir}/x.md".to_osPath
+    temp_frontmatter = "#{@tempdir}/xfrontmatter.md".to_osPath unless frontmatter.nil?
     collect_document(input, temp_filename)
+    collect_document(frontmatter, temp_frontmatter)            unless frontmatter.nil?
 
     # process the snippets
 
@@ -582,23 +598,43 @@ class PandocBeautifier
       replace_snippets_in_file(temp_filename, snippets)
     end
 
+    vars_frontmatter=vars.clone
+    vars_frontmatter[:usetoc] = "nousetoc"
+
 
     if editions.nil?
       # there are no editions
+      unless frontmatter.nil? then
+        render_document(temp_frontmatter, tempdir, temp_frontmatter, ["frontmatter"], vars_frontmatter)
+        vars[:frontmatter] = "#{tempdir}/#{temp_frontmatter}.latex"
+      end
       render_document(temp_filename, outdir, outname, format, vars, config)
     else
       # process the editions
       editions.each{|edition_name, properties|
         edition_out_filename = "#{outname}_#{properties[:filepart]}"
+        edition_temp_frontmatter = "#{@tempdir}/#{edition_out_filename}_frontmatter.md"  unless frontmatter.nil?
         edition_temp_filename = "#{@tempdir}/#{edition_out_filename}.md"
         vars[:title] = properties[:title]
 
         if properties[:debug]
+          process_debug_info(temp_frontmatter, edition_temp_frontmatter, edition_name.to_s)  unless frontmatter.nil?
           process_debug_info(temp_filename, edition_temp_filename, edition_name.to_s)
           lvars=vars.clone
           lvars[:linenumbers] = "true"
+          unless frontmatter.nil?                                                                # frontmatter
+            lvars[:usetoc] = "nousetoc"
+            render_document(edition_temp_frontmatter, @tempdir, "xfrontmatter", ["frontmatter"], lvars)
+            lvars[:usetoc] = vars[:usetoc] || "usetoc"
+            lvars[:frontmatter] = "#{@tempdir}/xfrontmatter.latex"
+          end
           render_document(edition_temp_filename, outdir, edition_out_filename, ["pdf", "latex"], lvars, config)
         else
+          unless frontmatter.nil?                                                                # frontmatter
+            filter_document_variant(temp_frontmatter, edition_temp_frontmatter, edition_name.to_s)
+            render_document(edition_temp_frontmatter, @tempdir, "xfrontmatter", ["frontmatter"], vars_frontmatter)
+            vars[:frontmatter]="#{@tempdir}/xfrontmatter.latex"
+          end
           filter_document_variant(temp_filename, edition_temp_filename, edition_name.to_s)
           render_document(edition_temp_filename, outdir, edition_out_filename, format, vars, config)
         end
@@ -606,20 +642,12 @@ class PandocBeautifier
     end
   end
 
+  #
 
-
-  # 
-
-  # render a single file 
-
+  # render a single file
   # @param  input [String] path to the inputfile
-
   # @param  outdir [String] path to the output directory
-
   # @param  format [Array of String] formats
-
-  # 
-
   # @return [nil] no useful return value
   def render_single_document(input, outdir, format)
     outname=File.basename(input, ".*")
@@ -639,7 +667,6 @@ class PandocBeautifier
   # @return nil
 
   def render_document(input, outdir, outname, format, vars, config=nil)
-
 
     #TODO: Clarify the following
     # on Windows, Tempdir contains a drive letter. But drive letter
@@ -663,31 +690,51 @@ class PandocBeautifier
     outfileText  = "#{outdir}/#{outname}.txt".to_osPath
     outfileSlide = "#{outdir}/#{outname}.slide.html".to_osPath
 
-
-    localvars=vars.clone
+    if vars.has_key? :frontmatter
+      latexTitleInclude = "--include-before-body=#{vars[:frontmatter].esc}"
+    else
+      latexTitleInclude
+    end
 
     #todo: make config required, so it can be reduced to the else part
     if config.nil? then
       latexStyleFile = File.dirname(File.expand_path(__FILE__))+"/../../resources/default.latex"
       latexStyleFile = File.expand_path(latexStyleFile).to_osPath
+      css_style_file = File.dirname(File.expand_path(__FILE__))+"/../../resources/default.css"
+      css_style_file = File.expand_path(css_style_file).to_osPath
     else
       latexStyleFile = config.stylefiles[:latex]
       css_style_file = config.stylefiles[:css]
     end
 
 
+    toc = "--toc"
+    toc = "" if vars[:usetoc]=="nousetoc"
 
-    vars_string=localvars.map{|key, value| "-V #{key}=#{value.esc}"}.join(" ")
+    begin
+      vars_string=vars.map.map{|key, value| "-V #{key}=#{value.esc}"}.join(" ")
+    rescue
+      require 'pry';binding.pry
+    end
 
     @log.info("rendering  #{outname} as [#{format.join(', ')}]")
 
-    begin 
+    begin
 
       if format.include?("pdf") then
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
+        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone --latex-engine xelatex --number-sections #{vars_string}" +
+          " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
+        `#{cmd}`
+      end
 
-        cmd="pandoc -S #{tempfilePdf.esc} --toc --standalone --latex-engine xelatex --number-sections #{vars_string}" +
-          " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc}"
+
+
+      if format.include?("frontmatter") then
+
+        ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
+
+        cmd="pandoc -S #{tempfilePdf.esc}  --latex-engine xelatex  #{vars_string} --ascii -o  #{outfileLatex.esc}"
         `#{cmd}`
       end
 
@@ -695,8 +742,8 @@ class PandocBeautifier
 
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
 
-        cmd="pandoc -S #{tempfilePdf.esc} --toc --standalone  --latex-engine xelatex --number-sections #{vars_string}" +
-          " --template #{latexStyleFile.esc} --ascii -o  #{outfileLatex.esc}"
+        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone  --latex-engine xelatex --number #{vars_string}" +
+          " --template #{latexStyleFile.esc} --ascii -o  #{outfileLatex.esc} #{latexTitleInclude}"
         `#{cmd}`
       end
 
@@ -714,8 +761,10 @@ class PandocBeautifier
         #todo: handle style file
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
 
+        cmd="pandoc -S #{tempfileHtml.esc} #{toc} --standalone --self-contained --ascii --number  #{vars_string}" +
+          " -o  #{outfileDocx.esc}"
         cmd="pandoc -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
-          "-s pandoc.css -o  #{outfileDocx.esc}"
+          " -o  #{outfileDocx.esc}"
         `#{cmd}`
       end
 
@@ -746,10 +795,8 @@ class PandocBeautifier
         `#{cmd}`
       end
     rescue
-
       @log.error "failed to perform #{cmd}"
       #TODO make a try catch block kere
-
     end
     nil
   end
