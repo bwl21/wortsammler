@@ -1,4 +1,4 @@
-require 'rake'
+﻿require 'rake'
 require 'tmpdir'
 require 'pry'
 
@@ -138,7 +138,11 @@ describe "Wortsammler conversion" do
     $?.success?.should==true
 
 
-    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["main.docx",
+    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["changelog.docx",
+                                                           "changelog.html",
+                                                           "changelog.latex",
+                                                           "changelog.pdf",
+                                                           "main.docx",
                                                            "main.html",
                                                            "main.latex",
                                                            "main.pdf",
@@ -159,7 +163,7 @@ describe "Wortsammler conversion" do
   end
 
   it "investigates the existence of a manifest" do
-    manifest="testproject/30_Sources/ZSUPP_Manifests/xxthis-path-does-not-exist.yaml"
+    manifest="testproject/30_Sources/ZSUPÏ_Manifests/xxthis-path-does-not-exist.yaml"
     system "#{wortsammler} -m #{manifest}"
     $?.success?.should==false
   end
@@ -169,6 +173,16 @@ describe "Wortsammler conversion" do
     system "#{wortsammler} -cm #{manifest}"
     $?.success?.should==true
   end
+
+  it "processes snippets" do
+    pending "Not yet implemented"
+  end
+
+  it "handles undefined snippets" do
+    pending "Test not yet implemented"
+  end
+
+
 
 
   # it "shall run the rake file in the sample document" do

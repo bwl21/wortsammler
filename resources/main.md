@@ -266,3 +266,8 @@ Paragraphs like starting with
 
     }(RS_Comp_003)
 
+### this should not show up in toc
+
+This chapter should not show up in the toc
+ 
+

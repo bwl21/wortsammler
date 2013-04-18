@@ -6,6 +6,7 @@
         - latex
         - docx
         - html
+        - pdf
 
     :vars: 
         :lang: german
@@ -13,11 +14,12 @@
         :mainfont: Calibri
         :sansfont: Calibri
         :geometry: a4paper 
+        :logofile: ../ZSUPP_Styles/logo.jpg
 
     :stylefiles:
-      :latex: ../ZSUPP_Styles/default.latex
-      :docx:  ../ZSUPP_Styles/default.docx
-      :html:  ../ZSUPP_Styles/default.css
+      :latex: ../ZSUPP_Styles/default.wortsammler.latex
+      :docx:  ../ZSUPP_Styles/default.wortsammler.docx
+      :html:  ../ZSUPP_Styles/default.wortsammler.css
 
     :input: 
         - ../001_main/main.md

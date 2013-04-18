@@ -55,6 +55,16 @@ Wortsammler conversion
   processes a manifest
   investigates the existence of a manifest
   extracts the traceables according to a manifest
+  processes snippets (PENDING: Not yet implemented)
+  handles undefined snippets (PENDING: Test not yet implemented)
 
-Finished in 31.15 seconds
-45 examples, 0 failures
+Pending:
+  Wortsammler conversion processes snippets
+    # Not yet implemented
+    # ./spec/wortsammler_spec.rb:177
+  Wortsammler conversion handles undefined snippets
+    # Test not yet implemented
+    # ./spec/wortsammler_spec.rb:181
+
+Finished in 43.1 seconds
+47 examples, 0 failures, 2 pending
