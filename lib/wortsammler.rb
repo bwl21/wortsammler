@@ -249,7 +249,7 @@ module Wortsammler
     }
     FileUtils.cp("#{resourcedir}/main.md", "#{root}/001_Main")
     FileUtils.cp("#{resourcedir}/rakefile.rb", "#{root}/ZSUPP_Tools")
-    FileUtils.cp("#{resourcedir}/default.latex", "#{root}/ZSUPP_Styles")
+    FileUtils.cp("#{resourcedir}/default.wortsammler.latex", "#{root}/ZSUPP_Styles")
     FileUtils.cp("#{resourcedir}/logo.jpg", "#{root}/ZSUPP_Styles")
 
     nil

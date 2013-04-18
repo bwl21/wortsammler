@@ -138,7 +138,11 @@ describe "Wortsammler conversion" do
     $?.success?.should==true
 
 
-    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["main.docx",
+    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["changelog.docx",
+                                                           "changelog.html",
+                                                           "changelog.latex",
+                                                           "changelog.pdf",
+                                                           "main.docx",
                                                            "main.html",
                                                            "main.latex",
                                                            "main.pdf",
@@ -169,6 +173,15 @@ describe "Wortsammler conversion" do
     system "#{wortsammler} -cm #{manifest}"
     $?.success?.should==true
   end
+
+  it "processes snippets" do
+    pending "Not yet implemented"
+  end
+
+  it "handles undefined snippets" do
+    pending "Test not yet implemented"
+  end
+
 
 
   # it "shall run the rake file in the sample document" do

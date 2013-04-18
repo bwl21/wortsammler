@@ -392,16 +392,16 @@ class PandocBeautifier
   def replace_snippets_in_text(text, snippets)
     changed=false
     text.gsub!(SNIPPET_PATTERN){|m|
-      unless $1.nil? then
-        replacetext_raw=snippets[$2.to_sym]
-        leading_whitespace=$1.split("\n",100)
-        leading_lines=leading_whitespace[0..-1].join("\n")
-        leading_spaces=leading_whitespace.last || ""
-        replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
-      end
+      replacetext_raw=snippets[$2.to_sym]
 
       if replacetext_raw
         changed=true
+        unless $1.nil? then
+          leading_whitespace=$1.split("\n",100)
+          leading_lines=leading_whitespace[0..-1].join("\n")
+          leading_spaces=leading_whitespace.last || ""
+          replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+        end
         @log.debug("replaced snippet #{$2} with #{replacetext}")
       else
         replacetext=m
@@ -698,9 +698,9 @@ class PandocBeautifier
 
     #todo: make config required, so it can be reduced to the else part
     if config.nil? then
-      latexStyleFile = File.dirname(File.expand_path(__FILE__))+"/../../resources/default.latex"
+      latexStyleFile = File.dirname(File.expand_path(__FILE__))+"/../../resources/default.wortsammler.latex"
       latexStyleFile = File.expand_path(latexStyleFile).to_osPath
-      css_style_file = File.dirname(File.expand_path(__FILE__))+"/../../resources/default.css"
+      css_style_file = File.dirname(File.expand_path(__FILE__))+"/../../resources/default.wortsammler.css"
       css_style_file = File.expand_path(css_style_file).to_osPath
     else
       latexStyleFile = config.stylefiles[:latex]
