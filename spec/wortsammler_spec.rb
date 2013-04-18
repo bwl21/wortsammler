@@ -1,4 +1,4 @@
-﻿require 'rake'
+require 'rake'
 require 'tmpdir'
 require 'pry'
 
@@ -163,7 +163,7 @@ describe "Wortsammler conversion" do
   end
 
   it "investigates the existence of a manifest" do
-    manifest="testproject/30_Sources/ZSUPÏ_Manifests/xxthis-path-does-not-exist.yaml"
+    manifest="testproject/30_Sources/ZSUPP_Manifests/xxthis-path-does-not-exist.yaml"
     system "#{wortsammler} -m #{manifest}"
     $?.success?.should==false
   end
@@ -181,7 +181,6 @@ describe "Wortsammler conversion" do
   it "handles undefined snippets" do
     pending "Test not yet implemented"
   end
-
 
 
 

@@ -66,5 +66,5 @@ Pending:
     # Test not yet implemented
     # ./spec/wortsammler_spec.rb:181
 
-Finished in 43.1 seconds
+Finished in 41.23 seconds
 47 examples, 0 failures, 2 pending
