@@ -44,10 +44,11 @@ END_DOC
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'yard'
-  spec.add_development_dependency 'redcarpet'
+  spec.add_development_dependency "rake", "~> 10.0.4"
+  spec.add_development_dependency "rspec", "~> 2.13.0"
+  spec.add_development_dependency 'pry', "~> 0.9.12"
+  spec.add_development_dependency 'yard', "~> 0.8.5.2"
+  spec.add_development_dependency 'redcarpet', "~> 2.2.2" 
+  spec.add_development_dependency 'graph', "~> 2.5.2"
 
 end

@@ -184,15 +184,53 @@ describe "Wortsammler conversion" do
 
 
 
-  # it "shall run the rake file in the sample document" do
-  #   FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
-  #     path=ENV['PATH']
-  #     ENV['PATH']="#{wortsammlerbin}:#{path}"
-  #     puts ENV['PATH']
-  #     system 'wortsammler -h'
-  #     #cmd= "rake sample"
-  #     #system cmd
-  #   }
-  #   $?.success?.should==true
-  # end
+  it "runs the rake file in the sample document" do
+    FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
+      path=ENV['PATH']
+      ENV['PATH']="#{wortsammlerbin}:#{path}"
+      puts ENV['PATH']
+      #system 'wortsammler -h'
+      cmd= "rake sample"
+      system cmd
+    }
+    $?.success?.should==true
+  end
+
+  it "compiles all documents" do
+    FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
+      path=ENV['PATH']
+      ENV['PATH']="#{wortsammlerbin}:#{path}"
+      puts ENV['PATH']
+      #system 'wortsammler -h'
+      cmd= "rake all"
+      #system cmd
+    }
+  end
+end
+
+
+describe "Wortsammler syntax extensions", :exp => true do
+  it "supports embedded images" do
+    tempdir="/tmp"#Dir.mktmpdir
+    mdfile="#{tempdir}/embedded-image.md"
+    mdtext=["#this is headline",
+            (5..100).to_a.map{|oi|
+              ["\n\n",
+               "this is image\n\n"+'~~EMBED "spec/logo.pdf" r 5cm 6cm~~',
+               (1..20).to_a.map{|ii|
+                 "#{oi} und #{ii} lorem ipsum und blafasel"
+               }.join(" "),
+               "\n\n",
+               (5..15+oi).to_a.map{|ii|
+                 "#{oi} und #{ii} lorem ipsum und blafasel"
+               }.join(" "),
+               "\n\n",               ]
+            }
+            ].flatten.join("\n")
+
+    File.open(mdfile, "w"){|f| f.puts mdtext}
+    system "#{wortsammler} -pi #{mdfile} -o #{tempdir} -f pdf:latex:html:docx"
+    $?.success?.should==true
+  end
+
 end

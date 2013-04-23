@@ -9,7 +9,10 @@
 ##
 # generate a task for each manifest file
 #
-Dir["../ZSUPP_Manifests/*.yaml"].each{|file|
+# 
+manifestfiles=Dir["../ZSUPP_Manifests/*.yaml"]
+
+manifestfiles.each{|file|
   taskdesc=File.basename(file, ".yaml")
   taskname=taskdesc.split("_")[0]
   desc "generate #{taskdesc}"
@@ -18,6 +21,10 @@ Dir["../ZSUPP_Manifests/*.yaml"].each{|file|
     sh cmd
   end
 }
+
+tasknames=manifestfiles.map{|f|File.basename(f, "yaml").split("_")}
+desc "generate all documents" 
+task :all => tasknames
 
 ##
 # the default task

@@ -110,7 +110,8 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 
 -   provide a sublime text package
 -   improve documentation (it is flying around in German and needs to be
-    consolidated, please refer to <https://github.com/bwl21/wortsammler/wiki>)
+    consolidated, please refer to
+    <https://github.com/bwl21/wortsammler/wiki>)
 -   support epub
 
 ## contributing

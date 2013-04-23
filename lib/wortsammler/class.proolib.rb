@@ -39,6 +39,7 @@ INCLUDE_MD_PATTERN    = /^\s+~~MD\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? \
 
 SNIPPET_PATTERN       = /(\s*)~~SN \s+ (\w+)~~/x
 
+EMBEDDED_IMAGE_PATTERN   = /~~EMBED\s +"(.+)" \s+ (r|l) \s+ (.+) \s+ (.+)~~/x
 
 #
 # This mixin convertes a file path to the os Path representation
@@ -129,7 +130,7 @@ class ReferenceTweaker
 
   # this does the postprocessing
   # of the file
-  # in particluar handloe wortsammler's specific syntax.
+  # in particluar handle wortsammler's specific syntax.
   def prepareFile(infile, outfile)
 
     infileIo=File.new(infile)
@@ -164,6 +165,20 @@ class ReferenceTweaker
     else #if not pdf then it gets a regular external link
       text.gsub!(INCLUDE_PDF_PATTERN){|m|
         "[#{$2}](#{$1})"
+      }
+    end
+
+
+    # embed images
+    # 
+    if @target == "pdf"
+      text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
+         "\\needspace{#{$4}}\\begin{wrapfigure}{#{$2}}{#{$3}}\\centering\\includegraphics{#{$1}}\\end{wrapfigure}"
+        # "\\Needspace{#{$4}}\\texttt{#{$1}}\\texttt{#{$2}}"
+      }
+    else #if not pdf then it gets a regular image
+      text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
+        "![#{$1}](#{$1})"
       }
     end
 

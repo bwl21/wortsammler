@@ -25,6 +25,7 @@
 \usepackage{ifxetex,ifluatex}
 \usepackage{multicol}
 \usepackage{wrapfig}
+\usepackage{needspace}
 $if(linenumbers)$
 \newcommand{\wsbegintwocol}{}
 \newcommand{\wsendtwocol}{}

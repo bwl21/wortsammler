@@ -1,3 +1,4 @@
+Run options: exclude {:exp=>true}
 
 TraceableSet
   should return a blank instance
@@ -57,6 +58,8 @@ Wortsammler conversion
   extracts the traceables according to a manifest
   processes snippets (PENDING: Not yet implemented)
   handles undefined snippets (PENDING: Test not yet implemented)
+  runs the rake file in the sample document
+  compiles all documents
 
 Pending:
   Wortsammler conversion processes snippets
@@ -66,5 +69,5 @@ Pending:
     # Test not yet implemented
     # ./spec/wortsammler_spec.rb:181
 
-Finished in 41.23 seconds
-47 examples, 0 failures, 2 pending
+Finished in 1 minute 0.67745 seconds
+49 examples, 0 failures, 2 pending
