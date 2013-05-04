@@ -39,7 +39,7 @@ INCLUDE_MD_PATTERN    = /^\s+~~MD\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? \
 
 SNIPPET_PATTERN       = /(\s*)~~SN \s+ (\w+)~~/x
 
-EMBEDDED_IMAGE_PATTERN   = /~~EMBED\s +"(.+)" \s+ (r|l) \s+ (.+) \s+ (.+)~~/x
+EMBEDDED_IMAGE_PATTERN   = /~~EMBED\s+ "(.+)" \s+ (r|l|i|o) \s+ (.+) \s+ (.+)~~/x
 
 #
 # This mixin convertes a file path to the os Path representation
@@ -519,7 +519,7 @@ class PandocBeautifier
 
     #now combine the input files
     @log.debug("combining the input files #{inputname} et al")
-    cmd="pandoc -s -S -o #{output} --ascii #{inputs}" # note that inputs is already quoted
+    cmd="pandoc -s -o #{output} --ascii #{inputs}" # note that inputs is already quoted
     system(cmd)
     if $?.success? then
       PandocBeautifier.new().beautify(output)
