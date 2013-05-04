@@ -64,10 +64,10 @@ Wortsammler conversion
 Pending:
   Wortsammler conversion processes snippets
     # Not yet implemented
-    # ./spec/wortsammler_spec.rb:177
+    # ./spec/wortsammler_spec.rb:172
   Wortsammler conversion handles undefined snippets
     # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:181
+    # ./spec/wortsammler_spec.rb:176
 
-Finished in 1 minute 0.67745 seconds
+Finished in 42.1 seconds
 49 examples, 0 failures, 2 pending

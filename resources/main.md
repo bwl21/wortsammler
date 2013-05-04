@@ -1,6 +1,6 @@
 % Wortsammler sample document
 % Bernhard Weichel; and others
-% date
+% 2013/05
 
 # Introduction
 

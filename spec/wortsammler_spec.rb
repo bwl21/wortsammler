@@ -134,22 +134,17 @@ describe "Wortsammler conversion" do
 
   it "converts all files within a folder to output format" do
     tempdir=Dir.mktmpdir
-    system "#{wortsammler} -pi . -o #{tempdir} -f latex:pdf:html:docx"
+    mdtext="# Header\n\n lorem ipsum\n"
+    basefiles = ["f1", "f2", "f3"]
+    outfiles  = basefiles.map{|f| ["#{f}.md", "#{f}.latex"]}.flatten.sort
+    basefiles.each{|f|
+      File.open("#{tempdir}/#{f}.md", "w"){|fo|fo.puts mdtext}
+    }
+
+    system "#{wortsammler} -pi #{tempdir} -o #{tempdir} -f latex"
     $?.success?.should==true
 
-
-    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["changelog.docx",
-                                                           "changelog.html",
-                                                           "changelog.latex",
-                                                           "changelog.pdf",
-                                                           "main.docx",
-                                                           "main.html",
-                                                           "main.latex",
-                                                           "main.pdf",
-                                                           "README.docx",
-                                                           "README.html",
-                                                           "README.latex",
-                                                           "README.pdf"]
+    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.sort.should== outfiles
 
   end
 
@@ -210,26 +205,35 @@ end
 
 
 describe "Wortsammler syntax extensions", :exp => true do
-  it "supports embedded images" do
-    tempdir="/tmp"#Dir.mktmpdir
-    mdfile="#{tempdir}/embedded-image.md"
-    mdtext=["#this is headline",
-            (5..100).to_a.map{|oi|
-              ["\n\n",
-               "this is image\n\n"+'~~EMBED "spec/logo.pdf" r 5cm 6cm~~',
-               (1..20).to_a.map{|ii|
-                 "#{oi} und #{ii} lorem ipsum und blafasel"
-               }.join(" "),
-               "\n\n",
-               (5..15+oi).to_a.map{|ii|
-                 "#{oi} und #{ii} lorem ipsum und blafasel"
-               }.join(" "),
-               "\n\n",               ]
-            }
-            ].flatten.join("\n")
+  it "[RS_Comp_012] supports embedded images" do
+    specdir   =File.dirname(__FILE__)
+    tempdir   ="#{specdir}/../testoutput"
+    imagefile ="floating-image.pdf"
 
-    File.open(mdfile, "w"){|f| f.puts mdtext}
-    system "#{wortsammler} -pi #{mdfile} -o #{tempdir} -f pdf:latex:html:docx"
+    FileUtils.cd(tempdir){|c|
+      FileUtils.cp("#{specdir}/#{imagefile}", ".")
+
+      mdfile="embedded-image.md"
+
+      mdtext=["#this is headline",
+              (5..100).to_a.map{|oi|
+                ["\n\n",
+                 "this is image\n\n~~EMBED \"#{imagefile}\" r 5cm 6cm~~",
+                 (1..20).to_a.map{|ii|
+                   "#{oi} und #{ii} lorem ipsum und blafasel"
+                 }.join(" "),
+                 "\n\n",
+                 (5..15+oi).to_a.map{|ii|
+                   "#{oi} und #{ii} lorem ipsum und blafasel"
+                 }.join(" "),
+                 "\n\n",               ]
+              }
+              ].flatten.join("\n")
+
+      File.open(mdfile, "w"){|f| f.puts mdtext}
+      system "#{wortsammler} -pi '#{mdfile}' -o '.' -f pdf:latex:html:docx"
+      FileUtils.rm imagefile
+    }
     $?.success?.should==true
   end
 

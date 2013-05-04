@@ -173,8 +173,7 @@ class ReferenceTweaker
     # 
     if @target == "pdf"
       text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
-         "\\needspace{#{$4}}\\begin{wrapfigure}{#{$2}}{#{$3}}\\centering\\includegraphics{#{$1}}\\end{wrapfigure}"
-        # "\\Needspace{#{$4}}\\texttt{#{$1}}\\texttt{#{$2}}"
+        "\\wsembedimage{#{$1}}{#{$2}}{#{$3}}{#{$4}}"
       }
     else #if not pdf then it gets a regular image
       text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
