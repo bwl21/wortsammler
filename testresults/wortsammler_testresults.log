@@ -1,73 +1,7 @@
-Run options: exclude {:exp=>true}
+Run options: include {:exp=>true}
 
-TraceableSet
-  should return a blank instance
-  allows to add Traceables
-  delivers the first of the duplicates
-  advertises duplicates
-  adertises undefined traceables
-  advertises all traceables
-  advertises a hash of supporting traces
-  advertises traceable ids of a particular category
-  advertises ttraceables of a particular category
-  merges traceables
-  exposes deleted Traceables
-  exposes added Traceables
-  exposes deleted Traceables of category
-  exposes added Traceables of category
-  exploses changed traceids as array of [Traceid, levensthein, diff_as_html]
-  exposes unchanged Traceables
-  can be marshalled to a file
-  can be dumped to a graphml file
+Wortsammler syntax extensions
+  [RS_Comp_012] supports embedded images
 
-Traceable
-  should == "id"
-  should == "origin"
-  should == "alternative_id"
-  should == "header_plain"
-  should == "\\textt{header_origin}"
-  should == "body_plain"
-  should == ["contributes_to"]
-  should == "trace_orig"
-  should == "origin"
-  should == "category"
-  should == "info"
-
-Wortsammler generic issues
-  provides a help
-  can create a new project folder
-  does not initialize into an existing project folder
-
-Wortsammler options validator
-  rejects no processing
-  rejeccts inputs without outputs
-
-Wortsammler beautifier features
-  beautifies all markdown files in a folder
-  beautifies a single file
-  beautifies input files in a manifest
-  claims missing input
-  claims undefined document path
-
-Wortsammler conversion
-  converts a single file to output format
-  converts a single file to default output format
-  converts all files within a folder to output format
-  processes a manifest
-  investigates the existence of a manifest
-  extracts the traceables according to a manifest
-  processes snippets (PENDING: Not yet implemented)
-  handles undefined snippets (PENDING: Test not yet implemented)
-  runs the rake file in the sample document
-  compiles all documents
-
-Pending:
-  Wortsammler conversion processes snippets
-    # Not yet implemented
-    # ./spec/wortsammler_spec.rb:172
-  Wortsammler conversion handles undefined snippets
-    # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:176
-
-Finished in 42.1 seconds
-49 examples, 0 failures, 2 pending
+Finished in 14.66 seconds
+1 example, 0 failures

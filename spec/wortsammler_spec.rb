@@ -218,7 +218,7 @@ describe "Wortsammler syntax extensions", :exp => true do
       mdtext=["#this is headline",
               (5..100).to_a.map{|oi|
                 ["\n\n",
-                 "this is image\n\n~~EMBED \"#{imagefile}\" r 5cm 6cm~~",
+                 "this is image\n\n~~EMBED \"#{imagefile}\" o 40mm 60mm~~",
                  (1..20).to_a.map{|ii|
                    "#{oi} und #{ii} lorem ipsum und blafasel"
                  }.join(" "),
@@ -226,7 +226,7 @@ describe "Wortsammler syntax extensions", :exp => true do
                  (5..15+oi).to_a.map{|ii|
                    "#{oi} und #{ii} lorem ipsum und blafasel"
                  }.join(" "),
-                 "\n\n",               ]
+                 "\n\n"]
               }
               ].flatten.join("\n")
 

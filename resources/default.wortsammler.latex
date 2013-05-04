@@ -187,7 +187,8 @@ $endif$
 % usage: \wsembedimage{file}{r|l}{width}{height}
 \usepackage{wrapfig}
 \usepackage{needspace}
-\newcommand{\wsembedimage}[4]{\needspace{#4}\begin{wrapfigure}{#2}{#3}\centering\includegraphics{#1}\end{wrapfigure}}
+\newcommand{\wsembedimage}[4]{\needspace{#4}\begin{wrapfigure}{#2}{#3}\centering%
+\vspace{-5mm}\includegraphics{#1}\vspace{-1cm}\end{wrapfigure}}
 %
 % adjust page layout
 %
