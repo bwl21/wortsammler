@@ -1,11 +1,7 @@
 Run options: include {:exp=>true}
 
-pdf utilities:
-  adjusts the bounding box of a pdf file
-  converts an excel sheet to pdf
-  converts a powerpoint to pdf
-  converts an excelsheet to cropped pdf
-  converts a powerpoint to cropped pdf
+Wortsammler beautifier features
+  recognizes if the specified manifest file is a directory
 
-Finished in 40.53 seconds
-5 examples, 0 failures
+Finished in 0.4096 seconds
+1 example, 0 failures

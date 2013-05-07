@@ -250,6 +250,10 @@ class ProoConfig
         $log.error "config file not found '#{configFileName}'"
       else
         $log.error "config file could not be loaded '#{configFileName}'"
+        if File.directory?(configFileName)then
+          # note that windows does not disinguish this.
+          $log.error "#{configFileName} is a directory"
+        end
         $log.error "reason '#{e.message}'"
       end
       exit(false)

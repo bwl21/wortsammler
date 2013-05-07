@@ -77,6 +77,15 @@ describe "Wortsammler beautifier features" do
     beautified_result.should include("# this is headline")
   end
 
+  it "recognizes if the specified manifest file is a directory", exp: false do
+    FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
+      manifest="../ZSUPP_Manifests"
+      cmd= "#{wortsammler} -bm #{manifest} 2>&1"
+      r=`#{cmd}`
+      r.include?("directory").should==true
+    }
+    $?.success?.should==false
+  end
   it "beautifies input files in a manifest" do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") {|d|
       manifest="../ZSUPP_Manifests/sample_the-sample-document.yaml"
