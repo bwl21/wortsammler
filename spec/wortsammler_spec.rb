@@ -20,6 +20,7 @@ describe "Wortsammler generic issues" do
     $?.success?.should==true
 
     Dir["#{testprojectdir}/**/*"].should include "#{testprojectdir}/001_Main"
+    Dir["#{testprojectdir}/**/snippets.xlsx"].should include "#{testprojectdir}/900_snippets/snippets.xlsx"
   end
 
   it "does not initialize into an existing project folder" do

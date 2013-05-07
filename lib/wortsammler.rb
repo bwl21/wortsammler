@@ -236,7 +236,8 @@ module Wortsammler
              "ZSUPP_Tools",
              "ZSUPP_Styles",
              "ZGEN_RequirementsTracing",
-             "001_Main"
+             "001_Main",
+             "900_snippets"
              ]
 
     folders.each{|folder|
@@ -251,6 +252,7 @@ module Wortsammler
     FileUtils.cp("#{resourcedir}/rakefile.rb", "#{root}/ZSUPP_Tools")
     FileUtils.cp("#{resourcedir}/default.wortsammler.latex", "#{root}/ZSUPP_Styles")
     FileUtils.cp("#{resourcedir}/logo.jpg", "#{root}/ZSUPP_Styles")
+    FileUtils.cp("#{resourcedir}/snippets.xlsx", "#{root}/900_snippets")
 
     nil
   end
