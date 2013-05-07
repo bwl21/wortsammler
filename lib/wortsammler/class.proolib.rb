@@ -528,7 +528,7 @@ class PandocBeautifier
 
   #
   # This loads snipptes from xlsx file
-  # @param [String] filename of the xlsx file
+  # @param [String] file name of the xlsx file
   # @return [Hash] a hash with the snippetes
   #
   def load_snippets_from_xlsx(file)
@@ -576,7 +576,7 @@ class PandocBeautifier
   # @param [Hash] vars - the variables passed to pandoc
   # @param [Hash] editions - the editions to process; default nil - no edition processing
   # @param [Array of String] snippetfiles the list of files containing snippets
-  # @param [String] file path to frontmatter the file to processed as frontmatter
+  # @param [String] frontmatter file path to frontmatter the file to processed as frontmatter
   # @param [ProoConfig] config - the configuration file to be used
   def generateDocument(input, outdir, outname, format, vars, editions=nil, snippetfiles=nil, frontmatter=nil, config=nil)
 

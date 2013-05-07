@@ -14,7 +14,8 @@ describe "Wortsammler generic issues" do
     $?.success?.should==true
   end
 
-  it "can create a new project folder" do
+  it "can create a new project folder", :exp => false do
+    FileUtils.rm_rf(testprojectdir)
     system "#{wortsammler} -n #{testprojectdir}"
     $?.success?.should==true
 
@@ -204,7 +205,7 @@ describe "Wortsammler conversion" do
 end
 
 
-describe "Wortsammler syntax extensions", :exp => true do
+describe "Wortsammler syntax extensions", :exp => false do
   it "[RS_Comp_012] supports embedded images" do
     specdir   =File.dirname(__FILE__)
     tempdir   ="#{specdir}/../testoutput"

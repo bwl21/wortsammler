@@ -105,6 +105,7 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 -   Specific syntax in strikethrough is still processed as one line
     which is not very robust
 -   as of now the "framework" is hard to use in other applications
+-   pdf_utilities only run on OSX
 
 ## future plans
 

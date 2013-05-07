@@ -1,7 +1,11 @@
 Run options: include {:exp=>true}
 
-Wortsammler syntax extensions
-  [RS_Comp_012] supports embedded images
+pdf utilities:
+  adjusts the bounding box of a pdf file
+  converts an excel sheet to pdf
+  converts a powerpoint to pdf
+  converts an excelsheet to cropped pdf
+  converts a powerpoint to cropped pdf
 
-Finished in 14.66 seconds
-1 example, 0 failures
+Finished in 40.53 seconds
+5 examples, 0 failures

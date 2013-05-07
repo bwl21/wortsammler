@@ -1,3 +1,5 @@
+require 'rake'
+
 
 ##
 #
@@ -26,10 +28,11 @@ tasknames=manifestfiles.map{|f|File.basename(f, "yaml").split("_")}
 desc "generate all documents" 
 task :all => tasknames
 
-##
+#
 # the default task
 
 desc "print this help"
+
 task :default do
   system "rake -T"
 end
