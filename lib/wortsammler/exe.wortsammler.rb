@@ -9,6 +9,7 @@ require 'wortsammler/version.rb'
 
 options = {}
 config = nil
+$log.progname="#{Wortsammler::PROGNAME} #{Wortsammler::VERSION}"
 
 optparse = OptionParser.new do|opts|
   # Set a banner, displayed at the top

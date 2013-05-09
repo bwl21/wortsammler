@@ -181,7 +181,7 @@ describe "Wortsammler conversion" do
   end
 
   it "processes snippets" do
-    pending "Not yet implemented"
+    pending "Test not yet implemented"
   end
 
   it "handles undefined snippets" do
@@ -242,6 +242,7 @@ describe "Wortsammler syntax extensions", :exp => false do
               ].flatten.join("\n")
 
       File.open(mdfile, "w"){|f| f.puts mdtext}
+
       system "#{wortsammler} -pi '#{mdfile}' -o '.' -f pdf:latex:html:docx"
       FileUtils.rm imagefile
     }

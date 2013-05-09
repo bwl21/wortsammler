@@ -65,7 +65,7 @@ $if(fancy-enums)$
 }\makeatother
 \usepackage{enumerate}
 $endif$
-\usepackage{ctable}
+\usepackage{longtable}
 \usepackage{float} % provides the H option for float placement
 \usepackage{graphicx}
 % We will generate all images so they have a width \maxwidth. This means

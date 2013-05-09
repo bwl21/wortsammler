@@ -1,5 +1,5 @@
 require "wortsammler/version"
-require 'pry' if false
+require "wortsammler/class.proolib"
 
 
 ##
@@ -22,14 +22,18 @@ module Wortsammler
   # 
   # @return [Nil] No Return
   def self.execute(options)
+
+
+    PandocBeautifier.new($log).check_pandoc_version
+
     ##
     #
     # print version info
     #
     if options[:version] then
-      puts "Wortsammler #{Wortsammler::VERSION}"
+      puts "#{Wortsammler::PROGNAME} #{Wortsammler::VERSION}"
 
-      pandoc=`pandocx -v`.split("\n")[0] rescue pandoc="error running pandoc"
+      pandoc=`pandoc -v`.split("\n")[0] rescue pandoc="error running pandoc"
       xetex=`xelatex -v`.split("\n")[0] rescue pandoc="error running xelatex"
 
       puts "found #{pandoc}"

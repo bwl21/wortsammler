@@ -16,6 +16,7 @@ require 'yaml'
 require 'tmpdir'
 require 'nokogiri'
 require "rubyXL"
+require 'logger'
 
 
 
@@ -170,7 +171,7 @@ class ReferenceTweaker
 
 
     # embed images
-    # 
+    #
     if @target == "pdf"
       text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
         "\\wsembedimage{#{$1}}{#{$2}}{#{$3}}{#{$4}}"
@@ -347,6 +348,29 @@ class PandocBeautifier
     end
   end
 
+
+  # 
+  # This checks if an appropriate pandoc version can be
+  # started on the machine
+  # 
+  # @return [boolean] true if an appropriate version is available
+  def check_pandoc_version
+    required_version_string="1.11"
+    begin
+      pandoc_version=`pandoc -v`.split("\n").first.split(" ")[1]
+      if pandoc_version < required_version_string then
+        @log.error "found pandoc #{pandoc_version} need #{required_version_string}"
+        result = false
+      else
+        result = true
+      end
+    rescue Exception => e
+      @log.error("could not run pandoc: #{e.message}")
+      result=false
+    end
+    result
+  end
+
   # perform the beautify
   # * process the file with pandoc
   # * revoke some quotes introduced by pandoc
@@ -499,7 +523,7 @@ class PandocBeautifier
           color="red"
         end
 
-        "\\color{#{color}}\\rule{2cm}{0.5mm}\\marginpar{#{$1.strip}}"
+        "\\color{#{color}}\\rule{2cm}{0.5mm}\\newline\\marginpar{#{$1.strip}}"
 
       }
 
@@ -740,6 +764,7 @@ class PandocBeautifier
     begin
 
       if format.include?("pdf") then
+        @log.debug("creating  #{outfilePdf}")
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
         cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone --latex-engine xelatex --number-sections #{vars_string}" +
           " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
@@ -757,16 +782,18 @@ class PandocBeautifier
       end
 
       if format.include?("latex") then
-
+        @log.debug("creating  #{outfileLatex}")
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
 
-        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone  --latex-engine xelatex --number #{vars_string}" +
+        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone  --latex-engine xelatex --number-sections #{vars_string}" +
           " --template #{latexStyleFile.esc} --ascii -o  #{outfileLatex.esc} #{latexTitleInclude}"
         `#{cmd}`
       end
 
       if format.include?("html") then
         #todo: handle css
+        @log.debug("creating  #{outfileHtml}")
+
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
 
         cmd="pandoc -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
@@ -777,9 +804,11 @@ class PandocBeautifier
 
       if format.include?("docx") then
         #todo: handle style file
+        @log.debug("creating  #{outfileDocx}")
+
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
 
-        cmd="pandoc -S #{tempfileHtml.esc} #{toc} --standalone --self-contained --ascii --number  #{vars_string}" +
+        cmd="pandoc -S #{tempfileHtml.esc} #{toc} --standalone --self-contained --ascii --number-sections  #{vars_string}" +
           " -o  #{outfileDocx.esc}"
         cmd="pandoc -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
           " -o  #{outfileDocx.esc}"
@@ -787,7 +816,7 @@ class PandocBeautifier
       end
 
       if format.include?("rtf") then
-
+        @log.debug("creating  #{outfileRtf}")
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
 
         cmd="pandoc -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
@@ -796,6 +825,7 @@ class PandocBeautifier
       end
 
       if format.include?("txt") then
+        @log.debug("creating  #{outfileText}")
 
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfileHtml)
 
@@ -805,10 +835,11 @@ class PandocBeautifier
       end
 
       if format.include?("slide") then
+        @log.debug("creating  #{outfileSlide}")
 
         ReferenceTweaker.new("slide").prepareFile(tempfile, tempfilePdf)
         #todo: hanlde stylefile
-        cmd="pandoc -S #{tempfileHtml.esc} --toc --standalone --number #{vars_string}" +
+        cmd="pandoc -S #{tempfileHtml.esc} --toc --standalone --number-sections #{vars_string}" +
           "  --ascii -t dzslides --slide-level 2 -o  #{outfileSlide.esc}"
         `#{cmd}`
       end

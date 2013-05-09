@@ -1,5 +1,5 @@
 # setup the logger
-require 'Logger'
+require 'logger'
 $log = Logger.new(STDOUT)
 $log.level = Logger::INFO
 $log.datetime_format= "%Y-%m-%d %H:%M:%S"          
