@@ -71,7 +71,8 @@ module Wortsammler
     system(cmd)
 
     Dir["#{tmpdir}/#{tmpbase}*.pdf"].each do |f|
-      FileUtils.cp(f, outdir)
+      outfilename=File.basename(f).gsub(" ", "_")
+      FileUtils.cp(f, "#{outdir}/#{outfilename}")
     end
 
     Dir["#{outdir}/#{tmpbase}*#{outext}"]
