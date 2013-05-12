@@ -5,6 +5,8 @@ require 'pry'
 wortsammlerbin = "'#{File.expand_path("bin")}'"
 wortsammler    = "'#{File.expand_path(File.join("bin", "wortsammler"))}'"
 testprojectdir = "testproject/30_Sources"
+specdir   =File.dirname(__FILE__)
+
 
 describe "Wortsammler generic issues" do
 
@@ -143,6 +145,35 @@ describe "Wortsammler conversion" do
   end
 
 
+  it "handles chapters up to 6 levels", exp: true do
+    tempdir="#{specdir}/../testoutput"
+    mdfile="#{tempdir}/chapternesting.md"
+    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    def lorem(j)
+      (1.upto 100) .map{|i| "text_#{j} lorem ipsum #{i} dolor "}.join(" ")
+    end
+    def chapter(i, depth)
+      ["\n\n", "##########"[1..depth], " Chapter #{i} .. #{depth}\n\n",
+       lorem(i),
+       ].join("")
+    end
+    File.open(mdfile, "w"){|f|
+      1.upto 10 do |i|
+        1.upto 6 do |j|
+          f.puts chapter(i,j)
+        end
+      end
+    }
+    system "#{wortsammler} -pi '#{mdfile}' -o '#{tempdir}' -f pdf:latex"
+    $?.success?.should==true
+
+require 'pry';binding.pry
+
+    Dir["#{tempdir}/chapternesting*"].map{|f|File.basename(f)}.should== ["chapternesting.md",
+                                                           "chapternesting.pdf"
+                                                           ]
+  end
+
   it "converts all files within a folder to output format" do
     tempdir=Dir.mktmpdir
     mdtext="# Header\n\n lorem ipsum\n"
@@ -217,7 +248,6 @@ end
 
 describe "Wortsammler syntax extensions", :exp => false do
   it "[RS_Comp_012] supports embedded images" do
-    specdir   =File.dirname(__FILE__)
     tempdir   ="#{specdir}/../testoutput"
     imagefile ="floating-image.pdf"
 

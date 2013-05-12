@@ -348,11 +348,15 @@ class PandocBeautifier
     end
   end
 
-
-  # 
+
+
+  # 
+
   # This checks if an appropriate pandoc version can be
-  # started on the machine
-  # 
+  # started on the machine
+
+  # 
+
   # @return [boolean] true if an appropriate version is available
   def check_pandoc_version
     required_version_string="1.11"
@@ -763,15 +767,6 @@ class PandocBeautifier
 
     begin
 
-      if format.include?("pdf") then
-        @log.debug("creating  #{outfilePdf}")
-        ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
-        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone --latex-engine xelatex --number-sections #{vars_string}" +
-          " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
-        `#{cmd}`
-      end
-
-
 
       if format.include?("frontmatter") then
 
@@ -781,11 +776,19 @@ class PandocBeautifier
         `#{cmd}`
       end
 
+      if format.include?("pdf") then
+        @log.debug("creating  #{outfilePdf}")
+        ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
+        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone --chapters --latex-engine xelatex --number-sections #{vars_string}" +
+          " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
+        `#{cmd}`
+      end
+
       if format.include?("latex") then
         @log.debug("creating  #{outfileLatex}")
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
 
-        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone  --latex-engine xelatex --number-sections #{vars_string}" +
+        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone --chapters --latex-engine xelatex --number-sections #{vars_string}" +
           " --template #{latexStyleFile.esc} --ascii -o  #{outfileLatex.esc} #{latexTitleInclude}"
         `#{cmd}`
       end
