@@ -238,8 +238,14 @@ $if(linenumbers)$
 \usepackage[pagewise]{lineno}
 \setlength\linenumbersep{1mm}
 \modulolinenumbers[5]
-
 $endif$
+%
+%\renewcommand{Befehl der Gliederungsebene z.B. \chapter}{\@startsection{Name z.B. chapter}{Ebene z.B. 0}{Einrückung z.B. 0pt}{Abstand zum vorigen Text z.B. 3.5ex plus 1ex minus 0pt\relax}{Abstand zum nachfolgenden Text z.B. 2.5ex plus 0.5ex minus 0pt\relax}{Schrift z.B. \normalfont\Large\bfseries}}
+%
+% \makeatletter%
+% \renewcommand{\chapter}{\@startsection{chapter}{0}{0pt}{3.5ex plus 1ex minus 0pt\relax}{2.5ex plus 0.5ex minus 0pt\relax}{\normalfont\Large\bfseries}}%
+% \makeatother%
+%
 %
 % Wortsammler extensions end here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

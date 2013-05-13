@@ -30,6 +30,10 @@ describe "Wortsammler generic issues" do
     `#{wortsammler} -n #{tempdir}`
     $?.success?.should==false
   end
+
+  it "controls the pandoc options by document class" do
+    pending "implmenet test to control pandoc options by document class"
+  end
 end
 
 describe "Wortsammler options validator" do
@@ -153,7 +157,7 @@ describe "Wortsammler conversion" do
       (1.upto 100) .map{|i| "text_#{j} lorem ipsum #{i} dolor "}.join(" ")
     end
     def chapter(i, depth)
-      ["\n\n", "##########"[1..depth], " Chapter #{i} .. #{depth}\n\n",
+      ["\n\n", "##########"[1..depth], " this is example on level  #{i} .. #{depth}\n\n",
        lorem(i),
        ].join("")
     end
@@ -164,14 +168,15 @@ describe "Wortsammler conversion" do
         end
       end
     }
-    system "#{wortsammler} -pi '#{mdfile}' -o '#{tempdir}' -f pdf:latex"
+
+    system "#{wortsammler} -pbi '#{mdfile}' -o '#{tempdir}' -f pdf:latex"
     $?.success?.should==true
 
-require 'pry';binding.pry
-
-    Dir["#{tempdir}/chapternesting*"].map{|f|File.basename(f)}.should== ["chapternesting.md",
-                                                           "chapternesting.pdf"
-                                                           ]
+    Dir["#{tempdir}/chapternesting*"].map{|f|File.basename(f)}.sort.should== ["chapternesting.md",
+                                                                         "chapternesting.pdf",
+                                                                         "chapternesting.latex",
+                                                                         "chapternesting.md.bak"
+                                                                         ].sort
   end
 
   it "converts all files within a folder to output format" do
