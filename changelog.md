@@ -1,4 +1,8 @@
-# 0.0.4 (upcoming)
+# 0.0.5
+
+-   Fixed the usual encoding but which occurred on windows
+
+# 0.0.4 (yanked)
 
 -   Improve handling of lists
     (https://github.com/bwl21/wortsammler/issues/14)
