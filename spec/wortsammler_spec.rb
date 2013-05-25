@@ -149,7 +149,7 @@ describe "Wortsammler conversion" do
   end
 
 
-  it "handles chapters up to 6 levels", exp: true do
+  it "handles chapters up to 6 levels", exp: false do
     tempdir="#{specdir}/../testoutput"
     mdfile="#{tempdir}/chapternesting.md"
     mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
@@ -176,6 +176,39 @@ describe "Wortsammler conversion" do
                                                                          "chapternesting.pdf",
                                                                          "chapternesting.latex",
                                                                          "chapternesting.md.bak"
+                                                                         ].sort
+  end
+
+  it "handles lists up to 9 levels", exp: false do
+    tempdir="#{specdir}/../testoutput"
+    mdfile="#{tempdir}/listnesting.md"
+    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    def lorem(j)
+      (1.upto 100) .map{|i| "text_#{j} lorem ipsum #{i} dolor "}.join(" ")
+    end
+    def chapter(i, depth)
+      ["\n\n", "##########"[1..depth], " this is example on level  #{i} .. #{depth}\n\n",
+       lorem(i),
+       ].join("")
+    end
+    File.open(mdfile, "w"){|f|
+      f.puts "# depth test for lists"
+      f.puts ""
+      f.puts lorem(1)
+      f.puts ""
+
+      0.upto 8 do |i|
+        f.puts ["    "*i, "-   this is list level #{i}"].join
+      end
+    }
+
+    system "#{wortsammler} -pbi '#{mdfile}' -o '#{tempdir}' -f pdf:latex"
+    $?.success?.should==true
+
+    Dir["#{tempdir}/listnesting*"].map{|f|File.basename(f)}.sort.should== ["listnesting.md",
+                                                                         "listnesting.pdf",
+                                                                         "listnesting.latex",
+                                                                         "listnesting.md.bak"
                                                                          ].sort
   end
 
