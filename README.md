@@ -149,17 +149,17 @@ Please use Ruby 1.9.3
 ### pandoc
 
 -   Download [ttp://code.google.com/p/pandoc/downloads/list][]
--   Installation [http://rubyinstaller.org/downloads/][1]
--   Homepage [http://johnmacfarlane.net/pandoc/][pandoc]
+-   Installation <http://rubyinstaller.org/downloads/>
+-   Homepage <http://johnmacfarlane.net/pandoc/>
 
 ### TeX
 
--   mac: download [http://tug.org/mactex/][]
+-   mac: download <http://tug.org/mactex/>
 
 -   windows:
 
-    -   [http://www.exomatik.net/U-Latex/USBTeXEnglish\#toc1][]
-    -   [http://www.miktex.org/2.9/setup][]
+    -   <http://www.exomatik.net/U-Latex/USBTeXEnglish#toc1>
+    -   <http://www.miktex.org/2.9/setup>
 
     Alternatively you can use
 
@@ -169,8 +169,4 @@ Please use Ruby 1.9.3
   [http://rubyinstaller.org/downloads/]: http://rubyforge.org/frs/%20download.php/76277/rubyinstaller-1.8.7-p370.exe
   [DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe]: https://github.com/downloads/oneclick/rubyinstaller/DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe
   [ttp://code.google.com/p/pandoc/downloads/list]: http://code.google.com/p/pandoc/downloads/list
-  [1]: http://rubyinstaller.org/downloads/
-  [http://tug.org/mactex/]: http://tug.org/mactex/
-  [http://www.exomatik.net/U-Latex/USBTeXEnglish\#toc1]: http://www.exomatik.net/U-Latex/USBTeXEnglish#toc1
-  [http://www.miktex.org/2.9/setup]: http://www.miktex.org/2.9/setup
   [usbtex]: http://www.exomatik.net/U-Latex/USBTeXEnglish
