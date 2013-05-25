@@ -59,16 +59,18 @@ module Wortsammler
 
     cmd=[]
     cmd << "osascript <<-EOF"
+    cmd << "set theTmpBase to (POSIX file \"#{tmpdir}/#{tmpbase}.pdf\") as string"
     cmd << "tell application \"Microsoft Excel\""
     #cmd << "activate"
     cmd << ""
     cmd << "open \"#{tmpfile}\""
     cmd << ""
-    cmd << "save active workbook in \"#{tmpbase}.pdf\" as PDF file format"
-    cmd << "close workbook 1 saving no"
-    cmd << "delay 5"
+    cmd << "save active workbook in theTmpBase as PDF file format"
+    cmd << "delay 1"
+    cmd << "close active workbook saving no"
     cmd << "quit"
     cmd << "end tell"
+    cmd << "EOF"
     cmd = cmd.join("\n")
     system(cmd)
 
