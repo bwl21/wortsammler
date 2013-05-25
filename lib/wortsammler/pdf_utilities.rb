@@ -66,6 +66,8 @@ module Wortsammler
     cmd << ""
     cmd << "save active workbook in \"#{tmpbase}.pdf\" as PDF file format"
     cmd << "close workbook 1 saving no"
+    cmd << "delay 5"
+    cmd << "quit"
     cmd << "end tell"
     cmd = cmd.join("\n")
     system(cmd)
@@ -128,6 +130,7 @@ module Wortsammler
     cmd << "set theActivePPT to the active presentation"
     cmd << "save theActivePPT in \"#{tmpout}\" as save as PDF"
     cmd << "close theActivePPT"
+    cmd << "quit"
     cmd << "end tell"
     cmd = cmd.join("\n")
     system(cmd)
