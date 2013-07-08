@@ -43,6 +43,8 @@ SNIPPET_PATTERN       = /(\s*)~~SN \s+ (\w+)~~/x
 
 EMBEDDED_IMAGE_PATTERN   = /~~EMBED\s+ "(.+)" \s+ (r|l|i|o) \s+ (.+) \s+ (.+)~~/x
 
+EXPECTED_RESULT_PATTERN = /(^\s*)~~~~\s*\{.expectedResult\s+label=\"([A-Za-z]+_[A-Za-z]+_[0-9]+)\"}\s([^~]*)~~~~/x
+
 #
 # This mixin convertes a file path to the os Path representation
 # todo maybe replace this by a builtin ruby stuff such as "pathname"
@@ -80,138 +82,181 @@ class ReferenceTweaker
 
   private
 
-  # this prepares the reference in the target format
-  #
-  # :string: the Id of the referenced Traceable
-  def prepareTraceReferences(string)
-    result=string.gsub(/\s*/,"").split(",").map{|trace|
-      itrace   = mkInternalTraceId(trace)
-      texTrace = mkTexTraceDisplay(trace)
-      if @target == "pdf" then
-        "\\hyperlink{#{itrace}}{#{texTrace}}"
-      else
-        "[#{trace}](\##{itrace})"
-      end
-    }
-    result.join(", ")
-  end
+    # this prepares the reference in the target format
+    #
+    # :string: the Id of the referenced Traceable
+    def prepareTraceReferences(string)
+      result=string.gsub(/\s*/,"").split(",").map{|trace|
+        itrace   = mkInternalTraceId(trace)
+        texTrace = mkTexTraceDisplay(trace)
+        if @target == "pdf" then
+          "\\hyperlink{#{itrace}}{#{texTrace}}"
+        else
+          "[#{trace}](\##{itrace})"
+        end
+      }
+      result.join(", ")
+    end
 
 
-  # this tweaks the reference-Id to be comaptible as TeX label
-  # private methd
-  def mkInternalTraceId(string)
-    string.gsub("_","-")
-  end
+    #
+    # [prepareExpectedResults description]
+    # @param  label [type] [description]
+    # @param  body [type] [description]
+    #
+    # @return [type] [description]
+    def prepareExpectedResults(indent="", label, body)
+      result_items=body.split("-   ")[1..-1].map{|i|i.strip}
+      result= ["\\begin{Form}"]
 
-  # this tweaks the reference-id to be displayed in TeX
-  # private method
-  def mkTexTraceDisplay(trace)
-    trace.gsub("_", "\\_")
-  end
+
+      j="00"
+      result << result_items.map{|i| 
+        j = j.next
+        "\\CheckBox[name=#{label}_#{j}]{} #{i}"
+       }
+      result << "\\vspace{1em}"
+      result << "\\ChoiceMenu[combo, name=#{label}_98]{Test execution:}{ok, fail, pending}"
+      result << "\\vspace{1em}"
+      result << ["\\TextField[ name=#{label}_99 , width=40em, height=2cm, multiline=true, bordercolor={1 1 1}] {}"]
+      result << ["\\end{Form}"]
+
+        unless $1.nil? then
+          leading_whitespace=$1.split("\n",100)
+          leading_lines=leading_whitespace[0..-1].join("\n")
+          leading_spaces=leading_whitespace.last || ""
+          replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+        end
+
+      result=result.compact.flatten.map{|i|"#{indent}#{i}"}
+      result.join("\n#{indent}\n")
+    end
+
+    # this tweaks the reference-Id to be comaptible as TeX label
+    # private methd
+    def mkInternalTraceId(string)
+      string.gsub("_","-")
+    end
+
+    # this tweaks the reference-id to be displayed in TeX
+    # private method
+    def mkTexTraceDisplay(trace)
+      trace.gsub("_", "\\_")
+    end
 
   public
 
-  # constructor
-  # :target: the target format
-  #          in which the referneces shall be represented
-  #todo: improve logger approach
-  def initialize(target, logger=nil)
-    @target=target
+    # constructor
+    # :target: the target format
+    #          in which the referneces shall be represented
+    #todo: improve logger approach
+    def initialize(target, logger=nil)
+      @target=target
 
-    @log=logger || $logger || nil
+      @log=logger || $logger || nil
 
-    if @log == nil
-      @log = Logger.new(STDOUT)
-      @log.level = Logger::INFO
-      @log.datetime_format = "%Y-%m-%d %H:%M:%S"
-      @log.formatter = proc do |severity, datetime, progname, msg|
-        "#{datetime}: #{msg}\n"
+      if @log == nil
+        @log = Logger.new(STDOUT)
+        @log.level = Logger::INFO
+        @log.datetime_format = "%Y-%m-%d %H:%M:%S"
+        @log.formatter = proc do |severity, datetime, progname, msg|
+          "#{datetime}: #{msg}\n"
+        end
       end
     end
-  end
 
-  # this does the postprocessing
-  # of the file
-  # in particluar handle wortsammler's specific syntax.
-  def prepareFile(infile, outfile)
+    # this does the postprocessing
+    # of the file
+    # in particluar handle wortsammler's specific syntax.
+    def prepareFile(infile, outfile)
 
-    infileIo=File.new(infile)
-    text = infileIo.readlines.join
-    infileIo.close
+      infileIo=File.new(infile)
+      text = infileIo.readlines.join
+      infileIo.close
 
-    #include pdf files
+      #include pdf files
 
-    if @target == "pdf"
-      text.gsub!(INCLUDE_PDF_PATTERN){|m|
+      if @target == "pdf"
+        text.gsub!(INCLUDE_PDF_PATTERN){|m|
 
-        if $4
-          pages="[pages=#{$4}]"
-        else
-          pages=""
-        end
+          if $4
+            pages="[pages=#{$4}]"
+          else
+            pages=""
+          end
 
-        if $5
-          clearpage=$5
-        else
-          clearpage="cleardoublepage"
-        end
+          if $5
+            clearpage=$5
+          else
+            clearpage="cleardoublepage"
+          end
 
-        if $3.length > 0
-          level=$3
-        else
-          level=9
-        end
+          if $3.length > 0
+            level=$3
+          else
+            level=9
+          end
 
-        "\n\n\\#{clearpage}\n\\bookmark[level=#{level},page=\\thepage]{#{$2}}\n\\includepdf#{pages}{#{$1}}"
-      }
-    else #if not pdf then it gets a regular external link
-      text.gsub!(INCLUDE_PDF_PATTERN){|m|
-        "[#{$2}](#{$1})"
-      }
+          "\n\n\\#{clearpage}\n\\bookmark[level=#{level},page=\\thepage]{#{$2}}\n\\includepdf#{pages}{#{$1}}"
+        }
+      else #if not pdf then it gets a regular external link
+        text.gsub!(INCLUDE_PDF_PATTERN){|m|
+          "[#{$2}](#{$1})"
+        }
+      end
+
+
+      # embed images
+      #
+      if @target == "pdf"
+        text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
+          "\\wsembedimage{#{$1}}{#{$2}}{#{$3}}{#{$4}}"
+        }
+      else #if not pdf then it gets a regular image
+        text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
+          "![#{$1}](#{$1})"
+        }
+      end
+
+      #inject the anchors for references to traces ->[traceid]
+      if @target == "pdf" then
+        text.gsub!(TRACE_ANCHOR_PATTERN){|m| "[#{$1}]#{$2}\\hypertarget{#{mkInternalTraceId($1)}}{}"}
+      else
+        text.gsub!(TRACE_ANCHOR_PATTERN){|m| "<a id=\"#{mkInternalTraceId($1)}\">[#{$1}]</a>#{$2}"}
+      end
+
+      #substitute arbitrary anchors for arbitrary targets <a id="">
+      if @target == "pdf" then
+        text.gsub!(ANY_ANCHOR_PATTERN){|m| "\\hypertarget{#{mkInternalTraceId($1)}}{}"}
+      else
+        # it is already html
+      end
+
+      #substitute arbitrary document internal references <a href=""></a>
+      if @target == "pdf" then
+        text.gsub!(ANY_REF_PATTERN){|m| "\\hyperlink{#{$1}}{#{mkTexTraceDisplay($2)}}"}
+      else
+        # it is already html
+      end
+
+      # substitute the uptrace references
+      text.gsub!(UPTRACE_REF_PATTERN){|m| "}(#{prepareTraceReferences($1)})"}
+
+      # substitute the informal trace references
+      text.gsub!(TRACE_REF_PATTERN){|m| "[#{prepareTraceReferences($1)}]"}
+
+
+      # substitute expected Results
+      #
+      #
+      if @target == "pdf" then
+        text.gsub!(EXPECTED_RESULT_PATTERN){|m| "#{prepareExpectedResults($1, $2, $3)}"}
+      else
+        # it is already leave it as it is
+      end
+
+      File.open(outfile, "w"){|f| f.puts(text)}
     end
-
-
-    # embed images
-    #
-    if @target == "pdf"
-      text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
-        "\\wsembedimage{#{$1}}{#{$2}}{#{$3}}{#{$4}}"
-      }
-    else #if not pdf then it gets a regular image
-      text.gsub!(EMBEDDED_IMAGE_PATTERN){|m|
-        "![#{$1}](#{$1})"
-      }
-    end
-
-    #inject the anchors for references to traces ->[traceid]
-    if @target == "pdf" then
-      text.gsub!(TRACE_ANCHOR_PATTERN){|m| "[#{$1}]#{$2}\\hypertarget{#{mkInternalTraceId($1)}}{}"}
-    else
-      text.gsub!(TRACE_ANCHOR_PATTERN){|m| "<a id=\"#{mkInternalTraceId($1)}\">[#{$1}]</a>#{$2}"}
-    end
-
-    #substitute arbitrary anchors for arbitrary targets <a id="">
-    if @target == "pdf" then
-      text.gsub!(ANY_ANCHOR_PATTERN){|m| "\\hypertarget{#{mkInternalTraceId($1)}}{}"}
-    else
-      # it is already html
-    end
-
-    #substitute arbitrary document internal references <a href=""></a>
-    if @target == "pdf" then
-      text.gsub!(ANY_REF_PATTERN){|m| "\\hyperlink{#{$1}}{#{mkTexTraceDisplay($2)}}"}
-    else
-      # it is already html
-    end
-
-    # substitute the uptrace references
-    text.gsub!(UPTRACE_REF_PATTERN){|m| "}(#{prepareTraceReferences($1)})"}
-
-    # substitute the informal trace references
-    text.gsub!(TRACE_REF_PATTERN){|m| "[#{prepareTraceReferences($1)}]"}
-
-    File.open(outfile, "w"){|f| f.puts(text)}
-  end
 end
 
 

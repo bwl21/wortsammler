@@ -1,3 +1,8 @@
+# 0.0.6 (07.07.2013)
+
+-   Added initial support for Testreports
+	<https://github.com/bwl21/wortsammler/issues/17>
+
 # 0.0.5
 
 -   Fixed the usual encoding but which occurred on windows

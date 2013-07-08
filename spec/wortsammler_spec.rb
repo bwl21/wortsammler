@@ -173,10 +173,10 @@ describe "Wortsammler conversion" do
     $?.success?.should==true
 
     Dir["#{tempdir}/chapternesting*"].map{|f|File.basename(f)}.sort.should== ["chapternesting.md",
-                                                                         "chapternesting.pdf",
-                                                                         "chapternesting.latex",
-                                                                         "chapternesting.md.bak"
-                                                                         ].sort
+                                                                              "chapternesting.pdf",
+                                                                              "chapternesting.latex",
+                                                                              "chapternesting.md.bak"
+                                                                              ].sort
   end
 
   it "handles lists up to 9 levels", exp: false do
@@ -206,10 +206,10 @@ describe "Wortsammler conversion" do
     $?.success?.should==true
 
     Dir["#{tempdir}/listnesting*"].map{|f|File.basename(f)}.sort.should== ["listnesting.md",
-                                                                         "listnesting.pdf",
-                                                                         "listnesting.latex",
-                                                                         "listnesting.md.bak"
-                                                                         ].sort
+                                                                           "listnesting.pdf",
+                                                                           "listnesting.latex",
+                                                                           "listnesting.md.bak"
+                                                                           ].sort
   end
 
   it "converts all files within a folder to output format" do
@@ -315,6 +315,17 @@ describe "Wortsammler syntax extensions", :exp => false do
       FileUtils.rm imagefile
     }
     $?.success?.should==true
+  end
+
+  it "TC_EXP_001 expands expected results from testcases", exp: true do
+
+    proc=ReferenceTweaker.new("pdf")
+    outfile="#{specdir}/../testoutput/TC_EXP_001.output.md"
+    File.unlink(outfile) if File.exists?(outfile)
+    proc.prepareFile("#{specdir}/TC_EXP_001.md", "#{specdir}/../testoutput/TC_EXP_001.output.md")
+
+    a=File.open(outfile, "r").readlines.join
+    a.should include("TC_DES_003_01")
   end
 
 end

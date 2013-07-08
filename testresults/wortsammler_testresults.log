@@ -1,8 +1,7 @@
 Run options: include {:exp=>true}
 
-Wortsammler conversion
-  handles chapters up to 6 levels
-  handles lists up to 9 levels
+Wortsammler syntax extensions
+  TC_EXP_001 expands expected results from testcases
 
-Finished in 11.94 seconds
-2 examples, 0 failures
+Finished in 0.00272 seconds
+1 example, 0 failures
