@@ -305,7 +305,7 @@ module Wortsammler
     # check duplicates
     duplicates=all_traceable_set.duplicate_traces
     if duplicates.count > 0
-      $logger.warn "duplicated trace ids found:"
+      $log.warn "duplicated trace ids found:"
       duplicates.each{|d| d.each{|t| $log.warn "#{t.id} in #{t.info}"}}
     end
 
