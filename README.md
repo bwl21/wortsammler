@@ -136,6 +136,9 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 
 Please use Ruby 1.9.3
 
+-   mac: best to use Ruby Version Manager [https://rvm.io/rvm/install][]
+ 
+
 -   windows
     -   download von [http://rubyinstaller.org/downloads/][]
     -   development kit installieren
@@ -144,12 +147,10 @@ Please use Ruby 1.9.3
         Das braucht man nur, wenn man den Windows-Debugger verwenden
         muss. In den scripten ist rquire ruby-debug aukommentiert.
 
--   mac: OSX 10.8 bereits installiert
 
 ### pandoc
 
--   Download [ttp://code.google.com/p/pandoc/downloads/list][]
--   Installation <http://rubyinstaller.org/downloads/>
+-   Download [http://code.google.com/p/pandoc/downloads/list][]
 -   Homepage <http://johnmacfarlane.net/pandoc/>
 
 ### TeX
