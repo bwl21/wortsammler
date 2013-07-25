@@ -37,13 +37,15 @@ TRACE_REF_PATTERN     = /->\[(\w+_\w+_\w+)\]/
 #                                                                                    pageclearance
 INCLUDE_PDF_PATTERN   = /^\s+~~PDF\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? \s* (clearpage|cleardoublepage)?~~/x
 
-INCLUDE_MD_PATTERN    = /^\s+~~MD\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? \s* (clearpage|cleardoublepage)?~~/x
+INCLUDE_MD_PATTERN    = /(\s*)~~MD\s+"(.+)"~~/x
 
 SNIPPET_PATTERN       = /(\s*)~~SN \s+ (\w+)~~/x
 
 EMBEDDED_IMAGE_PATTERN   = /~~EMBED\s+ "(.+)" \s+ (r|l|i|o) \s+ (.+) \s+ (.+)~~/x
 
 EXPECTED_RESULT_PATTERN = /(^\s*)~~~~\s*\{.expectedResult\s+label=\"([A-Za-z]+_[A-Za-z]+_[0-9]+)\"}\s([^~]*)~~~~/x
+
+PLANTUML_PATTERN = /[~]{4,}\s+{\.plantuml}\s+@startuml\s+([^\n]+)(\s+title\s+([^\n]+))?[^~]+[~]{4,}/x
 
 #
 # This mixin convertes a file path to the os Path representation
@@ -111,22 +113,22 @@ class ReferenceTweaker
 
 
       j="00"
-      result << result_items.map{|i| 
+      result << result_items.map{|i|
         j = j.next
         "\\CheckBox[name=#{label}_#{j}]{} #{i}"
-       }
+      }
       result << "\\vspace{1em}"
       result << "\\ChoiceMenu[combo, name=#{label}_98]{Test execution:}{ok, fail, pending}"
       result << "\\vspace{1em}"
       result << ["\\TextField[ name=#{label}_99 , width=40em, height=2cm, multiline=true, bordercolor={1 1 1}] {}"]
       result << ["\\end{Form}"]
 
-        unless $1.nil? then
-          leading_whitespace=$1.split("\n",100)
-          leading_lines=leading_whitespace[0..-1].join("\n")
-          leading_spaces=leading_whitespace.last || ""
-          replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
-        end
+      unless $1.nil? then
+        leading_whitespace=$1.split("\n",100)
+        leading_lines=leading_whitespace[0..-1].join("\n")
+        leading_spaces=leading_whitespace.last || ""
+        replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+      end
 
       result=result.compact.flatten.map{|i|"#{indent}#{i}"}
       result.join("\n#{indent}\n")
@@ -142,6 +144,36 @@ class ReferenceTweaker
     # private method
     def mkTexTraceDisplay(trace)
       trace.gsub("_", "\\_")
+    end
+
+
+
+    #
+    # This replaces markdown inlays
+    # it is a subroutine which is called
+    # recursively
+    # todo: handle indentation
+    #
+    # @param  text [String] text in which the markdown inlays shall be processed
+    # @return [String] The resulting text
+    def replace_md_inlay(text)
+      text.gsub!(INCLUDE_MD_PATTERN){|m|
+        if File.exist?($2) then
+          replacetext_raw=File.open($2).read
+          unless $1.nil? then
+            leading_whitespace=$1.split("\n",100)
+            leading_lines=leading_whitespace[0..-1].join("\n")
+            leading_spaces=leading_whitespace.last || ""
+            replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+          end
+        else
+          replacetext=""
+          @log.warn("File not found: #{$2}")
+        end
+        result=replace_md_inlay(replacetext)
+        result
+      }
+      text
     end
 
   public
@@ -205,6 +237,11 @@ class ReferenceTweaker
         }
       end
 
+      # include Markdown files
+      #
+      #
+      text = replace_md_inlay(text)
+
 
       # embed images
       #
@@ -254,6 +291,17 @@ class ReferenceTweaker
       else
         # it is already leave it as it is
       end
+
+      # substitute plantuml
+      #
+      # note this is substituted in any case
+      #
+      #if @target == "pdf" then
+      text.gsub!(PLANTUML_PATTERN){|m| ""}
+
+      #else
+      # it is already leave it as it is
+      #end
 
       File.open(outfile, "w"){|f| f.puts(text)}
     end
@@ -817,6 +865,10 @@ class PandocBeautifier
 
     @log.info("rendering  #{outname} as [#{format.join(', ')}]")
 
+    supported_formats=["pdf", "latex", "frontmatter", "docx", "html", "txt", "rtf", "slide"]
+    wrong_format=format - supported_formats
+    wrong_format.each{|f|@log.error("format not supported: #{f}")}
+
     begin
 
 
@@ -898,8 +950,8 @@ class PandocBeautifier
           "  --ascii -t dzslides --slide-level 2 -o  #{outfileSlide.esc}"
         `#{cmd}`
       end
-    rescue
-      @log.error "failed to perform #{cmd}"
+    rescue Exception => e
+      @log.error "failed to perform #{cmd}, #{e.message}"
       #TODO make a try catch block kere
     end
     nil

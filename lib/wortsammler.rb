@@ -106,6 +106,34 @@ module Wortsammler
       end
     end
 
+    #
+    # plantuml markdown files
+    #
+    #
+
+    if options[:plantuml]
+
+
+      # process path
+
+      if input_files then
+        Wortsammler.plantuml(input_files)
+      end
+
+      # process manifest
+
+      if config then
+        Wortsammler.plantuml(config.input)
+      end
+
+      unless input_files or config
+        $log.error "no input specified. Please use -m or -i to specify input"
+        exit false
+      end
+    end
+
+
+
     ##
     # process collect in markdown files
     #
@@ -186,6 +214,29 @@ module Wortsammler
     paths.each{|f| cleaner.beautify(f)}
     nil
   end
+
+
+  #
+  # plantuml a list of Documents
+  # @param  paths [Array of String] Array of filenames which shall be converted.
+  #
+  # @return [Nil] no return
+  def self.plantuml(paths)
+
+    cleaner = PandocBeautifier.new($log)
+    plantumljar=File.dirname(__FILE__)+"/../resources/plantuml.jar"
+
+    paths.each{|f| 
+      cmd = "java -jar \"#{plantumljar}\" -v \"#{f}\" 2>&1"
+      r=`#{cmd}`
+      no_of_images = r.split($/).grep(/Number of image/).first.split(":")[1]
+
+      $log.info("#{no_of_images} uml diagram(s) in #{File.basename(f)}")
+      $log.info(r) unless $?.success?
+     }
+    nil
+  end
+
 
   #
   # process the documents according to the maanifest
@@ -363,8 +414,8 @@ module Wortsammler
   # @return [Boolean] true if successful. otherwise exits the program
   def self.verify_options(options)
     if options[:inputpath] or options[:manifest] then
-      unless options[:process] or options[:beautify] or options[:collect] then
-        $log.error "no procesing option (p, b, c) specified"
+      unless options[:process] or options[:beautify] or options[:collect] or options[:plantuml] then
+        $log.error "no procesing option (p, b, c, u) specified"
         exit false
       end
     end

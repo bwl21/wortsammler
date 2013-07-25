@@ -5,7 +5,8 @@ require 'pry'
 wortsammlerbin = "'#{File.expand_path("bin")}'"
 wortsammler    = "'#{File.expand_path(File.join("bin", "wortsammler"))}'"
 testprojectdir = "testproject/30_Sources"
-specdir   =File.dirname(__FILE__)
+specdir        = File.dirname(__FILE__)
+testoutput     = "#{specdir}/../testoutput"
 
 
 describe "Wortsammler generic issues" do
@@ -243,11 +244,36 @@ describe "Wortsammler conversion" do
     $?.success?.should==false
   end
 
-  it "extracts the traceables according to a manifest" do
+  it "extracts the traceables according to a manifest", :exp=> false do 
     manifest="testproject/30_Sources/ZSUPP_Manifests/sample_the-sample-document.yaml"
     system "#{wortsammler} -cm #{manifest}"
     $?.success?.should==true
   end
+
+
+  it "extracts plantuml according to a manifest", :exp => false do
+    manifest="testproject/30_Sources/ZSUPP_Manifests/sample_the-sample-document.yaml"
+    system "#{wortsammler} -um #{manifest}"
+    $?.success?.should==true
+  end
+
+  it "extracts plantuml from a single file", :exp => false do
+    outfile="#{testoutput}/authentification.png"
+    FileUtils.rm(outfile)
+    system "#{wortsammler} -ui \"#{specdir}/TC_EXP_002.md\""
+    $?.success?.should==true
+    File.exist?(outfile).should==true
+  end
+
+  it "extracts plantuml from a folder", :exp => false do
+    outfile="#{testoutput}/authentification.png"
+    FileUtils.rm(outfile)
+    system "#{wortsammler} -ui \"#{specdir}\""
+    $?.success?.should==true
+    File.exist?(outfile).should==true
+  end
+
+   
 
   it "processes snippets" do
     pending "Test not yet implemented"
@@ -281,6 +307,7 @@ describe "Wortsammler conversion" do
       #system cmd
     }
   end
+
 end
 
 
@@ -317,15 +344,63 @@ describe "Wortsammler syntax extensions", :exp => false do
     $?.success?.should==true
   end
 
-  it "TC_EXP_001 expands expected results from testcases", exp: true do
+  it "TC_EXP_001 expands expected results from testcases", exp: false do
 
     proc=ReferenceTweaker.new("pdf")
     outfile="#{specdir}/../testoutput/TC_EXP_001.output.md"
     File.unlink(outfile) if File.exists?(outfile)
-    proc.prepareFile("#{specdir}/TC_EXP_001.md", "#{specdir}/../testoutput/TC_EXP_001.output.md")
+    proc.prepareFile("#{specdir}/TC_EXP_001.md", outfile)
 
     a=File.open(outfile, "r").readlines.join
     a.should include("TC_DES_003_01")
+  end
+
+  it "TC_EXP_002 removes plantuml sources", exp: false do
+
+    proc=ReferenceTweaker.new("pdf")
+    outfile="#{specdir}/../testoutput/TC_EXP_002.output.md"
+    File.unlink(outfile) if File.exists?(outfile)
+    proc.prepareFile("#{specdir}/TC_EXP_002.md", outfile)
+
+    a=File.open(outfile, "r").readlines.join
+    a.include?(".plantuml").should==false
+  end
+
+  it "TC_EXP_003 handles Markdown inlays", exp: true do
+    tempdir   ="#{specdir}/../testoutput"
+    mdinlayfile ="TC_EXP_003_1.md"
+    mdinlayfile_1 ="TC_EXP_003_2.md"
+    mdfile="tc_exp_003"
+
+    FileUtils.cd(tempdir){|c|
+      FileUtils.cp("#{specdir}/#{mdinlayfile}", ".")
+      FileUtils.cp("#{specdir}/#{mdinlayfile_1}", ".")
+
+
+      mdtext=["#this is headline",
+              "",
+              "~~~~",
+              "","now verbatim by indent inclucde #{mdinlayfile}", "",
+              "    ~~MD \"#{mdinlayfile}\"~~",
+              "~~~~",
+              "",
+              "","now full format inclucde #{mdinlayfile}", "",              
+              "~~MD \"#{mdinlayfile}\"~~",
+              "",
+              "","now full format inclucde #{mdinlayfile_1}", "",
+              "~~MD \"#{mdinlayfile_1}\"~~",
+              ].flatten.join("\n")
+
+      File.open("#{mdfile}.md", "w"){|f| f.puts mdtext}
+
+      system "#{wortsammler} -pi '#{mdfile}.md' -o '.' -f txt"
+      FileUtils.rm mdinlayfile
+      FileUtils.rm mdinlayfile_1
+    }
+
+    ref    = File.open("#{specdir}/tc_exp_003_reference.txt").read
+    result = File.open("#{tempdir}/#{mdfile}.txt").read
+    ref.should==result
   end
 
 end

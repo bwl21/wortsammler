@@ -94,6 +94,11 @@ optparse = OptionParser.new do|opts|
   end
 
 
+  options[:plantuml] = false
+  opts.on( '-u', '--plantuml', 'plantuml documents by manifest' ) do
+    options[:plantuml] = true
+  end
+
   options[:beautify] = false
   opts.on( "-b", '--beautify', 'bautify markdownfiles' ) do
     options[:beautify] = true
