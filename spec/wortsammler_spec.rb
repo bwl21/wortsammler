@@ -366,7 +366,7 @@ describe "Wortsammler syntax extensions", :exp => false do
     a.include?(".plantuml").should==false
   end
 
-  it "TC_EXP_003 handles Markdown inlays", exp: true do
+  it "TC_EXP_003 handles Markdown inlays", exp: false do
     tempdir   ="#{specdir}/../testoutput"
     mdinlayfile ="TC_EXP_003_1.md"
     mdinlayfile_1 ="TC_EXP_003_2.md"
