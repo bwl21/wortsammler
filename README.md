@@ -136,8 +136,12 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 
 Please use Ruby 1.9.3
 
--   mac: best to use Ruby Version Manager [https://rvm.io/rvm/install][]
- 
+-   mac: 
+    -   installation requirex xcode with the commanline tools
+    -   use Ruby Version Manager [https://rvm.io][]
+    -   rvm install ruby_1.9.3
+    -   might take pretty long depending on wha you have on your mac.
+    -   after ruby is installed `gem install wortsammler`
 
 -   windows
     -   download von [http://rubyinstaller.org/downloads/][]
@@ -146,7 +150,6 @@ Please use Ruby 1.9.3
 
         Das braucht man nur, wenn man den Windows-Debugger verwenden
         muss. In den scripten ist rquire ruby-debug aukommentiert.
-
 
 ### pandoc
 
@@ -169,5 +172,4 @@ Please use Ruby 1.9.3
   [pandoc]: http://johnmacfarlane.net/pandoc/
   [http://rubyinstaller.org/downloads/]: http://rubyforge.org/frs/%20download.php/76277/rubyinstaller-1.8.7-p370.exe
   [DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe]: https://github.com/downloads/oneclick/rubyinstaller/DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe
-  [ttp://code.google.com/p/pandoc/downloads/list]: http://code.google.com/p/pandoc/downloads/list
   [usbtex]: http://www.exomatik.net/U-Latex/USBTeXEnglish
