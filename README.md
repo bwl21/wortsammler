@@ -136,7 +136,7 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 
 Please use Ruby 1.9.3
 
--   mac: 
+-   mac:
     -   installation requirex xcode with the commanline tools
     -   use Ruby Version Manager [https://rvm.io][]
     -   rvm install ruby_1.9.3

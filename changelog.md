@@ -1,7 +1,15 @@
+# 0.0.7 (17.07.2013)
+
+-   Added support to include plantuml diagrams where the diagram source
+    is embedded in the md file
+-   Added support to include Markdown files.This provides another (maybe
+    even more common) approach to collect a document from multiple
+    files.
+
 # 0.0.6 (07.07.2013)
 
 -   Added initial support for Testreports
-	<https://github.com/bwl21/wortsammler/issues/17>
+    <https://github.com/bwl21/wortsammler/issues/17>
 
 # 0.0.5
 
