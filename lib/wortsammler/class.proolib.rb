@@ -107,20 +107,20 @@ class ReferenceTweaker
     # @param  body [type] [description]
     #
     # @return [type] [description]
-    def prepareExpectedResults(indent="", label, body)
+    def prepareExpectedResults(indent="", original_label, body)
       result_items=body.split("-   ")[1..-1].map{|i|i.strip}
       result= ["\\begin{Form}"]
 
-
+      label=original_label.gsub(/_/, "-")
       j="00"
       result << result_items.map{|i|
         j = j.next
-        "\\CheckBox[name=#{label}_#{j}]{} #{i}"
+        "\\CheckBox[name=#{label}-#{j}]{} #{i}"
       }
       result << "\\vspace{1em}"
-      result << "\\ChoiceMenu[combo, name=#{label}_98]{Test execution:}{ok, fail, pending}"
+      result << "\\ChoiceMenu[combo, name=#{label}-verdict, default=none]{Test verdict:}{none, ok-30, ok-60, ok, fail, pending}"
       result << "\\vspace{1em}"
-      result << ["\\TextField[ name=#{label}_99 , width=40em, height=2cm, multiline=true, bordercolor={1 1 1}] {}"]
+      result << ["\\TextField[ name=#{label}-comment , width=40em, height=2cm, multiline=true, backgroundcolor={0.9 0.9 0.9}] {}"]
       result << ["\\end{Form}"]
 
       unless $1.nil? then
@@ -159,7 +159,7 @@ class ReferenceTweaker
     def replace_md_inlay(text)
       text.gsub!(INCLUDE_MD_PATTERN){|m|
         if File.exist?($2) then
-          replacetext_raw=File.open($2).read
+          replacetext_raw=File.open($2,:encoding => 'bom|utf-8').read
           unless $1.nil? then
             leading_whitespace=$1.split("\n",100)
             leading_lines=leading_whitespace[0..-1].join("\n")
