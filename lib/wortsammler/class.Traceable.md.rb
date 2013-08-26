@@ -54,19 +54,23 @@ class TraceableSet
                }.join("\n\n")
     end
 
-    # 
+    # 
+
     # This factory method processes all traces in a particular markdown file
     # and returns a TraceableSet
-    # 
-    # @param  mdFile [String] name of the markdown File which shall be scanned
-    # 
+    # 
+
+    # @param  mdFile [String] name of the markdown File which shall be scanned
+
+    # 
+
     # @return [TraceableSet] The set of traceables found in the markdown file
     def self.processTracesInMdFile(mdFile)
         
         parser=TraceInMarkdownParser.new
         parser.consume_all_input = true
         
-        raw_md_code_file=File.open(mdFile)
+        raw_md_code_file=File.open(mdFile, "r:bom|utf-8")
         raw_md_code = raw_md_code_file.readlines.join
         raw_md_code_file.close
 #       print mdFile

@@ -352,7 +352,7 @@ describe "Wortsammler syntax extensions", :exp => false do
     proc.prepareFile("#{specdir}/TC_EXP_001.md", outfile)
 
     a=File.open(outfile, "r").readlines.join
-    a.should include("TC_DES_003_01")
+    a.should include("TC-DES-003-01")
   end
 
   it "TC_EXP_002 removes plantuml sources", exp: false do

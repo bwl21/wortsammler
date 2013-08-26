@@ -1,3 +1,12 @@
+# 0.0.9 (26.08.2013)
+
+-   Fixed encoding while reading traces from markdown (https://github.com/bwl21/wortsammler/issues/23)
+
+# 0.0.8 (26.08.2013)
+
+-   Added support for handling test specifications (https://github.com/bwl21/wortsammler/issues/22)
+-   Fixed some encoding issues (https://github.com/bwl21/wortsammler/issues/21)
+
 # 0.0.7 (17.07.2013)
 
 -   Added support to include plantuml diagrams where the diagram source
