@@ -11,7 +11,7 @@ testoutput     = "#{specdir}/../testoutput"
 
 describe "Wortsammler generic issues" do
 
-  it "provides a help" do
+  it "provides a help", :exp => false do
     result = `#{wortsammler} -h`
     result.should include("Usage: Wortsammler [options]")
     $?.success?.should==true
@@ -22,14 +22,14 @@ describe "Wortsammler generic issues" do
     result.empty?.should==true
   end
 
-  it "reports version numbers", :exp => true do 
+  it "reports version numbers", :exp => false do 
     result = `#{wortsammler} -v`
     result.should include "wortsammler"
     result.should include "pandoc"
     result.should include "XeTeX"
   end
 
-  it "turns on vervbose mode", :exp => true do 
+  it "turns on vervbose mode", :exp => false do 
     result = `#{wortsammler} -v`
     result.should include "DEBUG"
   end
@@ -60,11 +60,7 @@ describe "Wortsammler options validator" do
     $?.success?.should==false
   end
 
-  it "rejeccts inputs without outputs" do
-    system "#{wortsammler} -pi ." do
-      $?.success?.should==false
-    end
-  end
+
 end
 
 describe "Wortsammler beautifier features" do

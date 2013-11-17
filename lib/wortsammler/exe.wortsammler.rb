@@ -51,7 +51,7 @@ optparse = OptionParser.new do|opts|
 
   opts.separator nil
 
-  options[:init] = false
+  options[:init] = nil
   opts.on( "-n", '--init DIR', 'create a project folder in DIR' ) do|file|
     options[:init] = file
   end
@@ -59,12 +59,12 @@ optparse = OptionParser.new do|opts|
 
   opts.separator nil
 
-  options[:inputpath] = false
+  options[:inputpath] = nil
   opts.on( '-i', '--inputpath PATH', 'set input file/project folder for processing') do|path|
     options[:inputpath] = path
   end
 
-  options[:manifest] = false
+  options[:manifest] = nil
   opts.on( '-m', '--manifest PATH', 'set mainfest file for processing' ) do|file|
     options[:manifest] = file
   end
@@ -76,7 +76,7 @@ optparse = OptionParser.new do|opts|
     options[:outputformats] = formatlist
   end
 
-  options[:outputfolder] = 
+  options[:outputfolder] = nil
   opts.on( '-o', '--outputfolder PATH', 'set the output to PATH' ) do|path|
     options[:outputfolder] = path
   end

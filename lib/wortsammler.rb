@@ -4,22 +4,22 @@ require "wortsammler/class.proolib"
 
 ##
 # This represents the high level API of Wortsammler
- 
+
 module Wortsammler
 
 
-  # 
+  #
   # execute Wortsammler after parsing the command line
-  # 
-  # @param  options [Hash] The parsed commandline arguments. 
-  # 
+  #
+  # @param  options [Hash] The parsed commandline arguments.
+  #
   #         The key of each entry is the argument name as a symbol
-  # 
+  #
   #         The value of each entry is the value of the argument
   #
   #         No default handling is performed, since defaulting of arguments has been done
   #         on the commandline processor.
-  # 
+  #
   # @return [Nil] No Return
   def self.execute(options)
 
@@ -232,14 +232,14 @@ module Wortsammler
     cleaner = PandocBeautifier.new($log)
     plantumljar=File.dirname(__FILE__)+"/../resources/plantuml.jar"
 
-    paths.each{|f| 
+    paths.each{|f|
       cmd = "java -jar \"#{plantumljar}\" -v \"#{f}\" 2>&1"
       r=`#{cmd}`
       no_of_images = r.split($/).grep(/Number of image/).first.split(":")[1]
 
       $log.info("#{no_of_images} uml diagram(s) in #{File.basename(f)}")
       $log.info(r) unless $?.success?
-     }
+    }
     nil
   end
 
@@ -424,6 +424,16 @@ module Wortsammler
         $log.error "no procesing option (p, b, c, u) specified"
         exit false
       end
+    end
+
+    unless options[:outputfolder] then
+      outputfolder="."
+      inputpath=options[:inputpath]
+      unless inputpath.nil? then
+        outputfolder = inputpath                    if File.directory?(inputpath)
+        outputfolder = File.dirname(inputpath)    if File.file?(inputpath)
+      end
+      options[:outputfolder] = outputfolder
     end
 
     if options[:inputpath] and options[:process] then
