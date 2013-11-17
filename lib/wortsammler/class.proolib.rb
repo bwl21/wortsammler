@@ -901,7 +901,7 @@ class PandocBeautifier
         cmdmkindex = "mkindex #{outfile.esc}"
 
         @log.debug(cmdlatex);  `#{cmdlatex}`
-        @log.debug(cmdmkindex);`#{cmdmkindex}` if File.exist?("#{outfile}.idx")
+        (@log.debug(cmdmkindex);`#{cmdmkindex}`) if File.exist?("#{outfile}.idx")
         @log.debug(cmdlatex);  `#{cmdlatex}`
         @log.debug(cmdlatex);   `#{cmdlatex}`
 
