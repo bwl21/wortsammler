@@ -822,13 +822,14 @@ class PandocBeautifier
     tempfile     = input
     tempfilePdf  = "#{@tempdir}/x.TeX.md".to_osPath
     tempfileHtml = "#{@tempdir}/x.html.md".to_osPath
-    outfilePdf   = "#{outdir}/#{outname}.pdf".to_osPath
-    outfileDocx  = "#{outdir}/#{outname}.docx".to_osPath
-    outfileHtml  = "#{outdir}/#{outname}.html".to_osPath
-    outfileRtf   = "#{outdir}/#{outname}.rtf".to_osPath
-    outfileLatex = "#{outdir}/#{outname}.latex".to_osPath
-    outfileText  = "#{outdir}/#{outname}.txt".to_osPath
-    outfileSlide = "#{outdir}/#{outname}.slide.html".to_osPath
+    outfile      = "#{outdir}/#{outname}".to_osPath
+    outfilePdf   = "#{outfile}.pdf"
+    outfileDocx  = "#{outfile}.docx"
+    outfileHtml  = "#{outfile}.html"
+    outfileRtf   = "#{outfile}.rtf"
+    outfileLatex = "#{outfile}.latex"
+    outfileText  = "#{outfile}.txt"
+    outfileSlide = "#{outfile}.slide.html"
 
     if vars.has_key? :frontmatter
       latexTitleInclude = "--include-before-body=#{vars[:frontmatter].esc}"
@@ -880,15 +881,8 @@ class PandocBeautifier
         `#{cmd}`
       end
 
-      if format.include?("pdf") then
-        @log.debug("creating  #{outfilePdf}")
-        ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
-        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone #{option_chapters} --latex-engine xelatex --number-sections #{vars_string}" +
-          " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
-        `#{cmd}`
-      end
 
-      if format.include?("latex") then
+      if format & ["latex", "pdf"] then
         @log.debug("creating  #{outfileLatex}")
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
 
@@ -896,6 +890,29 @@ class PandocBeautifier
           " --template #{latexStyleFile.esc} --ascii -o  #{outfileLatex.esc} #{latexTitleInclude}"
         `#{cmd}`
       end
+
+
+      if format.include?("pdf") then
+        @log.debug("creating  #{outfilePdf}")
+        ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
+        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone #{option_chapters} --latex-engine xelatex --number-sections #{vars_string}" +
+          " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
+        cmdlatex="xelatex -halt-on-error -interaction nonstopmode -output-directory=#{outdir.esc} #{outfileLatex.esc}"
+        cmdmkindex = "mkindex #{outfile.esc}"
+
+        @log.debug(cmdlatex);  `#{cmdlatex}`
+        @log.debug(cmdmkindex);`#{cmdmkindex}` if File.exist?("#{outfile}.idx")
+        @log.debug(cmdlatex);  `#{cmdlatex}`
+        @log.debug(cmdlatex);   `#{cmdlatex}`
+
+        removeables = ["toc", "aux", "log", "bak"]
+        removeables << "latex" unless format.include?("latex")
+        removeables = removeables.map{|e| "#{outdir}/#{outname}.#{e}"}.select{|f| File.exists?(f)}
+        removeables.each{|e| 
+          @log.debug "removing file: #{e}"
+          FileUtils.rm e
+        }
+      end      
 
       if format.include?("html") then
         #todo: handle css

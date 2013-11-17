@@ -259,7 +259,7 @@ describe "Wortsammler conversion" do
 
   it "extracts plantuml from a single file", :exp => false do
     outfile="#{testoutput}/authentification.png"
-    FileUtils.rm(outfile)
+    FileUtils.rm(outfile) if File.exists?(outfile)
     system "#{wortsammler} -ui \"#{specdir}/TC_EXP_002.md\""
     $?.success?.should==true
     File.exist?(outfile).should==true
@@ -267,7 +267,7 @@ describe "Wortsammler conversion" do
 
   it "extracts plantuml from a folder", :exp => false do
     outfile="#{testoutput}/authentification.png"
-    FileUtils.rm(outfile)
+    FileUtils.rm(outfile) if File.exists?(outfile)
     system "#{wortsammler} -ui \"#{specdir}\""
     $?.success?.should==true
     File.exist?(outfile).should==true

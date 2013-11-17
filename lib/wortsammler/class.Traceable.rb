@@ -43,6 +43,8 @@ class TraceableSet
   #    * second
   #
   # @return [type] [description]
+  #
+  #
   def add(traceable)
     #TOOD: check traceable
     #TODO: check if append can be optimized
@@ -284,7 +286,7 @@ class TraceableSet
   # @param [Nokogiri::XML::Document] doc - the document
   # @return [Nokogiri::XML::Document] the beautified document
   def xp(doc)
-    xsl =<<XSL
+    xsl =<<-XSL
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
     <xsl:strip-space elements="*"/>
@@ -292,7 +294,7 @@ class TraceableSet
     <xsl:copy-of select="."/>
     </xsl:template>
     </xsl:stylesheet>
-XSL
+    XSL
 
 
     xslt = Nokogiri::XSLT(xsl)
