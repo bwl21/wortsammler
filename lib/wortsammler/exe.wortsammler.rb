@@ -46,6 +46,7 @@ optparse = OptionParser.new do|opts|
   opts.on( "-v", '--version', 'print Version info, then turn on verbose mode' ) do
     options[:version] = true
     options[:verbose] = true
+    $log.level=Logger::DEBUG
   end
 
   opts.separator nil
@@ -75,7 +76,7 @@ optparse = OptionParser.new do|opts|
     options[:outputformats] = formatlist
   end
 
-  options[:outputfolder] = false
+  options[:outputfolder] = 
   opts.on( '-o', '--outputfolder PATH', 'set the output to PATH' ) do|path|
     options[:outputfolder] = path
   end
@@ -119,7 +120,6 @@ rescue RegexpError => error
   $log.error "#{error}"
   exit
 end
-
 
 Wortsammler.verify_options(options)
 Wortsammler.execute(options)

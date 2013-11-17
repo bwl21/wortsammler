@@ -17,6 +17,23 @@ describe "Wortsammler generic issues" do
     $?.success?.should==true
   end
 
+  it "runs silent", :exp => true do
+    result = `#{wortsammler}`
+    result.empty?.should==true
+  end
+
+  it "reports version numbers", :exp => true do 
+    result = `#{wortsammler} -v`
+    result.should include "wortsammler"
+    result.should include "pandoc"
+    result.should include "XeTeX"
+  end
+
+  it "turns on vervbose mode", :exp => true do 
+    result = `#{wortsammler} -v`
+    result.should include "DEBUG"
+  end
+
   it "can create a new project folder", :exp => false do
     FileUtils.rm_rf(testprojectdir)
     system "#{wortsammler} -n #{testprojectdir}"

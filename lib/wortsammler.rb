@@ -31,14 +31,20 @@ module Wortsammler
     # print version info
     #
     if options[:version] then
-      puts "#{Wortsammler::PROGNAME} #{Wortsammler::VERSION}"
+      puts "this is #{Wortsammler::PROGNAME} version #{Wortsammler::VERSION}\n"
 
       pandoc=`pandoc -v`.split("\n")[0] rescue pandoc="error running pandoc"
       xetex=`xelatex -v`.split("\n")[0] rescue pandoc="error running xelatex"
 
-      puts "found #{pandoc}"
-      puts "found #{xetex}"
+      $log.info "found #{pandoc}"
+      $log.info "found #{xetex}"
 
+      $log.debug("debug mode turned on")
+
+      l= "-----------------"
+      $log.info l
+      options.each {|k,v| $log.info "#{k}: #{v}"}
+      $log.info l
     end
 
     ##
@@ -75,7 +81,7 @@ module Wortsammler
       if File.file?(inputpath)  #(RS_Mdc)
         input_files=[inputpath]
       elsif File.exists?(inputpath)
-        input_files=Dir["#{inputpath}/**/*.md", "#{inputpath}/**/*.markdown"]
+        input_files=Dir["#{inputpath}/**/*.md", "#{inputpath}/**/*.markdown", "#{inputpath}/**/*.plantuml"]
       end
     end
 
