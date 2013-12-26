@@ -17,6 +17,8 @@ require 'tmpdir'
 require 'nokogiri'
 require "rubyXL"
 require 'logger'
+require 'wortsammler/latex_helper'
+
 
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
@@ -872,7 +874,6 @@ class PandocBeautifier
 
     begin
 
-
       if format.include?("frontmatter") then
 
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
@@ -882,7 +883,7 @@ class PandocBeautifier
       end
 
 
-      if format & ["latex", "pdf"] then
+      if (format.include?("pdf") | format.include?("latex")) then
         @log.debug("creating  #{outfileLatex}")
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
 
@@ -895,17 +896,20 @@ class PandocBeautifier
       if format.include?("pdf") then
         @log.debug("creating  #{outfilePdf}")
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
-        cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone #{option_chapters} --latex-engine xelatex --number-sections #{vars_string}" +
-          " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
-        cmdlatex="xelatex -halt-on-error -interaction nonstopmode -output-directory=#{outdir.esc} #{outfileLatex.esc}"
-        cmdmkindex = "mkindex #{outfile.esc}"
+        #cmd="pandoc -S #{tempfilePdf.esc} #{toc} --standalone #{option_chapters} --latex-engine xelatex --number-sections #{vars_string}" +
+        #  " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
+        cmd="xelatex -halt-on-error -interaction nonstopmode -output-directory=#{outdir.esc} #{outfileLatex.esc}"
+        #cmdmkindex = "makeindex \"#{outfile.esc}.idx\""
 
-        @log.debug(cmdlatex);  `#{cmdlatex}`
-        (@log.debug(cmdmkindex);`#{cmdmkindex}`) if File.exist?("#{outfile}.idx")
-        @log.debug(cmdlatex);  `#{cmdlatex}`
-        @log.debug(cmdlatex);   `#{cmdlatex}`
+        latex=LatexHelper.new.set_latex_command(cmd).setlogger(@log)
+        latex.run(outfileLatex)
 
-        removeables = ["toc", "aux", "log", "bak"]
+        messages=latex.log_analyze("#{outdir}/#{outname}.log")
+
+        removeables = ["toc", "aux", "bak", "idx", "ilg", "ind" ]
+        removeables << "log" unless messages > 0
+
+
         removeables << "latex" unless format.include?("latex")
         removeables = removeables.map{|e| "#{outdir}/#{outname}.#{e}"}.select{|f| File.exists?(f)}
         removeables.each{|e| 
@@ -968,7 +972,8 @@ class PandocBeautifier
         `#{cmd}`
       end
     rescue Exception => e
-      @log.error "failed to perform #{cmd}, #{e.message}"
+      @log.error "failed to perform #{cmd}, \n#{e.message}"
+      @log.error e.backtrace.join("\n")
       #TODO make a try catch block kere
     end
     nil

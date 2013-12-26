@@ -416,4 +416,8 @@ describe "Wortsammler syntax extensions", :exp => false do
     ref.should==result
   end
 
+  it "generates an index", exp: true do 
+    system "wortsammler -pi \"#{specdir}/test_mkindex.md\" -f pdf:latex"
+  end
+
 end
