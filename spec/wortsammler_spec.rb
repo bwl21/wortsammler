@@ -17,7 +17,7 @@ describe "Wortsammler generic issues" do
     $?.success?.should==true
   end
 
-  it "runs silent", :exp => true do
+  it "runs silent", :exp => false do
     result = `#{wortsammler}`
     result.empty?.should==true
   end
@@ -50,7 +50,7 @@ describe "Wortsammler generic issues" do
   end
 
   it "controls the pandoc options by document class" do
-    pending "implmenet test to control pandoc options by document class"
+    pending "implement test to control pandoc options by document class"
   end
 end
 
@@ -143,6 +143,7 @@ describe "Wortsammler conversion" do
     Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["single.docx",
                                                            "single.html",
                                                            "single.latex",
+                                                           "single.log",
                                                            "single.md",
                                                            "single.pdf"
                                                            ]
@@ -157,7 +158,8 @@ describe "Wortsammler conversion" do
     $?.success?.should==true
 
 
-    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["single.md",
+    Dir["#{tempdir}/*"].map{|f|File.basename(f)}.should== ["single.log",
+                                                           "single.md",
                                                            "single.pdf"
                                                            ]
   end
@@ -189,6 +191,7 @@ describe "Wortsammler conversion" do
     Dir["#{tempdir}/chapternesting*"].map{|f|File.basename(f)}.sort.should== ["chapternesting.md",
                                                                               "chapternesting.pdf",
                                                                               "chapternesting.latex",
+                                                                              "chapternesting.log",
                                                                               "chapternesting.md.bak"
                                                                               ].sort
   end
@@ -222,6 +225,7 @@ describe "Wortsammler conversion" do
     Dir["#{tempdir}/listnesting*"].map{|f|File.basename(f)}.sort.should== ["listnesting.md",
                                                                            "listnesting.pdf",
                                                                            "listnesting.latex",
+                                                                           "listnesting.log",
                                                                            "listnesting.md.bak"
                                                                            ].sort
   end
@@ -416,8 +420,19 @@ describe "Wortsammler syntax extensions", :exp => false do
     ref.should==result
   end
 
-  it "generates an index", exp: true do 
+  it "generates an index", exp: false do 
     system "wortsammler -pi \"#{specdir}/test_mkindex.md\" -f pdf:latex"
+    system "pdftotext \"#{specdir}/test_mkindex.pdf\""
+    ref    = File.open("#{specdir}/test_mkindex_reference.txt").read
+    result = File.open("#{specdir}/test_mkindex.txt").read
+    ref.should==result
+  end
+
+  it "reports TeX messages", exp: false do 
+    system "wortsammler -pi \"#{specdir}/test_mkindex.md\" -f pdf:latex >> \"#{specdir}/test_mkindex.lst\""
+    system "pdftotext \"#{specdir}/test_mkindex.pdf\""
+    result = File.open("#{specdir}/test_mkindex.lst").read
+    result.include?("[WARN]").should==true
   end
 
 end

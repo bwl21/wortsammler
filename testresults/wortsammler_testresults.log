@@ -45,11 +45,12 @@ Traceable
 
 Wortsammler generic issues
   provides a help
+  runs silent
   reports version numbers
   turns on vervbose mode
   can create a new project folder
   does not initialize into an existing project folder
-  controls the pandoc options by document class (PENDING: implmenet test to control pandoc options by document class)
+  controls the pandoc options by document class (PENDING: implement test to control pandoc options by document class)
 
 Wortsammler options validator
   rejects no processing
@@ -84,17 +85,19 @@ Wortsammler syntax extensions
   TC_EXP_001 expands expected results from testcases
   TC_EXP_002 removes plantuml sources
   TC_EXP_003 handles Markdown inlays
+  generates an index
+  reports TeX messages
 
 Pending:
   Wortsammler generic issues controls the pandoc options by document class
-    # implmenet test to control pandoc options by document class
+    # implement test to control pandoc options by document class
     # ./spec/wortsammler_spec.rb:52
   Wortsammler conversion processes snippets
     # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:291
+    # ./spec/wortsammler_spec.rb:295
   Wortsammler conversion handles undefined snippets
     # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:295
+    # ./spec/wortsammler_spec.rb:299
 
-Finished in 2 minutes 6.22 seconds
-67 examples, 0 failures, 3 pending
+Finished in 2 minutes 10.22 seconds
+70 examples, 0 failures, 3 pending
