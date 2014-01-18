@@ -64,25 +64,25 @@ In order to use Wortsammler, you need to install the prerequisites:
 
 ### display the options
 
-    Wortsammler -h
+    wortsammler -h
 
 ### process markdown files
 
-    Wortsammler -pi readme.md -o.  
+    wortsammler -pi readme.md -o.  
        -- generates readme.pdf
 
-    Wortsammler -pi readme.md -f pdf:docx:html -o. 
+    wortsammler -pi readme.md -f pdf:docx:html -o. 
         -- generates readme.pdf, readme.html, readme.docx
 
-    Wortsammler -bi readme.md
+    wortsammler -bi readme.md
         -- beautifies readme.md (normalizes the markdown)
 
-    Wortsammler -bi .
+    wortsammler -bi .
         -- recursively beautifies all markdown files in the current folder    
 
 ### initialize a project
 
-    Wortsammler init <folder>
+    wortsammler init <folder>
 
 This command generates the proposed directory structure, a first
 document manifest and a rake file to do the processing.
@@ -125,6 +125,12 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 5.  Commit your changes (`git commit -am 'Add some feature'`)
 6.  Push to the branch (`git push origin my-new-feature`)
 7.  Create new Pull Request
+
+## License
+
+MIT: http://www.opensource.org/licenses/mit-license.php
+
+
 
 ## thanks to
 
