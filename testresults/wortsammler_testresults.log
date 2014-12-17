@@ -62,6 +62,7 @@ Wortsammler beautifier features
   beautifies input files in a manifest
   claims missing input
   claims undefined document path
+  creates a semantically unchanged markdown file
 
 Wortsammler conversion
   converts a single file to output format
@@ -94,10 +95,10 @@ Pending:
     # ./spec/wortsammler_spec.rb:52
   Wortsammler conversion processes snippets
     # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:295
+    # ./spec/wortsammler_spec.rb:315
   Wortsammler conversion handles undefined snippets
     # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:299
+    # ./spec/wortsammler_spec.rb:319
 
-Finished in 2 minutes 10.22 seconds
-70 examples, 0 failures, 3 pending
+Finished in 2 minutes 17.7 seconds
+71 examples, 0 failures, 3 pending

@@ -1,0 +1,57 @@
+% this is part of wortsammler (https://github.com/bwl21/wortsammler)
+% it contains wortsammler specific settings and commands
+%
+% usage: usepackage{wortsammler}
+%
+%
+%
+%list environment by reinhard Jahraus
+{\catcode`\@=11\relax%
+\gdef\itemize{%
+  \ifnum \@itemdepth >\thr@@\@toodeep\else
+    \advance\@itemdepth\@ne
+    \edef\@itemitem{labelitem\romannumeral\the\@itemdepth}%
+    \expandafter
+    \list
+      \csname\@itemitem\endcsname
+      {\def\makelabel##1{\hss\llap{##1}}%
+       \addtolength{\leftmargin}{-10pt}% 29.37pt
+       \addtolength{\rightmargin}{0.0pt}% 0.0pt
+       \addtolength{\labelsep}{0pt}% 23.50pt
+       \addtolength{\itemsep}{-3.0pt}% 5.0pt
+       \addtolength{\parsep}{-1pt}% 5.0pt
+       \addtolength{\topsep}{-5pt}% 10.0pt
+       \addtolength{\partopsep}{0pt}% 3.0pt
+      }%
+  \fi}
+}%
+%
+% We will generate all images so they have a width \maxwidth. This means
+% that they will get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+%\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
+% Determine if the image is too wide for the page.
+%
+{%
+ \catcode`\@=11\relax%
+ \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\maxwidth]}}%
+}%
+%
+%
+% required for embeded icons
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage{needspace}
+
+
+

@@ -130,8 +130,6 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 
 MIT: http://www.opensource.org/licenses/mit-license.php
 
-
-
 ## thanks to
 
 -   John Mc Farlane for [pandoc][]

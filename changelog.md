@@ -1,11 +1,21 @@
+# 0.1.0 (24.12.2014)
+
+-   adapt to pandoc 1.13
+-   add slide output formats
+-   improved installation of Wortsammler Box here
+-   improve installation of the required executeables
+
 # 0.0.9 (26.08.2013)
 
--   Fixed encoding while reading traces from markdown (https://github.com/bwl21/wortsammler/issues/23)
+-   Fixed encoding while reading traces from markdown
+    (https://github.com/bwl21/wortsammler/issues/23)
 
 # 0.0.8 (26.08.2013)
 
--   Added support for handling test specifications (https://github.com/bwl21/wortsammler/issues/22)
--   Fixed some encoding issues (https://github.com/bwl21/wortsammler/issues/21)
+-   Added support for handling test specifications
+    (https://github.com/bwl21/wortsammler/issues/22)
+-   Fixed some encoding issues
+    (https://github.com/bwl21/wortsammler/issues/21)
 
 # 0.0.7 (17.07.2013)
 
