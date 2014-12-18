@@ -78,15 +78,17 @@ Wortsammler conversion
   extracts plantuml from a folder
   processes snippets (PENDING: Test not yet implemented)
   handles undefined snippets (PENDING: Test not yet implemented)
-  runs the rake file in the sample document
-  compiles all documents
+
+Wortsammler output formats
+  generates dzslides
+  generates beamer files
 
 Wortsammler syntax extensions
   [RS_Comp_012] supports embedded images
   TC_EXP_001 expands expected results from testcases
   TC_EXP_002 removes plantuml sources
   TC_EXP_003 handles Markdown inlays
-  generates an index
+  generates an index (FAILED - 1)
   reports TeX messages
 
 Pending:
@@ -100,5 +102,62 @@ Pending:
     # Test not yet implemented
     # ./spec/wortsammler_spec.rb:319
 
-Finished in 2 minutes 17.7 seconds
-71 examples, 0 failures, 3 pending
+Failures:
+
+  1) Wortsammler syntax extensions generates an index
+     Failure/Error: ref.should==result
+       expected: "CONTENTS\n\nCONTENTS\n\nContents\n1 Das ist ein Test zur Indexerstellung\n\n2\n\n1\n\nDecember 18, 2014\n\n\f1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\n1 Das ist ein Test zur Indexerstellung\nDies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal\nbenutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen.\nManchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt\nist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige\nSatzteile eingebaut (AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu\ntesten. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in\nden meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur\nPﬂicht werden. Nichteinhaltung wird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch\nÂçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld\nsind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning\noder Ligaturen (sehr pﬁﬃg) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob\nalle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks\n\n2\n\nDecember 18, 2014\n\n\f1 DAS IST EIN TEST ZUR INDEXERSTELLUNG\n\n1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\nDies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal\nbenutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze,\ndie alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The\nquick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut\n(AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht\nzum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die\nZahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pﬂicht werden. Nichteinhaltung\nwird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften\naber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten.\nJe nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pﬁﬃg) nicht\nrichtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie\nsie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks\n\n3\n\nDecember 18, 2014\n\n\f1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\nhier kommt der Index\n\n4\n\nDecember 18, 2014\n\n\fIndex\nSätze, 2\nTypoblindtext, 2, 3\nUder, 2\nUfer, 2\nÄpfelchen, 2\nÜber, 2\n\n5\n\n\fINDEX\n\nINDEX\n\nende des Index\n\n6\n\nDecember 18, 2014\n\n\f"
+            got: "CONTENTS\n\nCONTENTS\n\nContents\n1 Das ist ein Test zur Indexerstellung\n\n2\n\n1\n\nDecember 17, 2014\n\n\f1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\n1 Das ist ein Test zur Indexerstellung\nDies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal\nbenutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen.\nManchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt\nist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige\nSatzteile eingebaut (AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu\ntesten. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in\nden meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur\nPﬂicht werden. Nichteinhaltung wird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch\nÂçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld\nsind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning\noder Ligaturen (sehr pﬁﬃg) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob\nalle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks\n\n2\n\nDecember 17, 2014\n\n\f1 DAS IST EIN TEST ZUR INDEXERSTELLUNG\n\n1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\nDies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal\nbenutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze,\ndie alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The\nquick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut\n(AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht\nzum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die\nZahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pﬂicht werden. Nichteinhaltung\nwird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften\naber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten.\nJe nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pﬁﬃg) nicht\nrichtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie\nsie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks\n\n3\n\nDecember 17, 2014\n\n\f1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\nhier kommt der Index\n\n4\n\nDecember 17, 2014\n\n\fIndex\nSätze, 2\nTypoblindtext, 2, 3\nUder, 2\nUfer, 2\nÄpfelchen, 2\nÜber, 2\n\n5\n\n\fINDEX\n\nINDEX\n\nende des Index\n\n6\n\nDecember 17, 2014\n\n\f" (using ==)
+       Diff:
+       @@ -9,7 +9,7 @@
+        
+        1
+        
+       -December 18, 2014
+       +December 17, 2014
+        
+        1
+        
+       @@ -31,7 +31,7 @@
+        
+        2
+        
+       -December 18, 2014
+       +December 17, 2014
+        
+        1 DAS IST EIN TEST ZUR INDEXERSTELLUNG
+        
+       @@ -54,7 +54,7 @@
+        
+        3
+        
+       -December 18, 2014
+       +December 17, 2014
+        
+        1
+        
+       @@ -64,7 +64,7 @@
+        
+        4
+        
+       -December 18, 2014
+       +December 17, 2014
+        
+        Index
+        Sätze, 2
+       @@ -84,7 +84,7 @@
+        
+        6
+        
+       -December 18, 2014
+       +December 17, 2014
+        
+        
+     # ./spec/wortsammler_spec.rb:472:in `block (2 levels) in <top (required)>'
+
+Finished in 2 minutes 4.94 seconds
+71 examples, 1 failure, 3 pending
+
+Failed examples:
+
+rspec ./spec/wortsammler_spec.rb:467 # Wortsammler syntax extensions generates an index
