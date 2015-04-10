@@ -245,7 +245,7 @@ module Wortsammler
 
 
   #
-  # process the documents according to the maanifest
+  # process the documents according to the manifest
   #
   # @param  config [ProoConfig] A configuration object representing the manifest.
   #

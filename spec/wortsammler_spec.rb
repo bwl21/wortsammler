@@ -85,7 +85,7 @@ describe "Wortsammler beautifier features" do
   end
 
 
-  it "beautifies a single file" do
+  it "beautifies a single file", exp: false do
     tempdir=Dir.mktmpdir
     mdfile="#{tempdir}/single.md"
     mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
@@ -321,7 +321,7 @@ describe "Wortsammler conversion" do
   end
 
 
-  it "runs the rake file in the sample document" do
+  it "runs the rake file in the sample document", exp:false do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
       path=ENV['PATH']
       ENV['PATH']="#{wortsammlerbin}:#{path}"
@@ -330,10 +330,11 @@ describe "Wortsammler conversion" do
       cmd= "rake sample"
       system cmd
     }
+    Dir["testproject/30_Sources/ZGEN_Documents/*.*"].count.should==15
     $?.success?.should==true
   end
 
-  it "compiles all documents" do
+  it "compiles all documents", exp: false do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
       path=ENV['PATH']
       ENV['PATH']="#{wortsammlerbin}:#{path}"
@@ -344,6 +345,30 @@ describe "Wortsammler conversion" do
     }
   end
 
+end
+
+describe "Wortsammler output formats" do
+
+
+  it "generates dzslides", exp: false do
+    mdfile = %Q{'#{specdir}/test_slides.md'}
+    FileUtils.cd("spec") do
+      system %Q{#{wortsammler} -pi #{mdfile} -o '#{testoutput}' -f slidy}
+    end
+  end
+
+
+  it "generates beamer files", exp: false do
+    mdfile = %Q{'#{specdir}/test_slides.md'}
+    FileUtils.cd("spec") do
+      system %Q{#{wortsammler} -pi #{mdfile} -o '#{testoutput}' -f beamer}
+    end
+  end
+
+
+  it "generates markdown", exp: true do
+
+  end
 end
 
 
@@ -402,7 +427,7 @@ describe "Wortsammler syntax extensions", :exp => false do
     a.include?(".plantuml").should==false
   end
 
-  it "TC_EXP_003 handles Markdown inlays", exp: false do
+  it "TC_EXP_003 handles Markdown inlays", exp: true do
     tempdir ="#{specdir}/../testoutput"
     mdinlayfile ="TC_EXP_003_1.md"
     mdinlayfile_1 ="TC_EXP_003_2.md"
@@ -413,7 +438,7 @@ describe "Wortsammler syntax extensions", :exp => false do
       FileUtils.cp("#{specdir}/#{mdinlayfile_1}", ".")
 
 
-      mdtext=["#this is headline",
+      mdtext=["#this is headlinexx",
               "",
               "~~~~",
               "", "now verbatim by indent inclucde #{mdinlayfile}", "",
@@ -448,10 +473,11 @@ describe "Wortsammler syntax extensions", :exp => false do
   end
 
   it "reports TeX messages", exp: false do
-    system "wortsammler -pi \"#{specdir}/test_mkindex.md\" -f pdf:latex >> \"#{specdir}/test_mkindex.lst\""
-    system "pdftotext \"#{specdir}/test_mkindex.pdf\""
-    result = File.open("#{specdir}/test_mkindex.lst").read
+  system %Q{wortsammler -pi '#{specdir}/test_mkindex.md' -f pdf:latex -o '#{testoutput}' >> ''#{testoutput}/test_mkindex.lst'}
+    system "pdftotext \"#{testoutput}/test_mkindex.pdf\""
+    result = File.open("#{testoutput  }/test_mkindex.lst").read
     result.include?("[WARN]").should==true
   end
+
 
 end
