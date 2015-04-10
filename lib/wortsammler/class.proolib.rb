@@ -25,7 +25,8 @@ Encoding.default_internal = Encoding::UTF_8
 
 # TODO: make these patterns part of the configuration
 
-PANDOC_EXE="pandoc "
+PANDOC_EXE="pandoc_1.13.2 "
+LATEX_EXE = "xelatex "
 
 ANY_ANCHOR_PATTERN = /<a\s+id=\"([^\"]+)\"\/>/
 ANY_REF_PATTERN = /<a\s+href=\"#([^\"]+)\"\>([^<]*)<\/a>/
@@ -453,9 +454,9 @@ class PandocBeautifier
 
   # @return [boolean] true if an appropriate version is available
   def check_pandoc_version
-    required_version_string="1.11"
+    required_version_string="1.13.2"
     begin
-      pandoc_version=`pandoc -v`.split("\n").first.split(" ")[1]
+      pandoc_version=`#{PANDOC_EXE} -v`.split("\n").first.split(" ")[1]
       if pandoc_version < required_version_string then
         @log.error "found pandoc #{pandoc_version} need #{required_version_string}"
         result = false
@@ -482,7 +483,7 @@ class PandocBeautifier
     docfile.close
 
     # process the file in pandoc
-    cmd="#{PANDOC_EXE} -s #{file.esc} -f markdown -t markdown-backtick_code_blocks --atx-headers --reference-links "
+    cmd="#{PANDOC_EXE} -s #{file.esc} -f markdown -t markdown-backtick_code_blocks --atx-headers --reference-links"
     newdoc = `#{cmd}`
     @log.debug "beautify #{file.esc}: #{$?}"
     @log.debug(" finished: \"#{file}\"")
@@ -952,7 +953,7 @@ class PandocBeautifier
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
         #cmd="#{PANDOC_EXE} -S #{tempfilePdf.esc} #{toc} --standalone #{option_chapters} --latex-engine xelatex --number-sections #{vars_string}" +
         #  " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
-        cmd="xelatex -halt-on-error -interaction nonstopmode -output-directory=#{outdir.esc} #{outfileLatex.esc}"
+        cmd="#{LATEX_EXE} -halt-on-error -interaction nonstopmode -output-directory=#{outdir.esc} #{outfileLatex.esc}"
         #cmdmkindex = "makeindex \"#{outfile.esc}.idx\""
 
         latex=LatexHelper.new.set_latex_command(cmd).setlogger(@log)
@@ -1033,7 +1034,7 @@ class PandocBeautifier
         @log.debug("creating  #{outfile}")
         ReferenceTweaker.new(tempformat).prepareFile(tempfile, tempfile_out)
 
-        cmd = %Q{pandoc -t beamer #{tempfile_out.esc} -V theme:Warsaw -o #{outfile.esc}}
+        cmd = %Q{#{PANDOC_EXE} -t beamer #{tempfile_out.esc} -V theme:Warsaw -o #{outfile.esc}}
         `#{cmd}`
 
         #messages=latex.log_analyze("#{outdir}/#{outname}.log")
