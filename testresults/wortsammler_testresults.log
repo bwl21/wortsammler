@@ -1,163 +1,39 @@
-Run options: exclude {:exp=>true}
-
-PandocBeautifier
-  checks the availability of the right pandoc version
-
-pdf utilities:
-  adjusts the bounding box of a pdf file
-  converts an excel sheet to pdf
-  converts a powerpoint to pdf
-  converts an excelsheet to cropped pdf
-  converts a powerpoint to cropped pdf
-
-TraceableSet
-  should return a blank instance
-  allows to add Traceables
-  delivers the first of the duplicates
-  advertises duplicates
-  adertises undefined traceables
-  advertises all traceables
-  advertises a hash of supporting traces
-  advertises traceable ids of a particular category
-  advertises ttraceables of a particular category
-  merges traceables
-  exposes deleted Traceables
-  exposes added Traceables
-  exposes deleted Traceables of category
-  exposes added Traceables of category
-  exploses changed traceids as array of [Traceid, levensthein, diff_as_html]
-  exposes unchanged Traceables
-  can be marshalled to a file
-  can be dumped to a graphml file
-
-Traceable
-  should == "id"
-  should == "origin"
-  should == "alternative_id"
-  should == "header_plain"
-  should == "\\textt{header_origin}"
-  should == "body_plain"
-  should == ["contributes_to"]
-  should == "trace_orig"
-  should == "origin"
-  should == "category"
-  should == "info"
-
-Wortsammler generic issues
-  provides a help
-  runs silent
-  reports version numbers
-  turns on vervbose mode
-  can create a new project folder
-  does not initialize into an existing project folder
-  controls the pandoc options by document class (PENDING: implement test to control pandoc options by document class)
-
-Wortsammler options validator
-  rejects no processing
-
-Wortsammler beautifier features
-  beautifies all markdown files in a folder
-  beautifies a single file
-  recognizes if the specified manifest file is a directory
-  beautifies input files in a manifest
-  claims missing input
-  claims undefined document path
-  creates a semantically unchanged markdown file
-
-Wortsammler conversion
-  converts a single file to output format
-  converts a single file to default output format
-  handles chapters up to 6 levels
-  handles lists up to 9 levels
-  converts all files within a folder to output format
-  processes a manifest
-  investigates the existence of a manifest
-  extracts the traceables according to a manifest
-  extracts plantuml according to a manifest
-  extracts plantuml from a single file
-  extracts plantuml from a folder
-  processes snippets (PENDING: Test not yet implemented)
-  handles undefined snippets (PENDING: Test not yet implemented)
+Run options: include {:exp=>true}
 
 Wortsammler output formats
-  generates dzslides
-  generates beamer files
+  generates markdown
 
 Wortsammler syntax extensions
-  [RS_Comp_012] supports embedded images
-  TC_EXP_001 expands expected results from testcases
-  TC_EXP_002 removes plantuml sources
-  TC_EXP_003 handles Markdown inlays
-  generates an index (FAILED - 1)
-  reports TeX messages
-
-Pending:
-  Wortsammler generic issues controls the pandoc options by document class
-    # implement test to control pandoc options by document class
-    # ./spec/wortsammler_spec.rb:52
-  Wortsammler conversion processes snippets
-    # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:315
-  Wortsammler conversion handles undefined snippets
-    # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:319
+  TC_EXP_003 handles Markdown inlays (FAILED - 1)
 
 Failures:
 
-  1) Wortsammler syntax extensions generates an index
+  1) Wortsammler syntax extensions TC_EXP_003 handles Markdown inlays
      Failure/Error: ref.should==result
-       expected: "CONTENTS\n\nCONTENTS\n\nContents\n1 Das ist ein Test zur Indexerstellung\n\n2\n\n1\n\nDecember 18, 2014\n\n\f1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\n1 Das ist ein Test zur Indexerstellung\nDies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal\nbenutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen.\nManchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt\nist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige\nSatzteile eingebaut (AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu\ntesten. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in\nden meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur\nPﬂicht werden. Nichteinhaltung wird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch\nÂçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld\nsind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning\noder Ligaturen (sehr pﬁﬃg) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob\nalle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks\n\n2\n\nDecember 18, 2014\n\n\f1 DAS IST EIN TEST ZUR INDEXERSTELLUNG\n\n1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\nDies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal\nbenutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze,\ndie alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The\nquick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut\n(AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht\nzum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die\nZahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pﬂicht werden. Nichteinhaltung\nwird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften\naber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten.\nJe nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pﬁﬃg) nicht\nrichtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie\nsie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks\n\n3\n\nDecember 18, 2014\n\n\f1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\nhier kommt der Index\n\n4\n\nDecember 18, 2014\n\n\fIndex\nSätze, 2\nTypoblindtext, 2, 3\nUder, 2\nUfer, 2\nÄpfelchen, 2\nÜber, 2\n\n5\n\n\fINDEX\n\nINDEX\n\nende des Index\n\n6\n\nDecember 18, 2014\n\n\f"
-            got: "CONTENTS\n\nCONTENTS\n\nContents\n1 Das ist ein Test zur Indexerstellung\n\n2\n\n1\n\nDecember 17, 2014\n\n\f1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\n1 Das ist ein Test zur Indexerstellung\nDies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal\nbenutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen.\nManchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt\nist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige\nSatzteile eingebaut (AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu\ntesten. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in\nden meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur\nPﬂicht werden. Nichteinhaltung wird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch\nÂçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld\nsind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning\noder Ligaturen (sehr pﬁﬃg) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob\nalle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks\n\n2\n\nDecember 17, 2014\n\n\f1 DAS IST EIN TEST ZUR INDEXERSTELLUNG\n\n1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\nDies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal\nbenutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze,\ndie alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The\nquick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut\n(AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht\nzum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die\nZahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pﬂicht werden. Nichteinhaltung\nwird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften\naber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten.\nJe nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pﬁﬃg) nicht\nrichtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie\nsie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks\n\n3\n\nDecember 17, 2014\n\n\f1\n\nDAS IST EIN TEST ZUR INDEXERSTELLUNG\n\nhier kommt der Index\n\n4\n\nDecember 17, 2014\n\n\fIndex\nSätze, 2\nTypoblindtext, 2, 3\nUder, 2\nUfer, 2\nÄpfelchen, 2\nÜber, 2\n\n5\n\n\fINDEX\n\nINDEX\n\nende des Index\n\n6\n\nDecember 17, 2014\n\n\f" (using ==)
+       expected: "-   this is headlinexx\n    -   this is TC\\_EXP\\_003\\_1\n    -   this is md TC\\_EXP\\_003\\_2\n    -   this is md TC\\_EXP\\_003\\_2\n\n\nthis is headlinexx\n==================\n\n\n    now verbatim by indent inclucde TC_EXP_003_1.md\n\n        ## this is TC_EXP_003_1\n        \n        we now include TC_EXP_003_2 from TC_EXP_003_1\n        \n        ## this is md TC_EXP_003_2\n        \n            - hugo\n        \n            - hugo2\n        \n        end of TC_EXP_003_2\n        \n        end of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_1.md\n\nthis is TC_EXP_003_1\n--------------------\n\nwe now include TC_EXP_003_2 from TC_EXP_003_1\n\nthis is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n\nend of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_2.md\n\nthis is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n"
+            got: "-   this is headline\n    -   this is TC\\_EXP\\_003\\_1\n    -   this is md TC\\_EXP\\_003\\_2\n    -   this is md TC\\_EXP\\_003\\_2\n\n\nthis is headline\n================\n\n\n    now verbatim by indent inclucde TC_EXP_003_1.md\n\n        ## this is TC_EXP_003_1\n        \n        we now include TC_EXP_003_2 from TC_EXP_003_1\n        \n        ## this is md TC_EXP_003_2\n        \n            - hugo\n        \n            - hugo2\n        \n        end of TC_EXP_003_2\n        \n        end of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_1.md\n\nthis is TC_EXP_003_1\n--------------------\n\nwe now include TC_EXP_003_2 from TC_EXP_003_1\n\nthis is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n\nend of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_2.md\n\nthis is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n" (using ==)
        Diff:
-       @@ -9,7 +9,7 @@
+       
+       @@ -1,11 +1,11 @@
+       --   this is headlinexx
+       +-   this is headline
+            -   this is TC\_EXP\_003\_1
+            -   this is md TC\_EXP\_003\_2
+            -   this is md TC\_EXP\_003\_2
         
-        1
         
-       -December 18, 2014
-       +December 17, 2014
+       -this is headlinexx
+       -==================
+       +this is headline
+       +================
         
-        1
         
-       @@ -31,7 +31,7 @@
-        
-        2
-        
-       -December 18, 2014
-       +December 17, 2014
-        
-        1 DAS IST EIN TEST ZUR INDEXERSTELLUNG
-        
-       @@ -54,7 +54,7 @@
-        
-        3
-        
-       -December 18, 2014
-       +December 17, 2014
-        
-        1
-        
-       @@ -64,7 +64,7 @@
-        
-        4
-        
-       -December 18, 2014
-       +December 17, 2014
-        
-        Index
-        Sätze, 2
-       @@ -84,7 +84,7 @@
-        
-        6
-        
-       -December 18, 2014
-       +December 17, 2014
-        
-        
-     # ./spec/wortsammler_spec.rb:472:in `block (2 levels) in <top (required)>'
+            now verbatim by indent inclucde TC_EXP_003_1.md
+     # ./spec/wortsammler_spec.rb:464:in `block (2 levels) in <top (required)>'
 
-Finished in 2 minutes 4.94 seconds
-71 examples, 1 failure, 3 pending
+Finished in 1.45 seconds
+2 examples, 1 failure
 
 Failed examples:
 
-rspec ./spec/wortsammler_spec.rb:467 # Wortsammler syntax extensions generates an index
+rspec ./spec/wortsammler_spec.rb:430 # Wortsammler syntax extensions TC_EXP_003 handles Markdown inlays

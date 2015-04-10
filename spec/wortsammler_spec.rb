@@ -85,7 +85,7 @@ describe "Wortsammler beautifier features" do
   end
 
 
-  it "beautifies a single file" do
+  it "beautifies a single file", exp: false do
     tempdir=Dir.mktmpdir
     mdfile="#{tempdir}/single.md"
     mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
@@ -321,7 +321,7 @@ describe "Wortsammler conversion" do
   end
 
 
-  it "runs the rake file in the sample document", exp:true do
+  it "runs the rake file in the sample document", exp:false do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
       path=ENV['PATH']
       ENV['PATH']="#{wortsammlerbin}:#{path}"
@@ -334,7 +334,7 @@ describe "Wortsammler conversion" do
     $?.success?.should==true
   end
 
-  it "compiles all documents", exp: true do
+  it "compiles all documents", exp: false do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
       path=ENV['PATH']
       ENV['PATH']="#{wortsammlerbin}:#{path}"
@@ -427,7 +427,7 @@ describe "Wortsammler syntax extensions", :exp => false do
     a.include?(".plantuml").should==false
   end
 
-  it "TC_EXP_003 handles Markdown inlays", exp: false do
+  it "TC_EXP_003 handles Markdown inlays", exp: true do
     tempdir ="#{specdir}/../testoutput"
     mdinlayfile ="TC_EXP_003_1.md"
     mdinlayfile_1 ="TC_EXP_003_2.md"
@@ -438,7 +438,7 @@ describe "Wortsammler syntax extensions", :exp => false do
       FileUtils.cp("#{specdir}/#{mdinlayfile_1}", ".")
 
 
-      mdtext=["#this is headline",
+      mdtext=["#this is headlinexx",
               "",
               "~~~~",
               "", "now verbatim by indent inclucde #{mdinlayfile}", "",
