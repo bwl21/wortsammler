@@ -22,3 +22,4 @@ resources/pandocdefault.html
 resources/pandocdefault.latex
 pandoc.css
 testoutput
+workspace.xml

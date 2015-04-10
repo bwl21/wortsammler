@@ -19,7 +19,6 @@ this
 ~~~~
 
 
-
 ``` {#backtick_codeblock}
 
 this
