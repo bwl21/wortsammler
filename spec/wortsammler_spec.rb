@@ -1,6 +1,7 @@
 require 'rake'
 require 'tmpdir'
 require 'pry'
+require 'wortsammler.rb'
 
 wortsammlerbin = "'#{File.expand_path("bin")}'"
 wortsammler    = "'#{File.expand_path(File.join("bin", "wortsammler"))}'"
@@ -407,8 +408,8 @@ describe "Wortsammler syntax extensions", :exp => false do
 
   it "TC_EXP_001 expands expected results from testcases", exp: false do
 
-    proc   =ReferenceTweaker.new("pdf")
-    outfile="#{specdir}/../testoutput/TC_EXP_001.output.md"
+    proc    = ReferenceTweaker.new("pdf")
+    outfile = "#{specdir}/../testoutput/TC_EXP_001.output.md"
     File.unlink(outfile) if File.exists?(outfile)
     proc.prepareFile("#{specdir}/TC_EXP_001.md", outfile)
 
@@ -418,12 +419,12 @@ describe "Wortsammler syntax extensions", :exp => false do
 
   it "TC_EXP_002 removes plantuml sources", exp: false do
 
-    proc   =ReferenceTweaker.new("pdf")
-    outfile="#{specdir}/../testoutput/TC_EXP_002.output.md"
+    proc    = ReferenceTweaker.new("pdf")
+    outfile = "#{specdir}/../testoutput/TC_EXP_002.output.md"
     File.unlink(outfile) if File.exists?(outfile)
     proc.prepareFile("#{specdir}/TC_EXP_002.md", outfile)
 
-    a=File.open(outfile, "r").readlines.join
+    a = File.open(outfile, "r").readlines.join
     a.include?(".plantuml").should==false
   end
 
@@ -468,9 +469,9 @@ describe "Wortsammler syntax extensions", :exp => false do
     system "wortsammler -pi \"#{specdir}/test_mkindex.md\" -f pdf:latex -o \"#{testoutput}\""
     system "pdftotext \"#{testoutput}/test_mkindex.pdf\""
     the_time = Time.now.strftime("%B %d, %Y")
-    ref    = File.open("#{specdir}/test_mkindex_reference.txt").read
-    result = File.open("#{testoutput}/test_mkindex.txt").read
-    result = result.gsub(the_time, "December 17, 2014")
+    ref      = File.open("#{specdir}/test_mkindex_reference.txt").read
+    result   = File.open("#{testoutput}/test_mkindex.txt").read
+    result   = result.gsub(the_time, "December 17, 2014")
     result.should==ref
   end
 

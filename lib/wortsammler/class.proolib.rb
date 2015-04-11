@@ -482,8 +482,16 @@ class PandocBeautifier
     olddoc = docfile.readlines.join
     docfile.close
 
+
+    markdown_switches = %w{
+     -backtick_code_blocks
+     +fenced_code_blocks
+    }
+
+    markdown_switches=markdown_switches.join()
+
     # process the file in pandoc
-    cmd="#{PANDOC_EXE} -s #{file.esc} -f markdown -t markdown-backtick_code_blocks --atx-headers --reference-links"
+    cmd="#{PANDOC_EXE} -s #{file.esc} -f markdown -t markdown#{markdown_switches} --atx-headers"
     newdoc = `#{cmd}`
     @log.debug "beautify #{file.esc}: #{$?}"
     @log.debug(" finished: \"#{file}\"")

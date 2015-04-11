@@ -95,13 +95,13 @@ Wortsammler syntax extensions
 Pending:
   Wortsammler generic issues controls the pandoc options by document class
     # implement test to control pandoc options by document class
-    # ./spec/wortsammler_spec.rb:52
+    # ./spec/wortsammler_spec.rb:53
   Wortsammler conversion processes snippets
     # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:315
+    # ./spec/wortsammler_spec.rb:316
   Wortsammler conversion handles undefined snippets
     # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:319
+    # ./spec/wortsammler_spec.rb:320
 
 Failures:
 
@@ -109,11 +109,11 @@ Failures:
      Failure/Error: Dir["testproject/30_Sources/ZGEN_Documents/*.*"].count.should==15
        expected: 15
             got: 14 (using ==)
-     # ./spec/wortsammler_spec.rb:333:in `block (2 levels) in <top (required)>'
+     # ./spec/wortsammler_spec.rb:334:in `block (2 levels) in <top (required)>'
 
-Finished in 2 minutes 17.04 seconds
+Finished in 2 minutes 39.54 seconds
 72 examples, 1 failure, 3 pending
 
 Failed examples:
 
-rspec ./spec/wortsammler_spec.rb:324 # Wortsammler conversion runs the rake file in the sample document
+rspec ./spec/wortsammler_spec.rb:325 # Wortsammler conversion runs the rake file in the sample document
