@@ -25,22 +25,22 @@ Encoding.default_internal = Encoding::UTF_8
 
 # TODO: make these patterns part of the configuration
 
-PANDOC_EXE="pandoc_1.13.2 "
-LATEX_EXE = "xelatex "
+PANDOC_EXE                ="pandoc_1.13.2 "
+LATEX_EXE                 = "xelatex "
 
 ANY_ANCHOR_PATTERN = /<a\s+id=\"([^\"]+)\"\/>/
-ANY_REF_PATTERN = /<a\s+href=\"#([^\"]+)\"\>([^<]*)<\/a>/
+ANY_REF_PATTERN    = /<a\s+href=\"#([^\"]+)\"\>([^<]*)<\/a>/
 
 TRACE_ANCHOR_PATTERN = /\[(\w+_\w+_\w+)\](\s*\*\*)/
-UPTRACE_REF_PATTERN = /\}\( ((\w+_\w+_\w+) (,\s*\w+_\w+_\w+)*)\)/x
-TRACE_REF_PATTERN = /->\[(\w+_\w+_\w+)\]/
+UPTRACE_REF_PATTERN  = /\}\( ((\w+_\w+_\w+) (,\s*\w+_\w+_\w+)*)\)/x
+TRACE_REF_PATTERN    = /->\[(\w+_\w+_\w+)\]/
 
 #                                      filename
 #                                               heading
 #                                                          level
 #                                                                    pages to include
 #                                                                                    pageclearance
-INCLUDE_PDF_PATTERN = /^\s+~~PDF\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? \s* (clearpage|cleardoublepage)?~~/x
+INCLUDE_PDF_PATTERN  = /^\s+~~PDF\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? \s* (clearpage|cleardoublepage)?~~/x
 
 INCLUDE_MD_PATTERN = /(\s*)~~MD\s+"(.+)"~~/x
 
@@ -93,7 +93,7 @@ class ReferenceTweaker
   # :string: the Id of the referenced Traceable
   def prepareTraceReferences(string)
     result=string.gsub(/\s*/, "").split(",").map { |trace|
-      itrace = mkInternalTraceId(trace)
+      itrace   = mkInternalTraceId(trace)
       texTrace = mkTexTraceDisplay(trace)
       if @target == "pdf" then
         "\\hyperlink{#{itrace}}{#{texTrace}}"
@@ -113,10 +113,10 @@ class ReferenceTweaker
   # @return [type] [description]
   def prepareExpectedResults(indent="", original_label, body)
     result_items=body.split("-   ")[1..-1].map { |i| i.strip }
-    result= ["\\begin{Form}"]
+    result      = ["\\begin{Form}"]
 
     label=original_label.gsub(/_/, "-")
-    j="00"
+    j    ="00"
     result << result_items.map { |i|
       j = j.next
       "\\CheckBox[name=#{label}-#{j}]{} #{i}"
@@ -129,9 +129,9 @@ class ReferenceTweaker
 
     unless $1.nil? then
       leading_whitespace=$1.split("\n", 100)
-      leading_lines=leading_whitespace[0..-1].join("\n")
-      leading_spaces=leading_whitespace.last || ""
-      replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+      leading_lines     =leading_whitespace[0..-1].join("\n")
+      leading_spaces    =leading_whitespace.last || ""
+      replacetext       =leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
     end
 
     result=result.compact.flatten.map { |i| "#{indent}#{i}" }
@@ -165,9 +165,9 @@ class ReferenceTweaker
         replacetext_raw=File.open($2, :encoding => 'bom|utf-8').read
         unless $1.nil? then
           leading_whitespace=$1.split("\n", 100)
-          leading_lines=leading_whitespace[0..-1].join("\n")
-          leading_spaces=leading_whitespace.last || ""
-          replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+          leading_lines     =leading_whitespace[0..-1].join("\n")
+          leading_spaces    =leading_whitespace.last || ""
+          replacetext       =leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
         end
       else
         replacetext=""
@@ -191,10 +191,10 @@ class ReferenceTweaker
     @log=logger || $logger || nil
 
     if @log == nil
-      @log = Logger.new(STDOUT)
-      @log.level = Logger::INFO
+      @log                 = Logger.new(STDOUT)
+      @log.level           = Logger::INFO
       @log.datetime_format = "%Y-%m-%d %H:%M:%S"
-      @log.formatter = proc do |severity, datetime, progname, msg|
+      @log.formatter       = proc do |severity, datetime, progname, msg|
         "#{datetime}: #{msg}\n"
       end
     end
@@ -206,7 +206,7 @@ class ReferenceTweaker
   def prepareFile(infile, outfile)
 
     infileIo=File.new(infile)
-    text = infileIo.readlines.join
+    text    = infileIo.readlines.join
     infileIo.close
 
     #include pdf files
@@ -329,17 +329,31 @@ class ProoConfig
               :reqtracefile_base, # string to determine the requirements tracing results
               :frontmatter, # Array of string to determine input filenames of frontmatter
               :rootdir, # String directory of the configuration file
-              :stylefiles # Hash of stylefiles path to pandoc latex style file
+              :stylefiles, # Hash of stylefiles path to pandoc latex style file
+              :mdreaderoptions, # string to be appended to -f markdown specifier in pandoc
+              :mdwriteroptions # string to be appendod to -t markdown in pandoc
 
 
   # constructor
+  def initialize
+    @mdreaderoptions = %w{
+     +fenced_code_blocks
+     +compact_definition_lists
+    }.join()
+
+    @mdwriteroptions = %w{
+     +fenced_code_blocks
+     +compact_definition_lists
+    }.join()
+  end
+
   # @param [String] configFileName  name of the configfile (without .yaml)
   # @param [Symbol] configSelect Default configuration. If not specified
   #                 the very first entry in the config file
   #                 will apply.
   #                 TODO: not yet implemented.
   # @return [ProoConfig] instance
-  def initialize(configFileName, configSelect=nil)
+  def load_from_file(configFileName, configSelect=nil)
     begin
       config = YAML.load(File.new(configFileName))
     rescue Exception => e
@@ -356,26 +370,27 @@ class ProoConfig
       exit(false)
     end
 
-    basePath = File.dirname(configFileName)
+    basePath        = File.dirname(configFileName)
 
     # this makes an absolute path based on the absolute path
     # of the configuration file
-    expand_path=lambda do |lf|
+    expand_path     =lambda do |lf|
       File.expand_path("#{basePath}/#{lf}")
     end
 
 
     #activeConfigs=config.select{|x| [x[:name]] & ConfigSelet}
 
-    selectedConfig=config.first
+    selectedConfig  = config.first
     #TODO: check the config file
-    @input = selectedConfig[:input].map { |file| File.expand_path("#{basePath}/#{file}") }
-    @outdir = File.expand_path("#{basePath}/#{selectedConfig[:outdir]}")
-    @outname = selectedConfig[:outname]
-    @format = selectedConfig[:format]
+    #TODO: refactor the configuration processing
+    @input          = selectedConfig[:input].map { |file| File.expand_path("#{basePath}/#{file}") }
+    @outdir         = File.expand_path("#{basePath}/#{selectedConfig[:outdir]}")
+    @outname        = selectedConfig[:outname]
+    @format         = selectedConfig[:format]
     @traceSortOrder = selectedConfig[:traceSortOrder]
-    @vars = selectedConfig[:vars] || {}
-    @editions = selectedConfig[:editions] || nil
+    @vars           = selectedConfig[:vars] || {}
+    @editions       = selectedConfig[:editions] || nil
 
     @downstream_tracefile = selectedConfig[:downstream_tracefile] || nil
 
@@ -383,19 +398,23 @@ class ProoConfig
 
     @upstream_tracefiles = selectedConfig[:upstream_tracefiles] || nil
     @upstream_tracefiles = @upstream_tracefiles.map { |file| File.expand_path("#{basePath}/#{file}") } unless @upstream_tracefiles.nil?
-    @frontmatter = selectedConfig[:frontmatter] || nil
-    @frontmatter = selectedConfig[:frontmatter].map { |file| File.expand_path("#{basePath}/#{file}") } unless @frontmatter.nil?
-    @rootdir = basePath
+    @frontmatter         = selectedConfig[:frontmatter] || nil
+    @frontmatter         = selectedConfig[:frontmatter].map { |file| File.expand_path("#{basePath}/#{file}") } unless @frontmatter.nil?
+    @rootdir             = basePath
+
+    @mdreaderoptions     = selectedConfig[:mdreaderoptions].join() if selectedConfig[:mdreaderoptions]
+    @mdwriteroptions     = selectedConfig[:mdwriteroptions].join() if selectedConfig[:mdwriteroptions]
+
 
     stylefiles = selectedConfig[:stylefiles] || nil
     if stylefiles.nil?
       @stylefiles = {
           :latex => expand_path.call("../ZSUPP_Styles/default.latex"),
-          :docx => expand_path.call("../ZSUPP_Styles/default.docx"),
-          :html => expand_path.call("../ZSUPP_Styles/default.css")
+          :docx  => expand_path.call("../ZSUPP_Styles/default.docx"),
+          :html  => expand_path.call("../ZSUPP_Styles/default.css")
       }
     else
-      @stylefiles = stylefiles.map { |key, value| {key => expand_path.call(value)} }.reduce(:merge)
+      @stylefiles = stylefiles.map { |key, value| { key => expand_path.call(value) } }.reduce(:merge)
     end
 
     snippets = selectedConfig[:snippets]
@@ -418,26 +437,26 @@ end
 
 class PandocBeautifier
 
-  attr_accessor :log
+  attr_accessor :log, :config
 
   # the constructor
   # @param [Logger]  logger logger object to be applied.
   #                  if none is specified, a default logger
   #                  will be implemented
-
-  def initialize(logger=nil)
-
+  def initialize(logger = nil)
     @view_pattern = /~~ED((\s*(\w+))*)~~/
     # @view_pattern = /<\?ED((\s*(\w+))*)\?>/
-    @tempdir = Dir.mktmpdir
+    @tempdir      = Dir.mktmpdir
+
+    @config = ProoConfig.new()
 
     @log=logger || $logger || nil
 
     if @log == nil
-      @log = Logger.new(STDOUT)
-      @log.level = Logger::INFO
+      @log                 = Logger.new(STDOUT)
+      @log.level           = Logger::INFO
       @log.datetime_format = "%Y-%m-%d %H:%M:%S"
-      @log.formatter = proc do |severity, datetime, progname, msg|
+      @log.formatter       = proc do |severity, datetime, progname, msg|
         "#{datetime}: #{msg}\n"
       end
 
@@ -479,20 +498,29 @@ class PandocBeautifier
     @log.debug(" Cleaning: \"#{file}\"")
 
     docfile = File.new(file)
-    olddoc = docfile.readlines.join
+    olddoc  = docfile.readlines.join
     docfile.close
 
-
-    markdown_switches = %w{
+    markdown_output_switches = %w{
      -backtick_code_blocks
      +fenced_code_blocks
-    }
+     +compact_definition_lists
+    }.join()
 
-    markdown_switches=markdown_switches.join()
+    markdown_input_switches = %w{
+     +fenced_code_blocks
+     +compact_definition_lists
+    }.join()
+
+
 
     # process the file in pandoc
-    cmd="#{PANDOC_EXE} -s #{file.esc} -f markdown -t markdown#{markdown_switches} --atx-headers"
-    newdoc = `#{cmd}`
+    cmd                     = "#{PANDOC_EXE} -s #{file.esc} -f markdown#{markdown_input_switches} -t markdown#{markdown_output_switches} --atx-headers"
+
+    require 'pry';binding.pry
+
+
+    newdoc                  = `#{cmd}`
     @log.debug "beautify #{file.esc}: #{$?}"
     @log.debug(" finished: \"#{file}\"")
 
@@ -547,9 +575,9 @@ class PandocBeautifier
         changed=true
         unless $1.nil? then
           leading_whitespace=$1.split("\n", 100)
-          leading_lines=leading_whitespace[0..-1].join("\n")
-          leading_spaces=leading_whitespace.last || ""
-          replacetext=leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+          leading_lines     =leading_whitespace[0..-1].join("\n")
+          leading_spaces    =leading_whitespace.last || ""
+          replacetext       =leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
         end
         @log.debug("replaced snippet #{$2} with #{replacetext}")
       else
@@ -575,7 +603,7 @@ class PandocBeautifier
     r = line.match(@view_pattern)
 
     if not r.nil?
-      found = r[1].split(" ")
+      found  = r[1].split(" ")
       result = (found & [view, "all"].flatten).any?
     else
       result = nil
@@ -596,7 +624,7 @@ class PandocBeautifier
     input_data = File.open(inputfile) { |f| f.readlines }
 
     output_data = Array.new
-    is_active = true
+    is_active   = true
     input_data.each { |l|
       switch=self.get_filter_command(l, view)
       l.gsub!(@view_pattern, "")
@@ -649,7 +677,7 @@ class PandocBeautifier
   # @param [Array of String] input - the input files to be processed in the given sequence
   # @param [String] output - the the name of the output file
   def collect_document(input, output)
-    inputs=input.map { |xx| xx.esc.to_osPath }.join(" ") # qoute cond combine the inputs
+    inputs   =input.map { |xx| xx.esc.to_osPath }.join(" ") # qoute cond combine the inputs
     inputname=File.basename(input.first)
 
     #now combine the input files
@@ -669,7 +697,7 @@ class PandocBeautifier
   def load_snippets_from_xlsx(file)
     temp_filename = "#{@tempdir}/snippett.xlsx"
     FileUtils::copy(file, temp_filename)
-    wb=RubyXL::Parser.parse(temp_filename)
+    wb    =RubyXL::Parser.parse(temp_filename)
     result={}
     wb.first.each { |row|
       key, the_value = row
@@ -717,7 +745,7 @@ class PandocBeautifier
 
     # combine the input files
 
-    temp_filename = "#{@tempdir}/x.md".to_osPath
+    temp_filename    = "#{@tempdir}/x.md".to_osPath
     temp_frontmatter = "#{@tempdir}/xfrontmatter.md".to_osPath unless frontmatter.nil?
     collect_document(input, temp_filename)
     collect_document(frontmatter, temp_frontmatter) unless frontmatter.nil?
@@ -747,7 +775,7 @@ class PandocBeautifier
       replace_snippets_in_file(temp_filename, snippets)
     end
 
-    vars_frontmatter=vars.clone
+    vars_frontmatter          =vars.clone
     vars_frontmatter[:usetoc] = "nousetoc"
 
 
@@ -761,22 +789,22 @@ class PandocBeautifier
     else
       # process the editions
       editions.each { |edition_name, properties|
-        edition_out_filename = "#{outname}_#{properties[:filepart]}"
+        edition_out_filename     = "#{outname}_#{properties[:filepart]}"
         edition_temp_frontmatter = "#{@tempdir}/#{edition_out_filename}_frontmatter.md" unless frontmatter.nil?
-        edition_temp_filename = "#{@tempdir}/#{edition_out_filename}.md"
-        vars[:title] = properties[:title]
+        edition_temp_filename    = "#{@tempdir}/#{edition_out_filename}.md"
+        vars[:title]             = properties[:title]
 
         editionformats = properties[:format] || format
 
         if properties[:debug]
           process_debug_info(temp_frontmatter, edition_temp_frontmatter, edition_name.to_s) unless frontmatter.nil?
           process_debug_info(temp_filename, edition_temp_filename, edition_name.to_s)
-          lvars=vars.clone
+          lvars               =vars.clone
           lvars[:linenumbers] = "true"
           unless frontmatter.nil? # frontmatter
             lvars[:usetoc] = "nousetoc"
             render_document(edition_temp_frontmatter, @tempdir, "xfrontmatter", ["frontmatter"], lvars)
-            lvars[:usetoc] = vars[:usetoc] || "usetoc"
+            lvars[:usetoc]      = vars[:usetoc] || "usetoc"
             lvars[:frontmatter] = "#{@tempdir}/xfrontmatter.latex"
           end
           render_document(edition_temp_filename, outdir, edition_out_filename, ["pdf", "latex"], lvars, config)
@@ -803,7 +831,7 @@ class PandocBeautifier
   # @return [nil] no useful return value
   def render_single_document(input, outdir, format)
     outname=File.basename(input, ".*")
-    render_document(input, outdir, outname, format, {:geometry => "a4paper"})
+    render_document(input, outdir, outname, format, { :geometry => "a4paper" })
   end
 
   #
@@ -832,17 +860,17 @@ class PandocBeautifier
     #
     # for whatever Reason, I decided for 2.
 
-    tempfile = input
-    tempfilePdf = "#{@tempdir}/x.TeX.md".to_osPath
-    tempfileHtml = "#{@tempdir}/x.html.md".to_osPath
-    outfile = "#{outdir}/#{outname}".to_osPath
-    outfilePdf = "#{outfile}.pdf"
-    outfileDocx = "#{outfile}.docx"
-    outfileHtml = "#{outfile}.html"
-    outfileRtf = "#{outfile}.rtf"
-    outfileLatex = "#{outfile}.latex"
-    outfileText = "#{outfile}.txt"
-    outfileSlide = "#{outfile}.slide.html"
+    tempfile      = input
+    tempfilePdf   = "#{@tempdir}/x.TeX.md".to_osPath
+    tempfileHtml  = "#{@tempdir}/x.html.md".to_osPath
+    outfile       = "#{outdir}/#{outname}".to_osPath
+    outfilePdf    = "#{outfile}.pdf"
+    outfileDocx   = "#{outfile}.docx"
+    outfileHtml   = "#{outfile}.html"
+    outfileRtf    = "#{outfile}.rtf"
+    outfileLatex  = "#{outfile}.latex"
+    outfileText   = "#{outfile}.txt"
+    outfileSlide  = "#{outfile}.slide.html"
 
 
     ## format handle
@@ -850,48 +878,48 @@ class PandocBeautifier
     # todo: use this information ...
 
     format_config = {
-        'pdf' => {
+        'pdf'      => {
             tempfile: :pdf,
-            outfile: "#{outfile}.pdf"
+            outfile:  "#{outfile}.pdf"
         },
-        'html' => {
+        'html'     => {
             tempfile: :html,
-            outfile: "#{outfile}.html"
+            outfile:  "#{outfile}.html"
         },
-        'docx' => {
+        'docx'     => {
             tempfile: :html,
-            outfile: "#{outfile}.docx"
+            outfile:  "#{outfile}.docx"
         },
-        'rtf' => {
+        'rtf'      => {
             tempfile: :html,
-            outfile: "#{outfile}.rtf"
+            outfile:  "#{outfile}.rtf"
         },
-        'latex' => {
+        'latex'    => {
             tempfile: :pdf,
-            outfile: "#{outfile}.latex"
+            outfile:  "#{outfile}.latex"
         },
-        'text' => {
+        'text'     => {
             tempfile: :html,
-            outfile: "#{outfile}.text"
+            outfile:  "#{outfile}.text"
         },
         'dzslides' => {
             tempfile: :html,
-            outfile: "#{outfile}.slide.html"
+            outfile:  "#{outfile}.slide.html"
         },
 
-        :beamer => {
+        :beamer    => {
             tempfile: :pdf,
-            outfile: "#{outfile}.beamer.pdf"
+            outfile:  "#{outfile}.beamer.pdf"
         },
 
         'markdown' => {
             tempfile: :html,
-            outfile: "#{outfile}.slide.html"
+            outfile:  "#{outfile}.slide.html"
         }
     }
 
     tempfile_config = {
-        pdf: "#{@tempdir}/x.TeX.md".to_osPath,
+        pdf:  "#{@tempdir}/x.TeX.md".to_osPath,
         html: "#{@tempdir}/x.html.md".to_osPath
     }
 
@@ -932,7 +960,7 @@ class PandocBeautifier
     @log.info("rendering  #{outname} as [#{format.join(', ')}]")
 
     supported_formats=["pdf", "latex", "frontmatter", "docx", "html", "txt", "rtf", "slidy", "md", "beamer"]
-    wrong_format=format - supported_formats
+    wrong_format     =format - supported_formats
     wrong_format.each { |f| @log.error("format not supported: #{f}") }
 
     begin
@@ -961,7 +989,7 @@ class PandocBeautifier
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
         #cmd="#{PANDOC_EXE} -S #{tempfilePdf.esc} #{toc} --standalone #{option_chapters} --latex-engine xelatex --number-sections #{vars_string}" +
         #  " --template #{latexStyleFile.esc} --ascii -o  #{outfilePdf.esc} #{latexTitleInclude}"
-        cmd="#{LATEX_EXE} -halt-on-error -interaction nonstopmode -output-directory=#{outdir.esc} #{outfileLatex.esc}"
+        cmd  ="#{LATEX_EXE} -halt-on-error -interaction nonstopmode -output-directory=#{outdir.esc} #{outfileLatex.esc}"
         #cmdmkindex = "makeindex \"#{outfile.esc}.idx\""
 
         latex=LatexHelper.new.set_latex_command(cmd).setlogger(@log)
@@ -1036,8 +1064,8 @@ class PandocBeautifier
       end
 
       if format.include?("beamer") then
-        outfile = format_config[:beamer][:outfile]
-        tempformat = format_config[:beamer][:tempfile]
+        outfile      = format_config[:beamer][:outfile]
+        tempformat   = format_config[:beamer][:tempfile]
         tempfile_out = tempfile_config[tempformat]
         @log.debug("creating  #{outfile}")
         ReferenceTweaker.new(tempformat).prepareFile(tempfile, tempfile_out)
