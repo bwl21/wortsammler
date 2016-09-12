@@ -1,12 +1,13 @@
 require 'rake'
 require 'tmpdir'
 require 'pry'
+require 'wortsammler.rb'
 
 wortsammlerbin = "'#{File.expand_path("bin")}'"
-wortsammler = "'#{File.expand_path(File.join("bin", "wortsammler"))}'"
+wortsammler    = "'#{File.expand_path(File.join("bin", "wortsammler"))}'"
 testprojectdir = "testproject/30_Sources"
-specdir = File.dirname(__FILE__)
-testoutput = "#{specdir}/../testoutput"
+specdir        = File.dirname(__FILE__)
+testoutput     = "#{specdir}/../testoutput"
 
 
 describe "Wortsammler generic issues" do
@@ -68,7 +69,7 @@ describe "Wortsammler beautifier features" do
 
   it "beautifies all markdown files in a folder" do
     tempdir=Dir.mktmpdir
-    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    mdtext ="#this is headline\n\n lorem ipsum\n\nbla fasel"
 
     cycles=10
     cycles.times { |i|
@@ -87,8 +88,8 @@ describe "Wortsammler beautifier features" do
 
   it "beautifies a single file", exp: false do
     tempdir=Dir.mktmpdir
-    mdfile="#{tempdir}/single.md"
-    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    mdfile ="#{tempdir}/single.md"
+    mdtext ="#this is headline\n\n lorem ipsum\n\nbla fasel"
 
     File.open(mdfile, "w") { |f| f.puts mdtext }
     system "#{wortsammler} -bi #{mdfile}"
@@ -101,8 +102,8 @@ describe "Wortsammler beautifier features" do
   it "recognizes if the specified manifest file is a directory", exp: false do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
       manifest="../ZSUPP_Manifests"
-      cmd= "#{wortsammler} -bm #{manifest} 2>&1"
-      r=`#{cmd}`
+      cmd     = "#{wortsammler} -bm #{manifest} 2>&1"
+      r       =`#{cmd}`
       r.include?("directory").should==true
     }
     $?.success?.should==false
@@ -110,7 +111,7 @@ describe "Wortsammler beautifier features" do
   it "beautifies input files in a manifest" do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
       manifest = "../ZSUPP_Manifests/sample_the-sample-document.yaml"
-      cmd = "#{wortsammler} -bm #{manifest}"
+      cmd      = "#{wortsammler} -bm #{manifest}"
       system cmd
     }
     $?.success?.should==true
@@ -128,9 +129,9 @@ describe "Wortsammler beautifier features" do
   end
 
   it "creates a semantically unchanged markdown file", exp: false do
-    testname = 'test_beautify'
-    inputfile = %Q{#{specdir}/#{testname}.md}
-    outputfile = %Q{#{testoutput}/#{testname}.md}
+    testname      = 'test_beautify'
+    inputfile     = %Q{#{specdir}/#{testname}.md}
+    outputfile    = %Q{#{testoutput}/#{testname}.md}
     referencefile = %Q{#{specdir}/#{testname}_reference.md}
 
     FileUtils.cp(inputfile, outputfile)
@@ -138,7 +139,7 @@ describe "Wortsammler beautifier features" do
     system cmd
 
     reference = File.open(referencefile).read
-    result = File.open(outputfile).read
+    result    = File.open(outputfile).read
     result.should == reference
   end
 
@@ -148,8 +149,8 @@ describe "Wortsammler conversion" do
 
   it "converts a single file to output format" do
     tempdir=Dir.mktmpdir
-    mdfile="#{tempdir}/single.md"
-    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    mdfile ="#{tempdir}/single.md"
+    mdtext ="#this is headline\n\n lorem ipsum\n\nbla fasel"
     File.open(mdfile, "w") { |f| f.puts mdtext }
     system "#{wortsammler} -pi #{mdfile} -o #{tempdir} -f latex:pdf:html:docx"
     $?.success?.should==true
@@ -166,8 +167,8 @@ describe "Wortsammler conversion" do
 
   it "converts a single file to default output format" do
     tempdir=Dir.mktmpdir
-    mdfile="#{tempdir}/single.md"
-    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    mdfile ="#{tempdir}/single.md"
+    mdtext ="#this is headline\n\n lorem ipsum\n\nbla fasel"
     File.open(mdfile, "w") { |f| f.puts mdtext }
     system "#{wortsammler} -pi #{mdfile} -o #{tempdir}"
     $?.success?.should==true
@@ -182,8 +183,8 @@ describe "Wortsammler conversion" do
 
   it "handles chapters up to 6 levels", exp: false do
     tempdir="#{specdir}/../testoutput"
-    mdfile="#{tempdir}/chapternesting.md"
-    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    mdfile ="#{tempdir}/chapternesting.md"
+    mdtext ="#this is headline\n\n lorem ipsum\n\nbla fasel"
 
     def lorem(j)
       (1.upto 100).map { |i| "text_#{j} lorem ipsum #{i} dolor " }.join(" ")
@@ -216,8 +217,8 @@ describe "Wortsammler conversion" do
 
   it "handles lists up to 9 levels", exp: false do
     tempdir="#{specdir}/../testoutput"
-    mdfile="#{tempdir}/listnesting.md"
-    mdtext="#this is headline\n\n lorem ipsum\n\nbla fasel"
+    mdfile ="#{tempdir}/listnesting.md"
+    mdtext ="#this is headline\n\n lorem ipsum\n\nbla fasel"
 
     def lorem(j)
       (1.upto 100).map { |i| "text_#{j} lorem ipsum #{i} dolor " }.join(" ")
@@ -252,10 +253,10 @@ describe "Wortsammler conversion" do
   end
 
   it "converts all files within a folder to output format" do
-    tempdir=Dir.mktmpdir
-    mdtext="# Header\n\n lorem ipsum\n"
+    tempdir   =Dir.mktmpdir
+    mdtext    ="# Header\n\n lorem ipsum\n"
     basefiles = ["f1", "f2", "f3"]
-    outfiles = basefiles.map { |f| ["#{f}.md", "#{f}.latex"] }.flatten.sort
+    outfiles  = basefiles.map { |f| ["#{f}.md", "#{f}.latex"] }.flatten.sort
     basefiles.each { |f|
       File.open("#{tempdir}/#{f}.md", "w") { |fo| fo.puts mdtext }
     }
@@ -270,7 +271,7 @@ describe "Wortsammler conversion" do
   it "processes a manifest" do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
       manifest="../ZSUPP_Manifests/sample_the-sample-document.yaml"
-      cmd= "#{wortsammler} -pm #{manifest}"
+      cmd     = "#{wortsammler} -pm #{manifest}"
       system cmd
     }
     $?.success?.should==true
@@ -321,13 +322,13 @@ describe "Wortsammler conversion" do
   end
 
 
-  it "runs the rake file in the sample document", exp:false do
+  it "runs the rake file in the sample document", exp: false do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
-      path=ENV['PATH']
-      ENV['PATH']="#{wortsammlerbin}:#{path}"
+      path        = ENV['PATH']
+      ENV['PATH'] = "#{wortsammlerbin}:#{path}"
       puts ENV['PATH']
       #system 'wortsammler -h'
-      cmd= "rake sample"
+      cmd = "rake sample"
       system cmd
     }
     Dir["testproject/30_Sources/ZGEN_Documents/*.*"].count.should==15
@@ -336,7 +337,7 @@ describe "Wortsammler conversion" do
 
   it "compiles all documents", exp: false do
     FileUtils.cd("testproject/30_Sources/ZSUPP_Tools") { |d|
-      path=ENV['PATH']
+      path       =ENV['PATH']
       ENV['PATH']="#{wortsammlerbin}:#{path}"
       puts ENV['PATH']
       #system 'wortsammler -h'
@@ -374,7 +375,7 @@ end
 
 describe "Wortsammler syntax extensions", :exp => false do
   it "[RS_Comp_012] supports embedded images" do
-    tempdir ="#{specdir}/../testoutput"
+    tempdir   ="#{specdir}/../testoutput"
     imagefile ="floating-image.pdf"
 
     FileUtils.cd(tempdir) { |c|
@@ -407,8 +408,8 @@ describe "Wortsammler syntax extensions", :exp => false do
 
   it "TC_EXP_001 expands expected results from testcases", exp: false do
 
-    proc=ReferenceTweaker.new("pdf")
-    outfile="#{specdir}/../testoutput/TC_EXP_001.output.md"
+    proc    = ReferenceTweaker.new("pdf")
+    outfile = "#{specdir}/../testoutput/TC_EXP_001.output.md"
     File.unlink(outfile) if File.exists?(outfile)
     proc.prepareFile("#{specdir}/TC_EXP_001.md", outfile)
 
@@ -418,27 +419,27 @@ describe "Wortsammler syntax extensions", :exp => false do
 
   it "TC_EXP_002 removes plantuml sources", exp: false do
 
-    proc=ReferenceTweaker.new("pdf")
-    outfile="#{specdir}/../testoutput/TC_EXP_002.output.md"
+    proc    = ReferenceTweaker.new("pdf")
+    outfile = "#{specdir}/../testoutput/TC_EXP_002.output.md"
     File.unlink(outfile) if File.exists?(outfile)
     proc.prepareFile("#{specdir}/TC_EXP_002.md", outfile)
 
-    a=File.open(outfile, "r").readlines.join
+    a = File.open(outfile, "r").readlines.join
     a.include?(".plantuml").should==false
   end
 
   it "TC_EXP_003 handles Markdown inlays", exp: true do
-    tempdir ="#{specdir}/../testoutput"
-    mdinlayfile ="TC_EXP_003_1.md"
+    tempdir       ="#{specdir}/../testoutput"
+    mdinlayfile   ="TC_EXP_003_1.md"
     mdinlayfile_1 ="TC_EXP_003_2.md"
-    mdfile="tc_exp_003"
+    mdfile        ="tc_exp_003"
 
     FileUtils.cd(tempdir) { |c|
       FileUtils.cp("#{specdir}/#{mdinlayfile}", ".")
       FileUtils.cp("#{specdir}/#{mdinlayfile_1}", ".")
 
 
-      mdtext=["#this is headlinexx",
+      mdtext=["#this is headline",
               "",
               "~~~~",
               "", "now verbatim by indent inclucde #{mdinlayfile}", "",
@@ -459,7 +460,7 @@ describe "Wortsammler syntax extensions", :exp => false do
       FileUtils.rm mdinlayfile_1
     }
 
-    ref = File.open("#{specdir}/tc_exp_003_reference.txt").read
+    ref    = File.open("#{specdir}/tc_exp_003_reference.txt").read
     result = File.open("#{tempdir}/#{mdfile}.txt").read
     ref.should==result
   end
@@ -467,13 +468,15 @@ describe "Wortsammler syntax extensions", :exp => false do
   it "generates an index", exp: false do
     system "wortsammler -pi \"#{specdir}/test_mkindex.md\" -f pdf:latex -o \"#{testoutput}\""
     system "pdftotext \"#{testoutput}/test_mkindex.pdf\""
-    ref = File.open("#{specdir}/test_mkindex_reference.txt").read
-    result = File.open("#{testoutput}/test_mkindex.txt").read
-    ref.should==result
+    the_time = Time.now.strftime("%B %d, %Y")
+    ref      = File.open("#{specdir}/test_mkindex_reference.txt").read
+    result   = File.open("#{testoutput}/test_mkindex.txt").read
+    result   = result.gsub(the_time, "December 17, 2014")
+    result.should==ref
   end
 
   it "reports TeX messages", exp: false do
-  system %Q{wortsammler -pi '#{specdir}/test_mkindex.md' -f pdf:latex -o '#{testoutput}' >> ''#{testoutput}/test_mkindex.lst'}
+    system %Q{wortsammler -pi '#{specdir}/test_mkindex.md' -f pdf:latex -o '#{testoutput}' >> '#{testoutput}/test_mkindex.lst'}
     system "pdftotext \"#{testoutput}/test_mkindex.pdf\""
     result = File.open("#{testoutput  }/test_mkindex.lst").read
     result.include?("[WARN]").should==true

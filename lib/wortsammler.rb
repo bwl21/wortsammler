@@ -33,8 +33,8 @@ module Wortsammler
     if options[:version] then
       puts "this is #{Wortsammler::PROGNAME} version #{Wortsammler::VERSION}\n"
 
-      pandoc=`pandoc -v`.split("\n")[0] rescue pandoc="error running pandoc"
-      xetex=`xelatex -v`.split("\n")[0] rescue pandoc="error running xelatex"
+      pandoc=`#{PANDOC_EXE} -v`.split("\n")[0] rescue pandoc="error running pandoc"
+      xetex=`#{LATEX_EXE} -v`.split("\n")[0] rescue pandoc="error running xelatex"
 
       $log.info "found #{pandoc}"
       $log.info "found #{xetex}"
