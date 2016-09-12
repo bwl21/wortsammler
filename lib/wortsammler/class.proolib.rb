@@ -484,7 +484,7 @@ class PandocBeautifier
     docfile.close
 
     # process the file in pandoc
-    cmd="pandoc -s #{file.esc} -f markdown -t markdown --atx-headers --reference-links "
+    cmd="pandoc -s #{file.esc} -f markdown -t markdown --atx-headers "
     newdoc = `#{cmd}`
     @log.debug "beautify #{file.esc}: #{$?}"
     @log.debug(" finished: \"#{file}\"")
