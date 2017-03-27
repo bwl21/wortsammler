@@ -47,7 +47,7 @@ EMBEDDED_IMAGE_PATTERN   = /~~EMBED\s+ "(.+)" \s+ (r|l|i|o) \s+ (.+) \s+ (.+)~~/
 
 EXPECTED_RESULT_PATTERN = /(^\s*)~~~~\s*\{.expectedResult\s+label=\"([A-Za-z]+_[A-Za-z]+_[0-9]+)\"}\s([^~]*)~~~~/x
 
-PLANTUML_PATTERN = /[~]{4,}\s+{\.plantuml}\s+@startuml\s+([^\n]+)(\s+title\s+([^\n]+))?[^~]+[~]{4,}/x
+PLANTUML_PATTERN = /[~`]{3,}\s+{\.plantuml}\s+@startuml\s+([^\n]+)(\s+title\s+([^\n]+))?[^~`]+[~`]{3,}/x
 
 #
 # This mixin convertes a file path to the os Path representation
@@ -484,7 +484,7 @@ class PandocBeautifier
     docfile.close
 
     # process the file in pandoc
-    cmd="pandoc -s #{file.esc} -f markdown -t markdown --atx-headers "
+    cmd="pandoc -s #{file.esc} -f markdown -t markdown --atx-headers --id-prefix=#{File.basename(file).esc}_ "
     newdoc = `#{cmd}`
     @log.debug "beautify #{file.esc}: #{$?}"
     @log.debug(" finished: \"#{file}\"")

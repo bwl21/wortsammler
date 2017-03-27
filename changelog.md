@@ -1,3 +1,11 @@
+# 1.0.2 (27.03.2017)
+-   fix plantuml handling with pandoc 1.13
+-   prefix header labels with filename to avoid conflicts in merged files
+
+# 1.0.1 (12.09.2016)
+
+-   no longer use reference links
+
 # 0.1.0 (24.12.2014)
 
 -   adapt to pandoc 1.13
