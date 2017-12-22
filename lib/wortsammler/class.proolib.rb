@@ -25,7 +25,7 @@ Encoding.default_internal = Encoding::UTF_8
 
 # TODO: make these patterns part of the configuration
 
-PANDOC_EXE                ="pandoc_1.13.2 "
+PANDOC_EXE                ="pandoc_2.0.5 "
 LATEX_EXE                 = "xelatex "
 
 ANY_ANCHOR_PATTERN = /<a\s+id=\"([^\"]+)\"\/>/
@@ -505,20 +505,20 @@ class PandocBeautifier
      -backtick_code_blocks
      +fenced_code_blocks
      +compact_definition_lists
+     +space_in_atx_header
+     +yaml_metadata_block
     }.join()
 
     markdown_input_switches = %w{
      +fenced_code_blocks
      +compact_definition_lists
+     -space_in_atx_header
     }.join()
 
 
 
     # process the file in pandoc
-    cmd                     = "#{PANDOC_EXE} -s #{file.esc} -f markdown#{markdown_input_switches} -t markdown#{markdown_output_switches} --atx-headers"
-
-    require 'pry';binding.pry
-
+    cmd                     = "#{PANDOC_EXE} --standalone #{file.esc} -f markdown#{markdown_input_switches} -t markdown#{markdown_output_switches} --atx-headers"
 
     newdoc                  = `#{cmd}`
     @log.debug "beautify #{file.esc}: #{$?}"
@@ -682,7 +682,7 @@ class PandocBeautifier
 
     #now combine the input files
     @log.debug("combining the input files #{inputname} et al")
-    cmd="#{PANDOC_EXE} -s -o #{output} --ascii #{inputs}" # note that inputs is already quoted
+    cmd="#{PANDOC_EXE} --standalone -o #{output} --ascii #{inputs}" # note that inputs is already quoted
     system(cmd)
     if $?.success? then
       PandocBeautifier.new().beautify(output)
@@ -969,7 +969,7 @@ class PandocBeautifier
 
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
 
-        cmd="#{PANDOC_EXE} -S #{tempfilePdf.esc}  --latex-engine xelatex  #{vars_string} --ascii -o  #{outfileLatex.esc}"
+        cmd="#{PANDOC_EXE} -f markdown+smart #{tempfilePdf.esc}  --pdf-engine xelatex  #{vars_string} --ascii -t latex+smart -o  #{outfileLatex.esc}"
         `#{cmd}`
       end
 
@@ -978,10 +978,12 @@ class PandocBeautifier
         @log.debug("creating  #{outfileLatex}")
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfilePdf)
 
-        cmd="#{PANDOC_EXE} -S #{tempfilePdf.esc} #{toc} --standalone #{option_chapters} --latex-engine xelatex --number-sections #{vars_string}" +
-            " --template #{latexStyleFile.esc} --ascii -o  #{outfileLatex.esc} #{latexTitleInclude}"
+        cmd="#{PANDOC_EXE} -f markdown+smart #{tempfilePdf.esc} #{toc} --standalone #{option_chapters} --pdf-engine xelatex --number-sections #{vars_string}" +
+            " --template #{latexStyleFile.esc} --ascii -t latex+smart -o  #{outfileLatex.esc} #{latexTitleInclude}"
         `#{cmd}`
+
       end
+
 
 
       if format.include?("pdf") then
@@ -1015,8 +1017,8 @@ class PandocBeautifier
 
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
 
-        cmd="#{PANDOC_EXE} -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
-            " -o #{outfileHtml.esc}"
+        cmd="#{PANDOC_EXE} -f markdown+smart #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
+            " -t html+smart -o #{outfileHtml.esc}"
 
         `#{cmd}`
       end
@@ -1027,10 +1029,10 @@ class PandocBeautifier
 
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
 
-        cmd="#{PANDOC_EXE} -S #{tempfileHtml.esc} #{toc} --standalone --self-contained --ascii --number-sections  #{vars_string}" +
-            " -o  #{outfileDocx.esc}"
-        cmd="#{PANDOC_EXE} -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
-            " -o  #{outfileDocx.esc}"
+        cmd="#{PANDOC_EXE} -f markdown+smart #{tempfileHtml.esc} #{toc} --standalone --self-contained --ascii --number-sections  #{vars_string}" +
+            " -f docx+smart -o  #{outfileDocx.esc}"
+        cmd="#{PANDOC_EXE} -f markdown+smart #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
+            " -t docx+smart -o  #{outfileDocx.esc}"
         `#{cmd}`
       end
 
@@ -1038,8 +1040,8 @@ class PandocBeautifier
         @log.debug("creating  #{outfileRtf}")
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
 
-        cmd="#{PANDOC_EXE} -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
-            " -o  #{outfileRtf.esc}"
+        cmd="#{PANDOC_EXE} -f markdown+smart #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
+            " -t rtf+smart -o  #{outfileRtf.esc}"
         `#{cmd}`
       end
 
@@ -1048,8 +1050,8 @@ class PandocBeautifier
 
         ReferenceTweaker.new("pdf").prepareFile(tempfile, tempfileHtml)
 
-        cmd="#{PANDOC_EXE} -S #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
-            " -t plain -o  #{outfileText.esc}"
+        cmd="#{PANDOC_EXE} -f markdown+smart #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
+            " -t plain+smart -o  #{outfileText.esc}"
         `#{cmd}`
       end
 
@@ -1058,8 +1060,8 @@ class PandocBeautifier
 
         ReferenceTweaker.new("html").prepareFile(tempfile, tempfileHtml)
         #todo: handle stylefile
-        cmd="#{PANDOC_EXE} -S #{tempfileHtml.esc} --toc --standalone --self-contained #{vars_string}" +
-            "  --ascii -t s5 --slide-level 1 -o  #{outfileSlide.esc}"
+        cmd="#{PANDOC_EXE} -f markdown+smart #{tempfileHtml.esc} --toc --standalone --self-contained #{vars_string}" +
+            "  --ascii -t s5+smart --slide-level 1 -o  #{outfileSlide.esc}"
         `#{cmd}`
       end
 

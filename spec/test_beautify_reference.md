@@ -3,7 +3,7 @@ author:
 - Bernhard Weichel
 date: '1.12.2014'
 title: Test Markdown
-...
+---
 
 # Test headlines
 
