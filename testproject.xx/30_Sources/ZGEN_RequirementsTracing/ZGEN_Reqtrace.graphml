@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <!--Created by yFiles for Java 2.9-->
+  <key for="graphml" id="d0" yfiles.type="resources"/>
+  <key for="port" id="d1" yfiles.type="portgraphics"/>
+  <key for="port" id="d2" yfiles.type="portgeometry"/>
+  <key for="port" id="d3" yfiles.type="portuserdata"/>
+  <key attr.name="url" attr.type="string" for="node" id="d4"/>
+  <key attr.name="description" attr.type="string" for="node" id="d5"/>
+  <key for="node" id="d6" yfiles.type="nodegraphics"/>
+  <key attr.name="Beschreibung" attr.type="string" for="graph" id="d7"/>
+  <key attr.name="url" attr.type="string" for="edge" id="d8"/>
+  <key attr.name="description" attr.type="string" for="edge" id="d9"/>
+  <key for="edge" id="d10" yfiles.type="edgegraphics"/>
+  <graph edgedefault="directed" id="G">
+    <node id="RS_Comp_001">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_001] Flexibler Dokumentumfang</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Comp_001" target="RS_Comp_003" id="RS_Comp_003_RS_Comp_001"/>
+    <node id="RS_Comp_003">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_003] Steuerung Dokumentenzusammenstellung</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Comp_003" target="RS_DM_014" id="RS_DM_014_RS_Comp_003"/>
+    <edge source="RS_Comp_003" target="RS_DM_010" id="RS_DM_010_RS_Comp_003"/>
+    <edge source="RS_Comp_003" target="RS_DM_005" id="RS_DM_005_RS_Comp_003"/>
+    <node id="RS_Comp_004">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_004] Prozessierung Einzeldokument</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="RS_Comp_005">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_005] Erstellung Loseblattsammlung</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="RS_Comp_006">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_006] Inkrementelle Verarbeitung</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="RS_Comp_007">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_007] Anforderungen an Manifest</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Comp_007" target="RS_Comp_003" id="RS_Comp_003_RS_Comp_007"/>
+    <node id="RS_Comp_008">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_008] Zielgruppenspezifische Ausgaben (Editionen)</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Comp_008" target="RS_Comp_003" id="RS_Comp_003_RS_Comp_008"/>
+    <node id="RS_Comp_009">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_009] Gesamtausgabe mit allen Texten zur Prüfung</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Comp_009" target="RS_Comp_003" id="RS_Comp_003_RS_Comp_009"/>
+    <node id="RS_Comp_010">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_010] Erstellung aller Ausgaben mit einem Befehl</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Comp_010" target="RS_Comp_003" id="RS_Comp_003_RS_Comp_010"/>
+    <node id="RS_Comp_011">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_011] including Plain pdf-Pages</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Comp_011" target="RS_Comp_003" id="RS_Comp_003_RS_Comp_011"/>
+    <node id="RS_Comp_012">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_012] Including text Snippets</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="RS_Comp_014">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Comp_014] Including markdown files</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Comp_014" target="RS_Comp_003" id="RS_Comp_003_RS_Comp_014"/>
+    <node id="RS_Conp_013">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:NodeLabel>[RS_Conp_013] Defining text Snippets</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge source="RS_Conp_013" target="RS_Comp_003" id="RS_Comp_003_RS_Conp_013"/>
+  </graph>
+</graphml>

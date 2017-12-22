@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="german" xml:lang="german">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Bernhard Weichel" />
+  <meta name="author" content="and others" />
+  <title>Wortsammler sample document</title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Main requirements (extended)</h1>
+<h2 class="author">Bernhard Weichel</h2>
+<h2 class="author">and others</h2>
+<h3 class="date">2013/05</h3>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#anforderung-an-dokumentenaufbereiter"><span class="toc-section-number">2</span> Anforderung an Dokumentenaufbereiter</a><ul>
+<li><a href="#zielgruppenspezifische-ausgaben"><span class="toc-section-number">2.1</span> Zielgruppenspezifische Ausgaben</a></li>
+</ul></li>
+</ul>
+</div>
+<h1 id="introduction"><span class="header-section-number">1</span> Introduction</h1>
+<p>This is a sample document for Wortsammler</p>
+<h1 id="anforderung-an-dokumentenaufbereiter"><span class="header-section-number">2</span> Anforderung an Dokumentenaufbereiter</h1>
+<ul>
+<li><p><a id="RS-Comp-003">[RS_Comp_003]</a> <strong>Steuerung Dokumentenzusammenstellung</strong> {Dokumentenzusammenstellungen soll &#252;ber ein manifest [<a href="#RS-Comp-007">RS_Comp_007</a>] gesteuert werden.</p>
+<ul>
+<li>Die Manifeste sollen als Laufzeitparameter &#252;bergeben werden</li>
+<li>Das Manifest enth&#228;lt auch die Ausgabedatei</li>
+</ul>
+<p>}(<a href="#RS-DM-014">RS_DM_014</a>, <a href="#RS-DM-010">RS_DM_010</a>, <a href="#RS-DM-005">RS_DM_005</a>)</p></li>
+<li><p><a id="RS-Comp-004">[RS_Comp_004]</a> <strong>Prozessierung Einzeldokument</strong> {Soll Dokumente verschiedenen Umfangs erzeugen k&#246;nnen:</p>
+<ul>
+<li>einzelnes Files</li>
+<li>zu Pr&#252;fzwecken</li>
+</ul>
+<p>Steuerung soll &#252;ber Konfiguration (Manifest) erfolgen [<a href="#RS-Comp-007">RS_Comp_007</a>].</p>
+<p>}()</p></li>
+<li><p><a id="RS-Comp-005">[RS_Comp_005]</a> <strong>Erstellung Loseblattsammlung</strong> {Soll Dokumente verschiedenen Umfangs erzeugen k&#246;nnen:</p>
+<ul>
+<li>kann aus dem Manifest errechnet werden [<a href="#RS-Comp-007">RS_Comp_007</a>]</li>
+</ul>
+<p>}()</p></li>
+<li><p><a id="RS-Comp-006">[RS_Comp_006]</a> <strong>Inkrementelle Verarbeitung</strong> {Soll nur auf ge&#228;nderte Dokumente reagieren k&#246;nnen:</p>
+<ul>
+<li>&#228;hnlich wie make/rake</li>
+</ul>
+<p>}()</p></li>
+<li><a id="RS-Comp-007">[RS_Comp_007]</a> <strong>Anforderungen an Manifest</strong> {Folgende Anforderungen gelten f&#252;r das Manifest
+<ul>
+<li>einfach bearbeiten - nur liste der Files</li>
+<li>Markdown-lite</li>
+<li>Yaml</li>
+</ul>
+<p>Inhalte im Manifest sind</p>
+<ul>
+<li>Name der Konfiguration</li>
+<li>Ausgabeverzeichnis</li>
+<li>Ausgabeformat</li>
+<li>Name des generierten Dokumentes</li>
+<li>Formate in denen das Dokument generiert wird. Werte hierf&#252;r ergeben sich aus den Anforderungen an die Aufbereitet</li>
+<li>zu verarbeitende Eingabedateien. Diese werden in der Reihenfolge verarbeitet wie sie aufgef&#252;hrt sind.</li>
+<li>Optionen f&#252;r die jeweiligen Formate.</li>
+<li>zu bearbeitende Zielgruppen [<a href="#RS-Comp-008">RS_Comp_008</a>]</li>
+</ul>
+<!-- -->
+<p>Beispiel f&#252;r ein manifest</p>
+<pre><code> -
+   :name:  komplett
+   :outdir: ../ZGEN_Documents
+   :outname: RS_Requirements-Ngopm
+   :format:
+     - pdf
+     - html
+     - rtf
+     - docx
+     - latex
+
+   :lang: german  
+
+   :vars:
+       :lang: german
+
+   :editions:
+     :intern: 
+         :title: Interne Ausgabe
+         :filepart: _intern 
+     :extern: 
+         :title: Externe Ausgabe
+         :filepart: _extern
+     :mieter: 
+         :title: Ausgabe f&#252;r Mieter
+         :filepart: _mieter
+     :ea: 
+         :title: Ausgabe f&#252;r ehrenamtliche Mitarbeiter
+         :filepart: _ma-ehrenamtlich
+     :ha: 
+         :title: Ausgabe f&#252;r hauptamtliche Mitarbeiter
+         :filepart: _ma-hauptamtlich
+     :1: 
+         :title: Ausgabe f&#252;r erste hauptamtliche Mitarbeiter
+         :filepart: _ma-hauptamtlich-1
+
+   :input: 
+     - ../RS_Process/RS_Process.md 
+     - ../RS_Tooling/RS_Tooling.md 
+     - ../RS_Tooling/RS_MarkdownCleaner.md 
+     - ../RS_Tooling/RS_MarkdownEditor.md 
+     - ../RS_Tooling/RS_DocumentComposer.md  
+     - ../TPL_DirectoryStructure/TPL_DirectoryStructure.md
+     - ../TR_Installation/TR_Installation.md
+     - ../TR_Installation/TR_Proo-Handbuch.md
+     - ../ZGEN_RequirementsTracing/ZGEN_Reqtrace.md
+
+   :snippets:
+     - ../TS_Markdown/TS_Snippets.yaml
+     - ../TS_Markdown/TS_MoreSnippets.yaml</code></pre>
+<p>}(<a href="#RS-Comp-003">RS_Comp_003</a>)</p></li>
+</ul>
+<h2 id="zielgruppenspezifische-ausgaben"><span class="header-section-number">2.1</span> Zielgruppenspezifische Ausgaben</h2>
+<p>Dieser Abschnitt behandelt speziell die Anforderungen an flexible Dokumentenausgabe</p>
+<ul>
+<li><p><a id="RS-Comp-001">[RS_Comp_001]</a> <strong>Flexibler Dokumentumfang</strong> {Soll Dokumente verschiedenen Umfangs erzeugen k&#246;nnen:</p>
+<ul>
+<li>einzelnes Files</li>
+<li>Zusammengestelltes Dokument</li>
+</ul>
+<p>}(<a href="#RS-Comp-003">RS_Comp_003</a>)</p></li>
+<li><a id="RS-Comp-002">[RS_Comp_002]</a> <strong>Flexible Dokumentendarstellung</strong> {Sollte Dokumente in verschiedener Darstellung erzeugen k&#246;nnen:
+<ul>
+<li>Seitenlayout</li>
+<li>Detaillierungsgrad (z.B. RequirementsMarken ausblenden) } (RS_Comp_003)</li>
+</ul></li>
+<li><p><a id="RS-Comp-008">[RS_Comp_008]</a> <strong>Zielgruppenspezifische Ausgaben (Editionen)</strong> { Es soll m&#246;glich sein Zielgruppenspezifische Ausgaben zu erstellen.</p>
+<ul>
+<li>Dabei wird die Zielgruppe durch eine spezifische Zeichenkette umgeschaltet (Durchstreichung), die auch in standard Markdown Programmen eine sinnvolle Ausgabe liefert:</li>
+</ul></li>
+</ul>
+</body>
+</html>

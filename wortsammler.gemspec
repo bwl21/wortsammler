@@ -50,8 +50,8 @@ END_DOC
   spec.add_development_dependency 'yard', "~> 0.8.5.2"
   spec.add_development_dependency 'redcarpet', "~> 2.2.2" 
   spec.add_development_dependency 'graph', "~> 2.5.2"
-  spec.add_development_dependency 'ruby-debug-base19x', "0.11.30.pre15"
-  spec.add_development_dependency "ruby-debug-ide", "0.4.24.beta5"
+  #spec.add_development_dependency 'ruby-debug-base19x', "0.11.30.pre15"
+  #spec.add_development_dependency "ruby-debug-ide", "0.4.24.beta5"
 
 
 end
