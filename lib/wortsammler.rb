@@ -419,6 +419,14 @@ module Wortsammler
   #
   # @return [Boolean] true if successful. otherwise exits the program
   def self.verify_options(options)
+
+    if options[:process] or options[:beautify] or options[:coollect] then
+      unless options[:inputpath] or options[:manifest] then
+        $log.error "no input specified"
+        exit false
+      end
+    end
+
     if options[:inputpath] or options[:manifest] then
       unless options[:process] or options[:beautify] or options[:collect] or options[:plantuml] then
         $log.error "no procesing option (p, b, c, u) specified"
