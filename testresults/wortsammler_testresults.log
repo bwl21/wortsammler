@@ -1,4 +1,3 @@
-Run options: exclude {:exp=>true}
 
 PandocBeautifier
   checks the availability of the right pandoc version
@@ -78,18 +77,20 @@ Wortsammler conversion
   extracts plantuml from a folder
   processes snippets (PENDING: Test not yet implemented)
   handles undefined snippets (PENDING: Test not yet implemented)
-  runs the rake file in the sample document (FAILED - 1)
+  runs the rake file in the sample document
   compiles all documents
 
 Wortsammler output formats
   generates dzslides
   generates beamer files
+  generates markdown
 
 Wortsammler syntax extensions
   [RS_Comp_012] supports embedded images
   TC_EXP_001 expands expected results from testcases
   TC_EXP_002 removes plantuml sources
-  generates an index
+  TC_EXP_003 handles Markdown inlays (FAILED - 1)
+  generates an index (FAILED - 2)
   reports TeX messages
 
 Pending:
@@ -105,15 +106,74 @@ Pending:
 
 Failures:
 
-  1) Wortsammler conversion runs the rake file in the sample document
-     Failure/Error: Dir["testproject/30_Sources/ZGEN_Documents/*.*"].count.should==15
-       expected: 15
-            got: 14 (using ==)
-     # ./spec/wortsammler_spec.rb:334:in `block (2 levels) in <top (required)>'
+  1) Wortsammler syntax extensions TC_EXP_003 handles Markdown inlays
+     Failure/Error: ref.should==result
+       expected: "-   [this is TC\\_EXP\\_003\\_1](#this-is-tc_exp_003_1)\n-   [this is md TC\\_EXP\\_003\\_2](#this-is-md-tc_exp_003_2)\n-   [this is md TC\\_EXP\\_003\\_2](#this-is-md-tc_exp_003_2-1)\n\n#this is headline\n\n\n    now verbatim by indent inclucde TC_EXP_003_1.md\n\n        ## this is TC_EXP_003_1\n        \n        we now include TC_EXP_003_2 from TC_EXP_003_1\n        \n        ## this is md TC_EXP_003_2\n        \n            - hugo\n        \n            - hugo2\n        \n        end of TC_EXP_003_2\n        \n        end of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_1.md\n\n\nthis is TC_EXP_003_1\n\nwe now include TC_EXP_003_2 from TC_EXP_003_1\n\n\nthis is md TC_EXP_003_2\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n\nend of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_2.md\n\n\nthis is md TC_EXP_003_2\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n"
+            got: "-   this is headline\n    -   this is TC\\_EXP\\_003\\_1\n    -   this is md TC\\_EXP\\_003\\_2\n    -   this is md TC\\_EXP\\_003\\_2\n\n\nthis is headline\n================\n\n\n    now verbatim by indent inclucde TC_EXP_003_1.md\n\n        ## this is TC_EXP_003_1\n        \n        we now include TC_EXP_003_2 from TC_EXP_003_1\n        \n        ## this is md TC_EXP_003_2\n        \n            - hugo\n        \n            - hugo2\n        \n        end of TC_EXP_003_2\n        \n        end of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_1.md\n\nthis is TC_EXP_003_1\n--------------------\n\nwe now include TC_EXP_003_2 from TC_EXP_003_1\n\nthis is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n\nend of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_2.md\n\nthis is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n" (using ==)
+       Diff:
+       
+       
+       
+       @@ -1,10 +1,13 @@
+       --   [this is TC\_EXP\_003\_1](#this-is-tc_exp_003_1)
+       --   [this is md TC\_EXP\_003\_2](#this-is-md-tc_exp_003_2)
+       --   [this is md TC\_EXP\_003\_2](#this-is-md-tc_exp_003_2-1)
+       +-   this is headline
+       +    -   this is TC\_EXP\_003\_1
+       +    -   this is md TC\_EXP\_003\_2
+       +    -   this is md TC\_EXP\_003\_2
+        
+       -#this is headline
+        
+       +this is headline
+       +================
+        
+       +
+            now verbatim by indent inclucde TC_EXP_003_1.md
+        
+                ## this is TC_EXP_003_1
+       
+       
+       
+       @@ -23,13 +26,13 @@
+        
+        now full format inclucde TC_EXP_003_1.md
+        
+       -
+        this is TC_EXP_003_1
+       +--------------------
+        
+        we now include TC_EXP_003_2 from TC_EXP_003_1
+        
+       -
+        this is md TC_EXP_003_2
+       +-----------------------
+        
+            - hugo
+        
+       
+       @@ -41,8 +44,8 @@
+        
+        now full format inclucde TC_EXP_003_2.md
+        
+       -
+        this is md TC_EXP_003_2
+       +-----------------------
+        
+            - hugo
+        
+     # ./spec/wortsammler_spec.rb:465:in `block (2 levels) in <top (required)>'
 
-Finished in 2 minutes 39.54 seconds
-72 examples, 1 failure, 3 pending
+  2) Wortsammler syntax extensions generates an index
+     Failure/Error: result.should==ref
+     ArgumentError:
+       invalid byte sequence in UTF-8
+     # ./spec/wortsammler_spec.rb:475:in `block (2 levels) in <top (required)>'
+
+Finished in 3 minutes 16.54 seconds
+74 examples, 2 failures, 3 pending
 
 Failed examples:
 
-rspec ./spec/wortsammler_spec.rb:325 # Wortsammler conversion runs the rake file in the sample document
+rspec ./spec/wortsammler_spec.rb:431 # Wortsammler syntax extensions TC_EXP_003 handles Markdown inlays
+rspec ./spec/wortsammler_spec.rb:468 # Wortsammler syntax extensions generates an index
