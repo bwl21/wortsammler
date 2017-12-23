@@ -1,0 +1,79 @@
+-
+    :name:  komplett
+    :outdir: ../ZGEN_Documents
+    :outname: RS_Main
+    :format:
+        - latex
+        - docx
+        - html
+        - pdf
+        - beamer
+        - slidy
+
+    :vars: 
+        :lang: german
+        :fontsize: 12pt
+        :mainfont: Calibri
+        :sansfont: Calibri
+        :geometry: a4paper 
+        :logofile: ../ZSUPP_Styles/logo.jpg
+
+    :stylefiles:
+      :latex: ../ZSUPP_Styles/default.wortsammler.latex
+      :docx:  ../ZSUPP_Styles/default.wortsammler.docx
+      :html:  ../ZSUPP_Styles/default.wortsammler.css
+
+    :input: 
+        - ../001_main/main.md
+
+    :downstream_tracefile: ../ZGEN_RequirementsTracing/RS_Main.traces.md
+
+    :reqtracefile_base: ../ZGEN_RequirementsTracing/ZGEN_Reqtrace
+
+    :traceSortOrder:
+        - RS_MG
+        - RS_TEC
+
+
+    :editions:
+
+        :review:
+            :title: Main requirements (review)
+            :filepart: review
+            :debug: true
+            :format:
+                - latex
+                - docx
+                - html
+                - pdf
+
+        :compact:
+            :title: Main requirements (compact)
+            :filepart: compact
+            :format:
+                - latex
+                - docx
+                - html
+                - pdf
+
+
+        :extended:
+            :title: Main requirements (extended)
+            :filepart: mieter
+            :format:
+                - latex
+                - docx
+                - html
+                - pdf
+
+
+        :folien:
+            :title: Beamer
+            :filepart: folien
+            :format:
+                - beamer
+                - slidy
+
+    :snippets:
+        - ../900_snippets/snippets.xlsx
+

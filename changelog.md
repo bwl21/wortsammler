@@ -1,3 +1,24 @@
+# 2.0.0.dev.1
+
+-   now use pandoc 2.0.5 (requires pandoc_2.0.5 on path)
+-   tested with ruby 2.4.3
+
+## BWC issues
+
+-   install pandoc 2.0.5 best from zip file
+-   ensure that pandoc_2.0.5 is on your path
+-   adapt your latex-styles accordingly (add definition for \tightlist)
+
+# 1.0.2 (27.03.2017)
+
+-   fix plantuml handling with pandoc 1.13
+-   prefix header labels with filename to avoid conflicts in merged
+    files
+
+# 1.0.1 (12.09.2016)
+
+-   no longer use reference links
+
 # 0.1.0 (24.12.2014)
 
 -   adapt to pandoc 1.13
