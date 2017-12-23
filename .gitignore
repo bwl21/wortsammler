@@ -16,10 +16,6 @@ test/version_tmp
 tmp
 testproject
 wortsammler-gem.sublime-workspace
-resources/pandocdefault.docx
-resources/pandocdefault.epub
-resources/pandocdefault.html
-resources/pandocdefault.latex
 pandoc.css
 testoutput
 
