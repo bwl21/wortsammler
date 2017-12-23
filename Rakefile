@@ -34,7 +34,7 @@ end
 
 desc "get the default stylefiles from pandoc" 
 task :getpandocstyles do
-  [:latex, :docx, :html, :epub].each{|format |sh "pandoc -D #{format} > resources/pandocdefault.#{format}"}
+  [:latex, :docx, :html, :epub].each{|format |sh "pandoc_2.0.5 -D #{format} > resources/pandocdefault.#{format}"}
   end
 
 desc "run tests"
