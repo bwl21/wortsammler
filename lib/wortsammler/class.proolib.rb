@@ -50,7 +50,7 @@ EMBEDDED_IMAGE_PATTERN = /~~EMBED\s+ "(.+)" \s+ (r|l|i|o) \s+ (.+) \s+ (.+)~~/x
 
 EXPECTED_RESULT_PATTERN = /(^\s*)~~~~\s*\{.expectedResult\s+label=\"([A-Za-z]+_[A-Za-z]+_[0-9]+)\"}\s([^~]*)~~~~/x
 
-PLANTUML_PATTERN = /[~]{4,}\s+{\.plantuml}\s+@startuml\s+([^\n]+)(\s+title\s+([^\n]+))?[^~]+[~]{4,}/x
+PLANTUML_PATTERN = /[~`]{3,}\s+{\.plantuml}\s+@startuml\s+([^\n]+)(\s+title\s+([^\n]+))?[^~`]+[~`]{3,}/x
 
 #
 # This mixin convertes a file path to the os Path representation
@@ -494,7 +494,7 @@ class PandocBeautifier
 
   # @return [boolean] true if an appropriate version is available
   def check_pandoc_version
-    required_version_string="1.13.2"
+    required_version_string="2.0.5"
     begin
       pandoc_version=`#{PANDOC_EXE} -v`.split("\n").first.split(" ")[1]
       if pandoc_version < required_version_string then
@@ -523,7 +523,7 @@ class PandocBeautifier
     docfile.close
 
     # process the file in pandoc
-    cmd                     = "#{PANDOC_EXE} --standalone #{file.esc} -f markdown#{@markdown_input_switches} -t markdown#{@markdown_output_switches} --atx-headers"
+    cmd                     = "#{PANDOC_EXE} --standalone #{file.esc} -f markdown#{@markdown_input_switches} -t markdown#{@markdown_output_switches} --atx-headers  --id-prefix=#{File.basename(file).esc}_ "
 
     newdoc                  = `#{cmd}`
     @log.debug "beautify #{file.esc}: #{$?}"
