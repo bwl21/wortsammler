@@ -8,6 +8,9 @@
 -   install pandoc 2.0.5 best from zip file
 -   ensure that pandoc_2.0.5 is on your path
 -   adapt your latex-styles accordingly (add definition for \tightlist)
+-   pandoc no longer mangles undescore (`_`) in labels when producing
+    latex. If you use `\ref{T01ux5fnumber}` you can now go back to
+    `\ref{T01_number}`
 
 # 1.0.2 (27.03.2017)
 
