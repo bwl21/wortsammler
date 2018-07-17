@@ -1,0 +1,108 @@
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:42: rendering  test_mkindex as [pdf, latex]
+[WARN] wortsammler 1.0.3: 2018-07-17 19:03:46: for details see line 151 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Package fixltx2e Warning: fixltx2e is not required with releases after 2015
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: (fixltx2e)                All fixes are now in the LaTeX kernel.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: (fixltx2e)                See the latexrelease package for details.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: ) (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/microtype.sty
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:03:46: for details see line 733 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Package hyperref Warning: Option `bookmarks' has already been used,
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: (hyperref)                setting the option has no effect on input line 61.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:03:46: for details see line 980 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:03:46: for details see line 997 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:03:46: for details see line 1004 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:03:46: for details see line 1015 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:03:46: for details see line 1029 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: Output written on /Users/beweiche/beweiche_noTimeMachine/202_wortsammler-gem/sp
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: ec/test_mkindex.pdf (6 pages).
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: logfilter: errors   = 0
+[INFO] wortsammler 1.0.3: 2018-07-17 19:03:46: logfilter: warnings = 7
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:35: rendering  test_mkindex as [pdf, latex]
+[WARN] wortsammler 1.0.3: 2018-07-17 19:06:38: for details see line 151 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Package fixltx2e Warning: fixltx2e is not required with releases after 2015
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: (fixltx2e)                All fixes are now in the LaTeX kernel.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: (fixltx2e)                See the latexrelease package for details.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: ) (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/microtype.sty
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:06:38: for details see line 733 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Package hyperref Warning: Option `bookmarks' has already been used,
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: (hyperref)                setting the option has no effect on input line 61.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:06:38: for details see line 980 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:06:38: for details see line 997 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:06:38: for details see line 1004 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:06:38: for details see line 1015 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[WARN] wortsammler 1.0.3: 2018-07-17 19:06:38: for details see line 1029 test_mkindex.log
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Package Fancyhdr Warning: \headheight is too small (28.45274pt):
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Make it at least 35.60004pt.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: We now make it that large for the rest of the document.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: This may cause the page layout to be inconsistent, however.
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: 
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: Output written on /Users/beweiche/beweiche_noTimeMachine/202_wortsammler-gem/sp
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: ec/test_mkindex.pdf (6 pages).
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: logfilter: errors   = 0
+[INFO] wortsammler 1.0.3: 2018-07-17 19:06:38: logfilter: warnings = 7

@@ -28,7 +28,7 @@ END_DOC
 
   spec.required_ruby_version = '>= 1.9.3'
   spec.add_runtime_dependency 'logger'
-  spec.add_runtime_dependency 'nokogiri', '=1.5.10 '
+  spec.add_runtime_dependency 'nokogiri', '=1.8.2'
   spec.add_runtime_dependency 'rubyXL'
   spec.add_runtime_dependency 'diffy', "~> 2.1.3"
   spec.add_runtime_dependency 'rubyzip'
@@ -47,7 +47,7 @@ END_DOC
   spec.add_development_dependency "rake", "~> 10.0.4"
   spec.add_development_dependency "rspec", "~> 2.13.0"
   spec.add_development_dependency 'pry', "~> 0.9.12"
-  spec.add_development_dependency 'yard', "~> 0.8.5.2"
+  spec.add_development_dependency 'yard', "~> 0.9.11"
   spec.add_development_dependency 'redcarpet', "~> 2.2.2" 
   spec.add_development_dependency 'graph', "~> 2.5.2"
 
