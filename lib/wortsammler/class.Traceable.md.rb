@@ -3,7 +3,7 @@
 #
 #require 'ruby-debug' if not RUBY_PLATFORM=="i386-mingw32"
 require 'treetop'
-require File.dirname(__FILE__) + "/class.treetophelper"
+require File.dirname(__FILE__) + "/class.treetopHelper"
 require File.dirname(__FILE__) + "/class.Traceable"
 require File.dirname(__FILE__) + "/class.Traceable.md"
 

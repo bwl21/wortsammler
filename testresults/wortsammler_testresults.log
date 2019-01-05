@@ -1,3 +1,4 @@
+Run options: exclude {:exp=>true}
 
 PandocBeautifier
   checks the availability of the right pandoc version
@@ -49,7 +50,7 @@ Wortsammler generic issues
   turns on vervbose mode
   can create a new project folder
   does not initialize into an existing project folder
-  controls the pandoc options by document class (PENDING: implement test to control pandoc options by document class)
+  controls the pandoc options by document class (FAILED - 1)
 
 Wortsammler options validator
   rejects no processing
@@ -61,7 +62,7 @@ Wortsammler beautifier features
   beautifies input files in a manifest
   claims missing input
   claims undefined document path
-  creates a semantically unchanged markdown file
+  creates a semantically unchanged markdown file (FAILED - 2)
 
 Wortsammler conversion
   converts a single file to output format
@@ -75,54 +76,92 @@ Wortsammler conversion
   extracts plantuml according to a manifest
   extracts plantuml from a single file
   extracts plantuml from a folder
-  processes snippets (PENDING: Test not yet implemented)
-  handles undefined snippets (PENDING: Test not yet implemented)
+  processes snippets (FAILED - 3)
+  handles undefined snippets (FAILED - 4)
   runs the rake file in the sample document
   compiles all documents
-
-Wortsammler output formats
-  generates dzslides
-  generates beamer files
-  generates markdown
 
 Wortsammler syntax extensions
   [RS_Comp_012] supports embedded images
   TC_EXP_001 expands expected results from testcases
   TC_EXP_002 removes plantuml sources
-  TC_EXP_003 handles Markdown inlays (FAILED - 1)
-  generates an index (FAILED - 2)
+  TC_EXP_003 handles Markdown inlays (FAILED - 5)
+  generates an index (FAILED - 6)
   reports TeX messages
-
-Pending:
-  Wortsammler generic issues controls the pandoc options by document class
-    # implement test to control pandoc options by document class
-    # ./spec/wortsammler_spec.rb:53
-  Wortsammler conversion processes snippets
-    # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:316
-  Wortsammler conversion handles undefined snippets
-    # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:320
 
 Failures:
 
-  1) Wortsammler syntax extensions TC_EXP_003 handles Markdown inlays
-     Failure/Error: ref.should==result
-       expected: "-   [this is headline](#this-is-headline)\n    -   [this is TC\\_EXP\\_003\\_1](#this-is-tc_exp_003_1)\n    -   [this is md TC\\_EXP\\_003\\_2](#this-is-md-tc_exp_003_2)\n    -   [this is md TC\\_EXP\\_003\\_2](#this-is-md-tc_exp_003_2-1)\n\n\n\nTHIS IS HEADLINE\n\n\n\n    now verbatim by indent inclucde TC_EXP_003_1.md\n\n        ## this is TC_EXP_003_1\n        \n        we now include TC_EXP_003_2 from TC_EXP_003_1\n        \n        ## this is md TC_EXP_003_2\n        \n            - hugo\n        \n            - hugo2\n        \n        end of TC_EXP_003_2\n        \n        end of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_1.md\n\n\nthis is TC_EXP_003_1\n\nwe now include TC_EXP_003_2 from TC_EXP_003_1\n\n\nthis is md TC_EXP_003_2\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n\nend of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_2.md\n\n\nthis is md TC_EXP_003_2\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n"
-            got: "-   this is headline\n    -   this is TC\\_EXP\\_003\\_1\n    -   this is md TC\\_EXP\\_003\\_2\n    -   this is md TC\\_EXP\\_003\\_2\n\n\nthis is headline\n================\n\n\n    now verbatim by indent inclucde TC_EXP_003_1.md\n\n        ## this is TC_EXP_003_1\n        \n        we now include TC_EXP_003_2 from TC_EXP_003_1\n        \n        ## this is md TC_EXP_003_2\n        \n            - hugo\n        \n            - hugo2\n        \n        end of TC_EXP_003_2\n        \n        end of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_1.md\n\nthis is TC_EXP_003_1\n--------------------\n\nwe now include TC_EXP_003_2 from TC_EXP_003_1\n\nthis is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n\nend of TC_EXP_003_1\n\nnow full format inclucde TC_EXP_003_2.md\n\nthis is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n" (using ==)
+  1) Wortsammler generic issues controls the pandoc options by document class FIXED
+     Expected pending 'implement test to control pandoc options by document class' to fail. No Error was raised.
+     # ./spec/wortsammler_spec.rb:52
+
+  2) Wortsammler beautifier features creates a semantically unchanged markdown file
+     Failure/Error: result.should == reference
+
+       expected: "% Test Markdown\n% Bernhard Weichel\n% 1.12.2014\n\n# Test headlines\n\n# Head Leel 2\n\n# test fenc...    codedblock\n~~~~\n\n~~~~ {#backtick_codeblock}\n\nthis\n\n    is\n\n         codedblock\n~~~~\n"
+            got: "---\nauthor:\n- Bernhard Weichel\ndate: '1.12.2014'\ntitle: Test Markdown\n...\n\n# Test headlines\n...       codedblock\n```\n\n``` {#backtick_codeblock}\n\nthis\n\n    is\n\n         codedblock\n```\n" (using ==)
        Diff:
-       
-       
-       
-       @@ -1,14 +1,13 @@
-       --   [this is headline](#this-is-headline)
-       -    -   [this is TC\_EXP\_003\_1](#this-is-tc_exp_003_1)
-       -    -   [this is md TC\_EXP\_003\_2](#this-is-md-tc_exp_003_2)
-       -    -   [this is md TC\_EXP\_003\_2](#this-is-md-tc_exp_003_2-1)
-       +-   this is headline
-       +    -   this is TC\_EXP\_003\_1
-       +    -   this is md TC\_EXP\_003\_2
-       +    -   this is md TC\_EXP\_003\_2
+       @@ -1,6 +1,9 @@
+       -% Test Markdown
+       -% Bernhard Weichel
+       -% 1.12.2014
+       +---
+       +author:
+       +- Bernhard Weichel
+       +date: '1.12.2014'
+       +title: Test Markdown
+       +...
+        
+        # Test headlines
+        
+
+
+
+       @@ -8,21 +11,21 @@
+        
+        # test fenced code blocks
+        
+       -~~~~ {#codeblock}
+       +``` {#codeblock}
+        
+        this
+        
+            is
+        
+                 codedblock
+       -~~~~
+       +```
+        
+       -~~~~ {#backtick_codeblock}
+       +``` {#backtick_codeblock}
+        
+        this
+        
+            is
+        
+                 codedblock
+       -~~~~
+       +```
+     # ./spec/wortsammler_spec.rb:142:in `block (2 levels) in <top (required)>'
+
+  3) Wortsammler conversion processes snippets FIXED
+     Expected pending 'Test not yet implemented' to fail. No Error was raised.
+     # ./spec/wortsammler_spec.rb:315
+
+  4) Wortsammler conversion handles undefined snippets FIXED
+     Expected pending 'Test not yet implemented' to fail. No Error was raised.
+     # ./spec/wortsammler_spec.rb:319
+
+  5) Wortsammler syntax extensions TC_EXP_003 handles Markdown inlays
+     Failure/Error: ref.should==result
+
+       expected: "-   this is headline\n    -   this is TC\\_EXP\\_003\\_1\n    -   this is md TC\\_EXP\\_003\\_2\n   ... TC_EXP_003_2.md\n\n\nthis is md TC_EXP_003_2\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n"
+            got: "-   this is headline\n    -   this is TC\\_EXP\\_003\\_1\n    -   this is md TC\\_EXP\\_003\\_2\n   ...s is md TC_EXP_003_2\n-----------------------\n\n    - hugo\n\n    - hugo2\n\nend of TC_EXP_003_2\n" (using ==)
+       Diff:
+
+
+       @@ -4,11 +4,10 @@
+            -   this is md TC\_EXP\_003\_2
         
         
        +this is headline
@@ -135,9 +174,9 @@ Failures:
             now verbatim by indent inclucde TC_EXP_003_1.md
         
                 ## this is TC_EXP_003_1
-       
-       
-       
+
+
+
        @@ -27,13 +26,13 @@
         
         now full format inclucde TC_EXP_003_1.md
@@ -154,7 +193,7 @@ Failures:
         
             - hugo
         
-       
+
        @@ -45,8 +44,8 @@
         
         now full format inclucde TC_EXP_003_2.md
@@ -165,18 +204,122 @@ Failures:
         
             - hugo
         
-     # ./spec/wortsammler_spec.rb:465:in `block (2 levels) in <top (required)>'
+     # ./spec/wortsammler_spec.rb:439:in `block (2 levels) in <top (required)>'
 
-  2) Wortsammler syntax extensions generates an index
-     Failure/Error: result.should==ref
-     ArgumentError:
-       invalid byte sequence in UTF-8
-     # ./spec/wortsammler_spec.rb:475:in `block (2 levels) in <top (required)>'
+  6) Wortsammler syntax extensions generates an index
+     Failure/Error: ref.should==result
 
-Finished in 3 minutes 14.62 seconds
-74 examples, 2 failures, 3 pending
+       expected: "CONTENTS\n\nCONTENTS\n\nContents\n1 Das ist ein Test zur Indexerstellung 2\n\n1\n\nJuly 17, 2018\n\n...2 \xC4pfelchen, 2 \xDCber, 2\n\n5\n\n\fINDEX\n\nINDEX\n\nende des Index\n\n6\n\nJuly 17, 2018\n\n\f"
+            got: "CONTENTS\n\nCONTENTS\n\nContents\n1 Das ist ein Test zur Indexerstellung\n\n2\n\n1\n\nDecember 17, 2...2\nÄpfelchen, 2\nÜber, 2\n\n5\n\n\fINDEX\n\nINDEX\n\nende des Index\n\n6\n\nDecember 17, 2014\n\n\f" (using ==)
+       Diff:
+
+
+
+
+       @@ -3,22 +3,35 @@
+        CONTENTS
+        
+        Contents
+       -1 Das ist ein Test zur Indexerstellung 2
+       +1 Das ist ein Test zur Indexerstellung
+        
+       +2
+       +
+        1
+        
+       -July 17, 2018
+       +December 17, 2014
+        
+        1
+        
+        DAS IST EIN TEST ZUR INDEXERSTELLUNG
+        
+        1 Das ist ein Test zur Indexerstellung
+       -Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal S?tze, die alle Buchstaben des Alphabets enthalten - man nennt diese S?tze ?Pangrams?. Sehr bekannt ist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL? and WefoxTM are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 ? ab dem Jahr 2034 Zahlen in 86 der Texte zur Pflicht werden. Nichteinhaltung wird mit bis zu 245  oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch ??c??t?, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalit?ten. Je nach Software und Voreinstellungen k?nnen eingebaute Kapit?lchen, Kerning oder Ligaturen (sehr pfiffig) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks
+       +Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal
+       +benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen.
+       +Manchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt
+       +ist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige
+       +Satzteile eingebaut (AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu
+       +testen. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in
+       +den meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur
+       +Pﬂicht werden. Nichteinhaltung wird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch
+       +Âçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld
+       +sind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning
+       +oder Ligaturen (sehr pﬁﬃg) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob
+       +alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks
+        
+        2
+        
+       -July 17, 2018
+       +December 17, 2014
+        
+        1 DAS IST EIN TEST ZUR INDEXERSTELLUNG
+        
+
+       @@ -26,11 +39,22 @@
+        
+        DAS IST EIN TEST ZUR INDEXERSTELLUNG
+        
+       -Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal S?tze, die alle Buchstaben des Alphabets enthalten - man nennt diese S?tze ?Pangrams?. Sehr bekannt ist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL? and WefoxTM are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 ? ab dem Jahr 2034 Zahlen in 86 der Texte zur Pflicht werden. Nichteinhaltung wird mit bis zu 245  oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch ??c??t?, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalit?ten. Je nach Software und Voreinstellungen k?nnen eingebaute Kapit?lchen, Kerning oder Ligaturen (sehr pfiffig) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks
+       +Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal
+       +benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze,
+       +die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The
+       +quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut
+       +(AVAIL® and Wefox™ are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht
+       +zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die
+       +Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pﬂicht werden. Nichteinhaltung
+       +wird mit bis zu 245 € oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften
+       +aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten.
+       +Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pﬁﬃg) nicht
+       +richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie
+       +sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks
+        
+        3
+        
+       -July 17, 2018
+       +December 17, 2014
+        
+        1
+        
+
+       @@ -40,10 +64,15 @@
+        
+        4
+        
+       -July 17, 2018
+       +December 17, 2014
+        
+        Index
+       -S?tze, 2 Typoblindtext, 2, 3 Uder, 2 Ufer, 2 ?pfelchen, 2 ?ber, 2
+       +Sätze, 2
+       +Typoblindtext, 2, 3
+       +Uder, 2
+       +Ufer, 2
+       +Äpfelchen, 2
+       +Über, 2
+        
+        5
+        
+       @@ -55,7 +84,7 @@
+        
+        6
+        
+       -July 17, 2018
+       +December 17, 2014
+        
+        
+     # ./spec/wortsammler_spec.rb:447:in `block (2 levels) in <top (required)>'
+
+Finished in 2 minutes 41.7 seconds (files took 0.64262 seconds to load)
+71 examples, 6 failures
 
 Failed examples:
 
-rspec ./spec/wortsammler_spec.rb:431 # Wortsammler syntax extensions TC_EXP_003 handles Markdown inlays
-rspec ./spec/wortsammler_spec.rb:468 # Wortsammler syntax extensions generates an index
+rspec ./spec/wortsammler_spec.rb:52 # Wortsammler generic issues controls the pandoc options by document class
+rspec ./spec/wortsammler_spec.rb:130 # Wortsammler beautifier features creates a semantically unchanged markdown file
+rspec ./spec/wortsammler_spec.rb:315 # Wortsammler conversion processes snippets
+rspec ./spec/wortsammler_spec.rb:319 # Wortsammler conversion handles undefined snippets
+rspec ./spec/wortsammler_spec.rb:405 # Wortsammler syntax extensions TC_EXP_003 handles Markdown inlays
+rspec ./spec/wortsammler_spec.rb:442 # Wortsammler syntax extensions generates an index
+
