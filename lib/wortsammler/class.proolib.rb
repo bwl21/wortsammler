@@ -25,7 +25,7 @@ Encoding.default_internal = Encoding::UTF_8
 
 # TODO: make these patterns part of the configuration
 
-PANDOC_EXE                ="pandoc_2.0.5 "
+PANDOC_EXE                ="pandoc_2.5 "  # wat
 LATEX_EXE                 = "xelatex "
 
 ANY_ANCHOR_PATTERN = /<a\s+id=\"([^\"]+)\"\/>/

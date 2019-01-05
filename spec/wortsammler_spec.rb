@@ -462,17 +462,18 @@ describe "Wortsammler syntax extensions", :exp => false do
 
     ref    = File.open("#{specdir}/tc_exp_003_reference.txt").read
     result = File.open("#{tempdir}/#{mdfile}.txt").read
-    ref.should==result
+
+    expect(result).to eq ref
   end
 
   it "generates an index", exp: false do
     system "wortsammler -pi \"#{specdir}/test_mkindex.md\" -f pdf:latex -o \"#{testoutput}\""
     system "pdftotext \"#{testoutput}/test_mkindex.pdf\""
-    the_time = Time.now.strftime("%B %d, %Y")
-    ref      = File.open("#{specdir}/test_mkindex_reference.txt").read
-    result   = File.open("#{testoutput}/test_mkindex.txt").read
-    result   = result.gsub(the_time, "December 17, 2014")
-    result.should==ref
+    the_time = Time.now.strftime("%B %-d, %Y")
+    ref      = File.open("#{specdir}/test_mkindex_reference.txt", encoding: "ISO-8859-1").read
+    result   = File.open("#{testoutput}/test_mkindex.txt",  encoding: "ISO-8859-1").read
+    result   = result.gsub(the_time, "January 5, 2019")  # adapt this if you update the reference
+    expect(result).to eq ref
   end
 
   it "reports TeX messages", exp: false do
