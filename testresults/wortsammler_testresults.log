@@ -49,7 +49,7 @@ Wortsammler generic issues
   turns on vervbose mode
   can create a new project folder
   does not initialize into an existing project folder
-  controls the pandoc options by document class (PENDING: implement test to control pandoc options by document class)
+  controls the pandoc options by document class (FAILED - 1)
 
 Wortsammler options validator
   rejects no processing
@@ -75,9 +75,9 @@ Wortsammler conversion
   extracts plantuml according to a manifest
   extracts plantuml from a single file
   extracts plantuml from a folder
-  processes snippets (PENDING: Test not yet implemented)
-  handles undefined snippets (PENDING: Test not yet implemented)
-  runs the rake file in the sample document
+  processes snippets (FAILED - 2)
+  handles undefined snippets (FAILED - 3)
+  runs the rake file in the sample document (FAILED - 4)
   compiles all documents
 
 Wortsammler output formats
@@ -90,19 +90,67 @@ Wortsammler syntax extensions
   TC_EXP_001 expands expected results from testcases
   TC_EXP_002 removes plantuml sources
   TC_EXP_003 handles Markdown inlays
-  generates an index
+  generates an index (FAILED - 5)
   reports TeX messages
 
-Pending:
-  Wortsammler generic issues controls the pandoc options by document class
-    # implement test to control pandoc options by document class
-    # ./spec/wortsammler_spec.rb:53
-  Wortsammler conversion processes snippets
-    # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:316
-  Wortsammler conversion handles undefined snippets
-    # Test not yet implemented
-    # ./spec/wortsammler_spec.rb:320
+Failures:
 
-Finished in 3 minutes 9.64 seconds
-74 examples, 0 failures, 3 pending
+  1) Wortsammler generic issues controls the pandoc options by document class FIXED
+     Expected pending 'implement test to control pandoc options by document class' to fail. No Error was raised.
+     # ./spec/wortsammler_spec.rb:53
+
+  2) Wortsammler conversion processes snippets FIXED
+     Expected pending 'Test not yet implemented' to fail. No Error was raised.
+     # ./spec/wortsammler_spec.rb:322
+
+  3) Wortsammler conversion handles undefined snippets FIXED
+     Expected pending 'Test not yet implemented' to fail. No Error was raised.
+     # ./spec/wortsammler_spec.rb:326
+
+  4) Wortsammler conversion runs the rake file in the sample document
+     Failure/Error: Dir["testproject/30_Sources/ZGEN_Documents/*.*"].count.should==15
+
+       expected: 15
+            got: 19 (using ==)
+     # ./spec/wortsammler_spec.rb:340:in `block (2 levels) in <top (required)>'
+
+  5) Wortsammler syntax extensions generates an index
+     Failure/Error: expect(result).to eq ref
+
+       expected: "CONTENTS\n\nCONTENTS\n\nContents\n1 Das ist ein Test zur Indexerstellung 2\n\n1\n\nJanuary 5, 2019\n...er, 2 Äpfelchen, 2 Über, 2\n\n5\n\n\fINDEX\n\nINDEX\n\nende des Index\n\n6\n\nJanuary 5, 2019\n\n\f"
+            got: "CONTENTS\n\nCONTENTS\n\nContents\n1 Das ist ein Test zur Indexerstellung 2\n\n1\n\nJanuary 5, 2019\n...er, 2 Äpfelchen, 2 Über, 2\n\n5\n\n\fINDEX\n\nINDEX\n\nende des Index\n\n6\n\nJanuary 5, 2019\n\n\f"
+
+       (compared using ==)
+
+       Diff:
+       @@ -14,7 +14,7 @@
+        DAS IST EIN TEST ZUR INDEXERSTELLUNG
+        
+        1 Das ist ein Test zur Indexerstellung
+       -Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL® and WefoxTM are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pflicht werden. Nichteinhaltung wird mit bis zu 245 oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pfiffig) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks
+       +Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL® and WefoxTM are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pflicht werden. Nichteinhaltung wird mit bis zu 245  oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pfiffig) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks
+        
+        2
+        
+       @@ -26,7 +26,7 @@
+        
+        DAS IST EIN TEST ZUR INDEXERSTELLUNG
+        
+       -Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL® and WefoxTM are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pflicht werden. Nichteinhaltung wird mit bis zu 245 oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pfiffig) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks
+       +Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. Manchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze »Pangrams«. Sehr bekannt ist dieser: The quick brown fox jumps over the lazy old dog. Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL® and WefoxTM are testing aussi la Kerning), um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. Seit 1975 fehlen in den meisten Testtexten die Zahlen, weswegen nach TypoGb. 204 § ab dem Jahr 2034 Zahlen in 86 der Texte zur Pflicht werden. Nichteinhaltung wird mit bis zu 245  oder 368 $ bestraft. Genauso wichtig in sind mittlerweile auch Âçcèñtë, die in neueren Schriften aber fast immer enthalten sind. Ein wichtiges aber schwierig zu integrierendes Feld sind OpenType-Funktionalitäten. Je nach Software und Voreinstellungen können eingebaute Kapitälchen, Kerning oder Ligaturen (sehr pfiffig) nicht richtig dargestellt werden.Dies ist ein Typoblindtext. An ihm kann man sehen, ob alle Buchstaben da sind und wie sie aussehen. Manchmal benutzt man Worte wie Hamburgefonts, Rafgenduks
+        
+        3
+        
+     # ./spec/wortsammler_spec.rb:482:in `block (2 levels) in <top (required)>'
+
+Finished in 3 minutes 9.5 seconds (files took 0.66312 seconds to load)
+74 examples, 5 failures
+
+Failed examples:
+
+rspec ./spec/wortsammler_spec.rb:53 # Wortsammler generic issues controls the pandoc options by document class
+rspec ./spec/wortsammler_spec.rb:322 # Wortsammler conversion processes snippets
+rspec ./spec/wortsammler_spec.rb:326 # Wortsammler conversion handles undefined snippets
+rspec ./spec/wortsammler_spec.rb:331 # Wortsammler conversion runs the rake file in the sample document
+rspec ./spec/wortsammler_spec.rb:475 # Wortsammler syntax extensions generates an index
+

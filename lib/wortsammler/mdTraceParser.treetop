@@ -25,7 +25,7 @@ grammar TraceInMarkdown
 	end
 	
 	rule traceId 
-	   "[" payload:label "]" 
+	   ("[" / "\\[") payload:label ("]" / "\\]")
 	end
 	
 	

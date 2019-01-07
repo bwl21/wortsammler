@@ -285,7 +285,13 @@ describe "Wortsammler conversion" do
 
   it "extracts the traceables according to a manifest", :exp => false do
     manifest="testproject/30_Sources/ZSUPP_Manifests/sample_the-sample-document.yaml"
+    tracefile = "testproject/30_Sources/ZGEN_RequirementsTracing/RS_Main.traces.md"
+    FileUtils.rm(tracefile) if File.exists?(tracefile)
+
     system "#{wortsammler} -cm #{manifest}"
+    result = File.read("testproject/30_Sources/ZGEN_RequirementsTracing/RS_Main.traces.md")
+
+    expect(result).to include("[RS_Comp_001] **Flexibler Dokumentumfang** { }()")
     $?.success?.should==true
   end
 
