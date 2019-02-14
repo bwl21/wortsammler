@@ -531,15 +531,6 @@ class PandocBeautifier
 
     # tweak the quoting
     if $?.success? then
-      # do this twice since the replacement
-      # does not work on e.g. 2\_3\_4\_5.
-      #
-      newdoc.gsub!(/(\w)\\_(\w)/, '\1_\2')
-      newdoc.gsub!(/(\w)\\_(\w)/, '\1_\2')
-
-      # fix more quoting
-      newdoc.gsub!('-\\>[', '->[')
-
       # (RS_Mdc)
       # TODO: fix Table width toggles sometimes
       if (not olddoc == newdoc) then ##only touch the file if it is really changed
