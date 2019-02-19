@@ -42,7 +42,7 @@ TRACE_REF_PATTERN    = /->\[(\w+_\w+_\w+)\]/
 #                                                                                    pageclearance
 INCLUDE_PDF_PATTERN  = /^\s+~~PDF\s+"(.+)" \s+ "(.+)" \s* (\d*) \s* (\d+-\d+)? \s* (clearpage|cleardoublepage)?~~/x
 
-INCLUDE_MD_PATTERN = /(\s*)~~MD\s+"(.+)"~~/x
+INCLUDE_MD_PATTERN = /(\s*)~~MD\s+\\?"(.+)\\?"~~/x
 
 SNIPPET_PATTERN = /(\s*)~~SN \s+ (\w+)~~/x
 
@@ -161,19 +161,22 @@ class ReferenceTweaker
   # @return [String] The resulting text
   def replace_md_inlay(text)
     text.gsub!(INCLUDE_MD_PATTERN) { |m|
-      if File.exist?($2) then
-        replacetext_raw=File.open($2, :encoding => 'bom|utf-8').read
+      infile = $2.gsub("\\_", "_")
+      if File.exist?(infile) then
+        replacetext_raw = File.open(infile, :encoding => 'bom|utf-8').read
         unless $1.nil? then
-          leading_whitespace=$1.split("\n", 100)
-          leading_lines     =leading_whitespace[0..-1].join("\n")
-          leading_spaces    =leading_whitespace.last || ""
-          replacetext       =leading_lines+replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+          leading_whitespace = $1.split("\n", 100)
+          leading_lines      = leading_whitespace[0 .. -1].join("\n")
+          leading_spaces     = leading_whitespace.last || ""
+          replacetext        = leading_lines + replacetext_raw.gsub("\n", "\n#{leading_spaces}")
+        else
+          replacetext = replacetext_raw
         end
       else
-        replacetext=""
+        replacetext = ""
         @log.warn("File not found: #{$2}")
       end
-      result=replace_md_inlay(replacetext)
+      result = replace_md_inlay(replacetext)
       result
     }
     text
@@ -450,8 +453,8 @@ class PandocBeautifier
   def initialize(logger = nil)
 
     @markdown_output_switches = %w{
-     -backtick_code_blocks
-     +fenced_code_blocks
+     +backtick_code_blocks
+     -fenced_code_blocks
      +compact_definition_lists
      +space_in_atx_header
      +yaml_metadata_block
@@ -459,6 +462,7 @@ class PandocBeautifier
 
     @markdown_input_switches = %w{
      +smart
+     +backtick_code_blocks
      +fenced_code_blocks
      +compact_definition_lists
      -space_in_atx_header
@@ -678,7 +682,7 @@ class PandocBeautifier
 
     #now combine the input files
     @log.debug("combining the input files #{inputname} et al")
-    cmd="#{PANDOC_EXE} --standalone -o #{output} --ascii #{inputs}" # note that inputs is already quoted
+    cmd="#{PANDOC_EXE} -f markdown#{@markdown_input_switches} --standalone -t markdown#{@markdown_output_switches} -o #{output} --ascii #{inputs}" # note that inputs is already quoted
     system(cmd)
     if $?.success? then
       PandocBeautifier.new().beautify(output)
@@ -950,7 +954,7 @@ class PandocBeautifier
     begin
       vars_string=vars.map.map { |key, value| "-V #{key}=#{value.esc}" }.join(" ")
     rescue
-      require 'pry'; binding.pry
+     #todo require 'pry'; binding.pry
     end
 
     @log.info("rendering  #{outname} as [#{format.join(', ')}]")
@@ -1048,7 +1052,6 @@ class PandocBeautifier
 
         cmd="#{PANDOC_EXE} -f markdown#{@markdown_input_switches} #{tempfileHtml.esc} --toc --standalone --self-contained --ascii --number-sections  #{vars_string}" +
             " -t plain+smart -o  #{outfileText.esc}"
-        puts cmd
         `#{cmd}`
       end
 

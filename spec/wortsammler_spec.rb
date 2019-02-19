@@ -435,7 +435,7 @@ describe "Wortsammler syntax extensions", :exp => false do
     a.include?(".plantuml").should == false
   end
 
-  it "TC_EXP_003 handles Markdown inlays", exp: true do
+  it "TC_EXP_003x handles Markdown inlays", exp: true do
     tempdir       = "#{specdir}/../testoutput"
     mdinlayfile   = "TC_EXP_003_1.md"
     mdinlayfile_1 = "TC_EXP_003_2.md"
@@ -450,7 +450,7 @@ describe "Wortsammler syntax extensions", :exp => false do
                 "",
                 "~~~~",
                 "", "now verbatim by indent inclucde #{mdinlayfile}", "",
-                "    ~~MD \"#{mdinlayfile}\"~~",
+                "    ~~MD \"#{mdinlayfile.gsub('_', '\_')}\"~~",
                 "~~~~",
                 "",
                 "", "now full format inclucde #{mdinlayfile}", "",

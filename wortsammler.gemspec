@@ -46,7 +46,9 @@ END_DOC
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0.4"
   spec.add_development_dependency "rspec", "~> 2.13.0"
-  spec.add_development_dependency 'pry', "~> 0.9.12"
+  spec.add_development_dependency 'pry', "~> 0.12.2"
+  spec.add_development_dependency 'pry-byebug', "~> 3.6"
+
   spec.add_development_dependency 'yard', "~> 0.9.11"
   spec.add_development_dependency 'redcarpet', "~> 2.2.2" 
   spec.add_development_dependency 'graph', "~> 2.5.2"
