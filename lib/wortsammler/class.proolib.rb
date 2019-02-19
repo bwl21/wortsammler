@@ -48,9 +48,9 @@ SNIPPET_PATTERN = /(\s*)~~SN \s+ (\w+)~~/x
 
 EMBEDDED_IMAGE_PATTERN = /~~EMBED\s+ "(.+)" \s+ (r|l|i|o) \s+ (.+) \s+ (.+)~~/x
 
-EXPECTED_RESULT_PATTERN = /(^\s*)~~~~\s*\{.expectedResult\s+label=\"([A-Za-z]+_[A-Za-z]+_[0-9]+)\"}\s([^~]*)~~~~/x
+EXPECTED_RESULT_PATTERN = /(^\s*)[~`]{3,}\s*\{.expectedResult\s+label=\"([A-Za-z]+\\?_[A-Za-z]+\\?_[0-9]+)\"}\s([^~`]+)[~`]{3,}/x
 
-PLANTUML_PATTERN = /[~`]{3,}\s+{\.plantuml}\s+@startuml\s+([^\n]+)(\s+title\s+([^\n]+))?[^~`]+[~`]{3,}/x
+PLANTUML_PATTERN = /[~`]{3,}\s+{\.plantuml}\s+@startuml\s+([^\n]+)(\s+title\s+([^\n]+))?[^~`]+ v/x
 
 #
 # This mixin convertes a file path to the os Path representation
@@ -293,6 +293,7 @@ class ReferenceTweaker
     #
     #
     if @target == "pdf" then
+      require 'pry';binding.pry
       text.gsub!(EXPECTED_RESULT_PATTERN) { |m| "#{prepareExpectedResults($1, $2, $3)}" }
     else
       # it is already leave it as it is
