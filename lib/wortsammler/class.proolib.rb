@@ -293,7 +293,6 @@ class ReferenceTweaker
     #
     #
     if @target == "pdf" then
-      require 'pry';binding.pry
       text.gsub!(EXPECTED_RESULT_PATTERN) { |m| "#{prepareExpectedResults($1, $2, $3)}" }
     else
       # it is already leave it as it is

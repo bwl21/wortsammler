@@ -291,7 +291,6 @@ describe "Wortsammler conversion" do
     system "#{wortsammler} -cm #{manifest}"
     result = File.read("testproject/30_Sources/ZGEN_RequirementsTracing/RS_Main.traces.md")
 
-    require 'pry';binding.pry
     expect(result).to include("\\[RS\\_Comp\\_001\\] **Flexibler Dokumentumfang** { }()")
     $?.success?.should == true
   end
