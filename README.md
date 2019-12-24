@@ -1,3 +1,5 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/bwl21/wortsammler) 
+
 # Wortsammler
 
 Wortsammler (colloquial German for *word collector*) is an environment
