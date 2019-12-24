@@ -15,7 +15,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
       && rm -rf /var/cache/apk/*
 
 RUN apk update && apk upgrade && apk --update add \
-    ruby ruby ruby-dev ruby-irb ruby-rake ruby-io-console ruby-bigdecimal ruby-json ruby-bundler  \
+    ruby ruby ruby-dev ruby-irb ruby-rake ruby-io-console ruby-bigdecimal ruby-json ruby-bundler ruby-rspec \
     libstdc++ tzdata bash ca-certificates \
     &&  echo 'gem: --no-document' > /etc/gemrc\
 # from https://hub.docker.com/r/ciandt/docker-alpine-pandoc/dockerfile^\
@@ -28,4 +28,3 @@ RUN \
     && update-ca-certificates \
     && apk del wget ca-certificates\
     && rm /tmp/pandoc.tar.gz
-    
