@@ -2,7 +2,7 @@ FROM alpine:latest
                 
 
 RUN apk update &&\
-    apk add texlive-xetex texmf-dist-latexextra
+    apk add texlive-xetex texmf-dist-latexextra less
 
 # from https://github.com/cybercode/alpine-ruby/blob/master/Dockerfile
 # guess ist is to install native extensions
