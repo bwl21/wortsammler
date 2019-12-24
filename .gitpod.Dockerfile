@@ -29,4 +29,4 @@ RUN \
     && apk del wget ca-certificates\
     && rm /tmp/pandoc.tar.gz
 
- RUN apk update && apk add ghostcript   
+ RUN apk update && apk add ghostscript   
