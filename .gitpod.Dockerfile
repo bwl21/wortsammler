@@ -2,7 +2,7 @@ FROM alpine:latest
                 
 
 RUN apk update &&\
-    apk add texlive-xetex texmf-dist-latexextra
+    apk add texlive-xetex texmf-dist-latexextra less
 
 # from https://github.com/cybercode/alpine-ruby/blob/master/Dockerfile
 # guess ist is to install native extensions
@@ -28,3 +28,5 @@ RUN \
     && update-ca-certificates \
     && apk del wget ca-certificates\
     && rm /tmp/pandoc.tar.gz
+
+ RUN apk update && apk add ghostscript   
