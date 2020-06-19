@@ -33,6 +33,7 @@ END_DOC
   spec.add_runtime_dependency 'diffy', "~> 2.1.3"
   spec.add_runtime_dependency 'rubyzip'
   spec.add_runtime_dependency 'treetop'
+  spec.add_runtime_dependency 'rspec'
 
   spec.summary       = %q{an environment to manage documentation}
   spec.homepage      = ""
@@ -45,7 +46,7 @@ END_DOC
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0.4"
-  spec.add_development_dependency "rspec", "~> 2.13.0"
+  spec.add_development_dependency "rspec"
   spec.add_development_dependency 'pry', "~> 0.12.2"
   spec.add_development_dependency 'pry-byebug', "~> 3.6"
 
