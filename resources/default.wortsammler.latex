@@ -66,6 +66,7 @@ $if(fancy-enums)$
 \usepackage{enumerate}
 $endif$
 \usepackage{longtable,booktabs}
+\usepackage{neespace}  % provides %needspace
 \usepackage{float} % provides the H option for float placement
 \usepackage{graphicx}
 % We will generate all images so they have a width \maxwidth. This means
@@ -260,6 +261,22 @@ $endif$
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \usepackage{makeidx}
 \makeindex
+
+%
+% suppress float
+%
+
+% keep aspect ration for iamges
+\floatplacement{figure}{H}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
 %
 %
 %\renewcommand{Befehl der Gliederungsebene z.B. \chapter}{\@startsection{Name z.B. chapter}{Ebene z.B. 0}{Einrückung z.B. 0pt}{Abstand zum vorigen Text z.B. 3.5ex plus 1ex minus 0pt\relax}{Abstand zum nachfolgenden Text z.B. 2.5ex plus 0.5ex minus 0pt\relax}{Schrift z.B. \normalfont\Large\bfseries}}
