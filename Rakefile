@@ -9,9 +9,9 @@ desc "Run specs"
 RSpec::Core::RakeTask.new(:spec, :focus) do |t, args|
   t.pattern = "./spec/**/*_spec.rb" # don't need this, it's default.
   if args[:focus] then
-    usetags="--tag #{args[:focus]}"
+    usetags="-e #{args[:focus]}"
   else
-    usetags="--tag ~exp"
+    usetags=nil #"--tag ~exp"
   end
   t.rspec_opts = [usetags,
                   " -fd -fd --out ./testresults/wortsammler_testresults.log -fh --out ./testresults/wortsammler_testresults.html"]
@@ -34,7 +34,7 @@ end
 
 desc "get the default stylefiles from pandoc" 
 task :getpandocstyles do
-  [:latex, :docx, :html, :epub].each{|format |sh "pandoc -D #{format} > resources/pandocdefault.#{format}"}
+  [:latex, :docx, :html, :epub].each{|format |sh "pandoc_2.0.5 -D #{format} > resources/pandocdefault.#{format}"}
   end
 
 desc "run tests"

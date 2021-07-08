@@ -1,11 +1,17 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/bwl21/wortsammler) 
+
 # Wortsammler
+
+> **plaease note**
+> :   this project is not actively maintained. I try to keep it alive in
+>     order to fulfil my own needs
 
 Wortsammler (colloquial German for *word collector*) is an environment
 to maintain doucmentation in markdown and publish it in various formats
 for different audiences. It originated in some project specific hacks
-wrapping around [pandoc][]. But now I refactored it since I use it in
-more than two projects now and think it might be beneficial for others
-as well.
+wrapping around [pandoc](http://johnmacfarlane.net/pandoc/). But now I
+refactored it since I use it in more than two projects now and think it
+might be beneficial for others as well.
 
 Typical application of Wortsammler is user manuals, project documents,
 user manuals.
@@ -26,7 +32,6 @@ Basically Wortsammler comprises of
     -   expected output formats
     -   expected editions
     -   Requirements tracing (upstream / downstream)
-
 -   a command line tool to produce the doucments (`wortsammler`)
 
 Wortsammler is built on top of other open source tools, in particular:
@@ -45,7 +50,7 @@ The features are based on three appraoches:
 
 1.  particular pattern in existing markdown
 2.  embedded HTML/LaTeX
-3.  specific syntax in strikethrouh sections (e.g. ~~ED simple~~)
+3.  specific syntax in strikethrouh sections (e.g. ~~ED simple~~)
 
 ## Installation
 
@@ -53,10 +58,9 @@ The features are based on three appraoches:
 
 In order to use Wortsammler, you need to install the prerequisites:
 
--   ruby 1.9.3 of course
--   pandoc 1.9.4.2 or above
-
-    I plan to upgrade to 1.11.1 asap
+-   ruby 2.5
+-   pandoc 2.5 or above. Note that in this version, ean executable named
+    pandoc_2.5 must be in the search path.
 
 -   tex, in particular xelatex 3.1415926-2.4-0.9998
 
@@ -109,7 +113,6 @@ The rakefile is in `<folder>/30_Sources/ZSUPP_Tools`
 
 ## future plans
 
--   provide a sublime text package
 -   improve documentation (it is flying around in German and needs to be
     consolidated, please refer to
     <https://github.com/bwl21/wortsammler/wiki>)
@@ -132,33 +135,32 @@ MIT: http://www.opensource.org/licenses/mit-license.php
 
 ## thanks to
 
--   John Mc Farlane for [pandoc][]
+-   John Mc Farlane for [pandoc](http://johnmacfarlane.net/pandoc/)
 
 ## Installation of the required software
 
 ### Ruby
 
-Please use Ruby 1.9.3
+Please use Ruby 2.5
 
 -   mac:
     -   installation requirex xcode with the commanline tools
-    -   use Ruby Version Manager [https://rvm.io][]
-    -   rvm install ruby_1.9.3
-    -   might take pretty long depending on wha you have on your mac.
+    -   use Ruby Version Manager \[https://rvm.io\]\[\]
+    -   rvm install ruby_2.5
+    -   might take pretty long depending on what you have on your mac.
     -   after ruby is installed `gem install wortsammler`
-
 -   windows
-    -   download von [http://rubyinstaller.org/downloads/][]
+    -   download von
+        [http://rubyinstaller.org/downloads/](https://rubyinstaller.org/downloads/)
     -   development kit installieren
-        [DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe][]
+        [DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe](https://github.com/downloads/oneclick/rubyinstaller/DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe)
 
-        Das braucht man nur, wenn man den Windows-Debugger verwenden
-        muss. In den scripten ist rquire ruby-debug aukommentiert.
+        you might need this to install gems
 
 ### pandoc
 
--   Download [http://code.google.com/p/pandoc/downloads/list][]
--   Homepage <http://johnmacfarlane.net/pandoc/>
+-   Download \[http://code.google.com/p/pandoc/downloads/list\]\[\]
+-   Homepage <https://pandoc.org/>
 
 ### TeX
 
@@ -171,9 +173,4 @@ Please use Ruby 1.9.3
 
     Alternatively you can use
 
-    -   [usbtex][]
-
-  [pandoc]: http://johnmacfarlane.net/pandoc/
-  [http://rubyinstaller.org/downloads/]: http://rubyforge.org/frs/%20download.php/76277/rubyinstaller-1.8.7-p370.exe
-  [DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe]: https://github.com/downloads/oneclick/rubyinstaller/DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe
-  [usbtex]: http://www.exomatik.net/U-Latex/USBTeXEnglish
+    -   [usbtex](http://www.exomatik.net/U-Latex/USBTeXEnglish)

@@ -65,7 +65,7 @@ $if(fancy-enums)$
 }\makeatother
 \usepackage{enumerate}
 $endif$
-\usepackage{longtable}
+\usepackage{longtable,booktabs}
 \usepackage{float} % provides the H option for float placement
 \usepackage{graphicx}
 % We will generate all images so they have a width \maxwidth. This means
@@ -256,10 +256,11 @@ $if(linenumbers)$
 \setlength\linenumbersep{1mm}
 \modulolinenumbers[5]
 $endif$
-
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \usepackage{makeidx}
 \makeindex
-
+%
 %
 %\renewcommand{Befehl der Gliederungsebene z.B. \chapter}{\@startsection{Name z.B. chapter}{Ebene z.B. 0}{Einrückung z.B. 0pt}{Abstand zum vorigen Text z.B. 3.5ex plus 1ex minus 0pt\relax}{Abstand zum nachfolgenden Text z.B. 2.5ex plus 0.5ex minus 0pt\relax}{Schrift z.B. \normalfont\Large\bfseries}}
 %

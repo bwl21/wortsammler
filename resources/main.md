@@ -236,7 +236,7 @@ Paragraphs like starting with
 
     `~~MD "lib/01234/xxxx/yyyy.md"~~`
 
-    will be replaced by the content of the argument. It shold even work
+    will be replaced by the content of the argument. It should even work
     inline.
 
     }(RS_Comp_003)

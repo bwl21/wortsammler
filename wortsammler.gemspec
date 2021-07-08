@@ -26,13 +26,14 @@ Gem::Specification.new do |spec|
   wortsammler is based on ruby, pandoc, latex  
 END_DOC
 
-  spec.required_ruby_version = '>= 1.9.3'
+  spec.required_ruby_version = '>= 2.4'
   spec.add_runtime_dependency 'logger'
-  spec.add_runtime_dependency 'nokogiri', '=1.5.10 '
+  spec.add_runtime_dependency 'nokogiri', '=1.8.2'
   spec.add_runtime_dependency 'rubyXL'
   spec.add_runtime_dependency 'diffy', "~> 2.1.3"
   spec.add_runtime_dependency 'rubyzip'
   spec.add_runtime_dependency 'treetop'
+  spec.add_runtime_dependency 'rspec'
 
   spec.summary       = %q{an environment to manage documentation}
   spec.homepage      = ""
@@ -43,11 +44,13 @@ END_DOC
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0.4"
-  spec.add_development_dependency "rspec", "~> 2.13.0"
-  spec.add_development_dependency 'pry', "~> 0.9.12"
-  spec.add_development_dependency 'yard', "~> 0.8.5.2"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency 'pry', "~> 0.12.2"
+  spec.add_development_dependency 'pry-byebug', "~> 3.6"
+
+  spec.add_development_dependency 'yard', "~> 0.9.11"
   spec.add_development_dependency 'redcarpet', "~> 2.2.2" 
   spec.add_development_dependency 'graph', "~> 2.5.2"
 

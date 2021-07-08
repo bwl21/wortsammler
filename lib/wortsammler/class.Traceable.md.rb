@@ -3,7 +3,7 @@
 #
 #require 'ruby-debug' if not RUBY_PLATFORM=="i386-mingw32"
 require 'treetop'
-require File.dirname(__FILE__) + "/class.treetophelper"
+require File.dirname(__FILE__) + "/class.treetopHelper"
 require File.dirname(__FILE__) + "/class.Traceable"
 require File.dirname(__FILE__) + "/class.Traceable.md"
 
@@ -13,6 +13,10 @@ Treetop.load File.dirname(__FILE__) + "/mdTraceParser.treetop"
 class TraceableSet
 
 
+  def mk_hyperlink(id)
+    idm = id.gsub("_","-")
+    "[\[#{id}\]](#RT-#{idm})"
+  end
 
   # this generates a synopsis of traces in markdown Format
   # @param [Symbol] selectedCategory the the category of the Traceables
@@ -23,20 +27,18 @@ class TraceableSet
     map{|t|
       tidm=t.id.gsub("_","-")
 
-      lContributes=t.contributes_to.
-      #                  map{|c| cm=c.gsub("_","-"); "[\[#{c}\]](#RT-#{cm})"}
-      map{|c| cm=c.gsub("_","-"); "<a href=\"#RT-#{cm}\">\[#{c}\]</a>"}
+      lContributes = t.contributes_to.
+          map { |c| mk_hyperlink(c) }
 
       luptraces = [uptrace_ids[t.id]].flatten.compact.map{|x| self[x]}
 
       luptraces=luptraces.
       sort_by{|x| trace_order_index(x.id)}.
       map{|u|
-        um = u.id.gsub("_","-")
-        "    - <a href=\"#RT-#{um}\">[#{u.id}]</a> #{u.header_orig}"
+        "    - #{mk_hyperlink(u.id)} #{u.header_orig}"
       }
 
-      ["- ->[#{t.id}] <!-- --> <a id=\"RT-#{tidm}\"/>**#{t.header_orig}**" +
+      ["- #{mk_hyperlink(t.id)} <!-- --> <a id=\"RT-#{tidm}\"/>**#{t.header_orig}**" +
        #                     "  (#{t.contributes_to.join(', ')})", "",
        "  (#{lContributes.join(', ')})", "",
        luptraces
@@ -50,7 +52,7 @@ class TraceableSet
     all_traces(selectedCategory).
       sort_by{|x| trace_order_index(x.id) }.
     map{|t|
-      "\n\n[#{t.id}] **#{t.header_orig}** { }()"
+      "\n\n\\[#{t.id}\\] **#{t.header_orig}** { }()"
     }.join("\n\n")
   end
 

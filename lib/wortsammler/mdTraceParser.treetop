@@ -25,12 +25,12 @@ grammar TraceInMarkdown
 	end
 	
 	rule traceId 
-	   "[" payload:label "]" 
+	   ("[" / "\\[") payload:label ("]" / "\\]")
 	end
 	
 	
 	rule label
-		[a-zA-Z]+ "_" [a-zA-Z]+ "_" [0-9]+ 
+		[a-zA-Z]+ ("_" / "\\_") [a-zA-Z]+ ("_" / "\\_") [0-9]+
 	end
 	
 	rule traceHead

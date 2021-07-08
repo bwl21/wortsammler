@@ -1,38 +1,26 @@
 -   this is headline
-    -   this is TC\_EXP\_003\_1
-    -   this is md TC\_EXP\_003\_2
-    -   this is md TC\_EXP\_003\_2
 
 
-this is headline
-================
+
+THIS IS HEADLINE
 
 
-    now verbatim by indent inclucde TC_EXP_003_1.md
 
-        ## this is TC_EXP_003_1
-        
-        we now include TC_EXP_003_2 from TC_EXP_003_1
-        
-        ## this is md TC_EXP_003_2
-        
-            - hugo
-        
-            - hugo2
-        
-        end of TC_EXP_003_2
-        
-        end of TC_EXP_003_1
+    now verbatim by indent inclucde TC_EXP_003_1.md## this is TC_EXP_003_1
 
-now full format inclucde TC_EXP_003_1.md
+    we now include TC_EXP_003_2 from TC_EXP_003_1## this is md TC_EXP_003_2
 
-this is TC_EXP_003_1
---------------------
+        - hugo
 
-we now include TC_EXP_003_2 from TC_EXP_003_1
+        - hugo2
 
-this is md TC_EXP_003_2
------------------------
+    end of TC_EXP_003_2
+
+    end of TC_EXP_003_1
+
+now full format inclucde TC_EXP_003_1.md## this is TC_EXP_003_1
+
+we now include TC_EXP_003_2 from TC_EXP_003_1## this is md TC_EXP_003_2
 
     - hugo
 
@@ -42,10 +30,7 @@ end of TC_EXP_003_2
 
 end of TC_EXP_003_1
 
-now full format inclucde TC_EXP_003_2.md
-
-this is md TC_EXP_003_2
------------------------
+now full format inclucde TC_EXP_003_2.md## this is md TC_EXP_003_2
 
     - hugo
 

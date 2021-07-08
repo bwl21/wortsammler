@@ -23,16 +23,16 @@ class TraceableSet
   # @return [type] [description]
   def initialize()
     # the traces
-    @traces={}
+    @traces = {}
 
     # the list of supporters
     # supporters for foo 0 @@supported_by["foo"]
-    @supported_by={}
+    @supported_by = {}
 
 
     # define the sort order policy
     # it is the same for all slots
-    @sortOrder=[]
+    @sortOrder = []
 
   end
 
@@ -63,7 +63,7 @@ class TraceableSet
   # @param  category  [Symbol] Restrict the comparison to a particlar category
   #
   # @return [Array] the ids of the added traces (list of trace_id which are not in @referece_set)
-  def added_trace_ids(reference_set, category=nil)
+  def added_trace_ids(reference_set, category = nil)
     self.all_trace_ids(category) - reference_set.all_trace_ids(category)
   end
 
@@ -74,9 +74,9 @@ class TraceableSet
   # @param  category [Symbol] Restrict the operation to traceables of this category.
   #
   # @return [Array] List of trace_id which changed not in reference_set
-  def changed_trace_ids(reference_set, category=nil)
-    candidates=self.all_trace_ids(category) & reference_set.all_trace_ids(category)
-    candidates.map{|candidate|
+  def changed_trace_ids(reference_set, category = nil)
+    candidates = self.all_trace_ids(category) & reference_set.all_trace_ids(category)
+    candidates.map { |candidate|
       self[candidate].get_diff(reference_set[candidate])
     }.compact
   end
@@ -87,9 +87,9 @@ class TraceableSet
   # @param  category [Symbol] Restrict the operation to traceables of this category.
   #
   # @return [Array] List of trace_id which unchanged
-  def unchanged_trace_ids(reference_set, category=nil)
-    candidates=self.all_trace_ids(category) & reference_set.all_trace_ids(category)
-    candidates.select{|candidate|
+  def unchanged_trace_ids(reference_set, category = nil)
+    candidates = self.all_trace_ids(category) & reference_set.all_trace_ids(category)
+    candidates.select { |candidate|
       self[candidate].get_diff(reference_set[candidate]).nil?
     }.compact
   end
@@ -101,7 +101,7 @@ class TraceableSet
   # @param  category [Symbol] Restrict the operation to traceables of this category.
   #
   # @return [Array] List of trace_id which are deleted (not in current set)
-  def deleted_trace_ids(reference_set, category=nil)
+  def deleted_trace_ids(reference_set, category = nil)
     reference_set.all_trace_ids(category) - self.all_trace_ids(category)
   end
 
@@ -109,31 +109,31 @@ class TraceableSet
   # export the trace as graphml for yed
   # @return - the requirements tree in graphml
   def to_graphml
-    f = File.open("#{File.dirname(__FILE__)}/../../resources/requirementsSynopsis.graphml")
+    f   = File.open("#{File.dirname(__FILE__)}/../../resources/requirementsSynopsis.graphml")
     doc = Nokogiri::XML(f)
     f.close
 
-    graph=doc.xpath("//xmlns:graph").first
+    graph = doc.xpath("//xmlns:graph").first
 
     # generate all nodes
-    self.all_traces(nil).each{|theTrace|
-      n_node = Nokogiri::XML::Node.new "node", doc
-      n_node["id"] = theTrace.id
-      n_data = Nokogiri::XML::Node.new "data", doc
-      n_data["key"]= "d6"
-      n_ShapeNode = Nokogiri::XML::Node.new "y:ShapeNode", doc
-      n_NodeLabel = Nokogiri::XML::Node.new "y:NodeLabel", doc
+    self.all_traces(nil).each { |theTrace|
+      n_node              = Nokogiri::XML::Node.new "node", doc
+      n_node["id"]        = theTrace.id
+      n_data              = Nokogiri::XML::Node.new "data", doc
+      n_data["key"]       = "d6"
+      n_ShapeNode         = Nokogiri::XML::Node.new "y:ShapeNode", doc
+      n_NodeLabel         = Nokogiri::XML::Node.new "y:NodeLabel", doc
       n_NodeLabel.content = "[#{theTrace.id}] #{theTrace.header_orig}"
       n_ShapeNode << n_NodeLabel
       n_data << n_ShapeNode
       n_node << n_data
       graph << n_node
 
-      theTrace.contributes_to.each{|up|
-        n_edge=Nokogiri::XML::Node.new "edge", doc
-        n_edge["source" ] = theTrace.id
-        n_edge["target" ] = up
-        n_edge["id"     ] = "#{up}_#{theTrace.id}"
+      theTrace.contributes_to.each { |up|
+        n_edge           = Nokogiri::XML::Node.new "edge", doc
+        n_edge["source"] = theTrace.id
+        n_edge["target"] = up
+        n_edge["id"]     = "#{up}_#{theTrace.id}"
         graph << n_edge
       }
     }
@@ -146,7 +146,7 @@ class TraceableSet
   # @return [Array of String] an array of the registered Traceables
   #                              of the selectedCategory
   def all_trace_ids(selected_category = nil)
-    @traces.keys.select{|x|
+    @traces.keys.select { |x|
       y = @traces[x].first
       selected_category.nil? or y.category == selected_category
     }.sort
@@ -161,7 +161,7 @@ class TraceableSet
   #
   # @return [Array of Traceable] The array of traceables
   def all_traces(selected_category = nil)
-    all_trace_ids(selected_category).map{|t| @traces[t].first}
+    all_trace_ids(selected_category).map { |t| @traces[t].first }
   end
 
 
@@ -187,43 +187,43 @@ class TraceableSet
   # this lists duplicate traces
   # @return [Array of String] the list of the id of duplicate Traces
   def duplicate_ids()
-    @traces.select{|id, traceables| traceables.length > 1}.map{|id, traceable| id}.sort
+    @traces.select { |id, traceables| traceables.length > 1 }.map { |id, traceable| id }.sort
   end
 
   # this lists duplicate traces
   # @return [Array of Traceable] the list duplicate Traces.
   def duplicate_traces()
-    @traces.select{|id, traceables| traceables.length > 1}.map{|id, traceable| traceable}.sort
+    @traces.select { |id, traceables| traceables.length > 1 }.map { |id, traceable| traceable }.sort
   end
 
 
   # this serializes a particular slot for caching
   # @param file [String] name of the cachefile
   def dump_to_marshal(file)
-    File.open(file, "wb"){|f|
+    File.open(file, "wb") { |f|
       Marshal.dump(self, f)
     }
   end
 
   # this loads cached information into a particular slot
   # @param file [String] name of the cachefile
-  def  self.load_from_marshal(file)
-    a=nil
-    File.open(file, "rb"){|f| a=Marshal.load(f)}
+  def self.load_from_marshal(file)
+    a = nil
+    File.open(file, "rb") { |f| a = Marshal.load(f) }
     a
   end
 
   # this merges a TraceableSet
   # @return [Treaceable] the current traceable set
   def merge(set)
-    set.all_traces_as_arrays.values.flatten.each{|t| self.add(t)}
+    set.all_traces_as_arrays.values.flatten.each { |t| self.add(t) }
   end
 
   # this retunrs traces marked as supported but not being defined
   # @return [Array of String] the list of the id of undefined Traces
   #         traces which are marked as uptraces but do not exist.
   def undefined_ids
-    @supported_by.keys.select{|t| not @traces.has_key?(t)}.sort
+    @supported_by.keys.select { |t| not @traces.has_key?(t) }.sort
   end
 
   #
@@ -243,7 +243,7 @@ class TraceableSet
   # it is placed according to the sequence
   # in the array. Otherwise it is sorted at the end
   def sort_order= (sort_order)
-    @sort_order=sort_order
+    @sort_order = sort_order
   end
 
   # this determines the sort order index of a trace
@@ -252,11 +252,11 @@ class TraceableSet
   #                 the sort order index shall be coumputed.
   # @return [String] the sort key of the given id.
   def trace_order_index(trace_id)
-    global=@sort_order.index{|x| trace_id.start_with? x} ||
-      (@sort_order.length+1)
+    global = @sort_order.index { |x| trace_id.start_with? x } ||
+        (@sort_order.length + 1)
 
     # add the {index} of the trace to
-    orderId = [global.to_s.rjust(5,"0"),trace_id].join("_")
+    orderId = [global.to_s.rjust(5, "0"), trace_id].join("_")
     orderId
   end
 
@@ -272,9 +272,8 @@ class TraceableSet
   #
   # @return [type] [description]
   def to_compareEntries
-    all_traces.sort.map{|t| "\n\n[#{t.id}]\n#{t.as_oneline}" }.join("\n")
+    all_traces.sort.map { |t| "\n\n[#{t.id}]\n#{t.as_oneline}" }.join("\n")
   end
-
 
 
   #############################
@@ -286,7 +285,7 @@ class TraceableSet
   # @param [Nokogiri::XML::Document] doc - the document
   # @return [Nokogiri::XML::Document] the beautified document
   def xp(doc)
-    xsl =<<-XSL
+    xsl = <<-XSL
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
     <xsl:strip-space elements="*"/>
@@ -307,16 +306,19 @@ class TraceableSet
 end
 
 
-
-
 class Traceable
+
+  def clear_trace_id(id)
+    id.gsub("\\_", "_")
+  end
+
   include Comparable
 
 
   # String: The trace-Id
-  attr_accessor :id
+  attr_reader :id
   # string: the alternative Id, used e.g. for the constraint number
-  attr_accessor :alternative_id
+  attr_reader :alternative_id
   # String: The header in plain text
   attr_accessor :header_plain
   # String: The header in original format
@@ -326,7 +328,7 @@ class Traceable
   # String: he body in original format
   attr_accessor :body_orig
   # Array of Strings: The uplink as an array of Trace-ids
-  attr_accessor :contributes_to
+  attr_reader :contributes_to
   # String: the Traceable in its original format
   attr_accessor :trace_orig
   # String: origin of the entry
@@ -338,18 +340,30 @@ class Traceable
 
 
   def initialize()
-    @id = ""
+    @id             = ""
     @alternative_id = ""
-    @header_orig = ""
-    @body_plain = ""
-    @body_orig = ""
+    @header_orig    = ""
+    @body_plain     = ""
+    @body_orig      = ""
     @contributes_to = []
-    @trace_orig = ""
-    @category = ""
-    @info = ""
+    @trace_orig     = ""
+    @category       = ""
+    @info           = ""
   end
 
-  # define the comparison to makeit really comaprable
+  def id=(id)
+    @id = clear_trace_id(id)
+  end
+
+  def alternative_id=()
+    @alternative_id = clear_trace_id(id)
+  end
+
+  def contributes_to=(list)
+    @contributes_to = list.map { |id| id = clear_trace_id(id) }
+  end
+
+  # define the comparison to makeit really comparable
   # @param [Traceable] other the other traceable for comparison.
   def <=> (other)
     @id <=> other.id
@@ -366,19 +380,19 @@ class Traceable
     if newval == oldval
       result = nil
     else
-      diff_as_html= "<pre>#{other.trace_orig}</pre><hr/><pre>#{self.trace_orig}</pre>"#Diffy::Diff.new(other.trace_orig, self.trace_orig).to_s(:text)
-      rawDiff = Diffy::Diff.new(self.trace_orig, other.trace_orig)
-      diff_as_html=rawDiff.to_s(:html)
+      diff_as_html = "<pre>#{other.trace_orig}</pre><hr/><pre>#{self.trace_orig}</pre>" #Diffy::Diff.new(other.trace_orig, self.trace_orig).to_s(:text)
+      rawDiff      = Diffy::Diff.new(self.trace_orig, other.trace_orig)
+      diff_as_html = rawDiff.to_s(:html)
 
-      result = [self.id, similarity, diff_as_html]
-      diff_as_html=nil
+      result       = [self.id, similarity, diff_as_html]
+      diff_as_html = nil
     end
     result
   end
 
 
   def get_comparison_string
-    "#{header_orig};#{body_orig};#{contributes_to.sort}".gsub(/\s+/," ")
+    "#{header_orig};#{body_orig};#{contributes_to.sort}".gsub(/\s+/, " ")
   end
 
   def as_oneline

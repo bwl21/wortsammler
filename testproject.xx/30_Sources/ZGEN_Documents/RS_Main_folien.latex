@@ -1,0 +1,416 @@
+\documentclass[twoside,a4paper,12pt,german,]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+% use microtype if available
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \usepackage{fontspec}
+  \ifxetex
+    \usepackage{xltxtra,xunicode}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+    \setmainfont{Calibri}
+    \setsansfont{Calibri}
+\fi
+\usepackage[a4paper]{geometry}
+\usepackage{longtable}
+\usepackage{float} % provides the H option for float placement
+\usepackage{graphicx}
+% We will generate all images so they have a width \maxwidth. This means
+% that they will get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+%\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
+% Determine if the image is too wide for the page.
+%
+{%
+ \catcode`\@=11\relax%
+ \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\maxwidth]}}%
+}%
+%
+
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              bookmarksdepth=3, %
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={Bernhard Weichel; and others},
+            pdftitle={Wortsammler sample document},
+            colorlinks=true,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{5}
+\ifxetex
+  \usepackage{polyglossia}
+  \setmainlanguage{german}
+\else
+  \usepackage[german]{babel}
+\fi
+
+\title{Beamer}
+\author{Bernhard Weichel \and and others}
+\date{2013/05}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Wortsammler specific settings
+%
+%list environment by reinhard Jahraus
+{\catcode`\@=11\relax%
+\gdef\itemize{%
+  \ifnum \@itemdepth >\thr@@\@toodeep\else
+    \advance\@itemdepth\@ne
+    \edef\@itemitem{labelitem\romannumeral\the\@itemdepth}%
+    \expandafter
+    \list
+      \csname\@itemitem\endcsname
+      {\def\makelabel##1{\hss\llap{##1}}%
+       \addtolength{\leftmargin}{-10pt}% 29.37pt
+       \addtolength{\rightmargin}{0.0pt}% 0.0pt
+       \addtolength{\labelsep}{0pt}% 23.50pt
+       \addtolength{\itemsep}{-3.0pt}% 5.0pt
+       \addtolength{\parsep}{-1pt}% 5.0pt
+       \addtolength{\topsep}{-5pt}% 10.0pt
+       \addtolength{\partopsep}{0pt}% 3.0pt
+      }%
+  \fi}
+}%
+
+%
+% improve nesting of lists
+% %http://stackoverflow.com/questions/1935952/maximum-nesting-level-of-lists-in-latex
+%
+\usepackage{enumitem}
+\setlistdepth{9}
+\setlist[itemize,1]{label=$\bullet$}
+\setlist[itemize,2]{label=$\bullet$}
+\setlist[itemize,3]{label=$\bullet$}
+\setlist[itemize,4]{label=$\bullet$}
+\setlist[itemize,5]{label=$\bullet$}
+\setlist[itemize,6]{label=$\bullet$}
+\setlist[itemize,7]{label=$\bullet$}
+\setlist[itemize,8]{label=$\bullet$}
+\setlist[itemize,9]{label=$\bullet$}
+\renewlist{itemize}{itemize}{9}
+%
+% multicol
+%
+\usepackage{multicol}
+\newcommand{\wsbegintwocol}{\begin{multicols}{2}}
+\newcommand{\wsendtwocol}{\end{multicols}}
+
+%
+% embed an image in the text
+%
+% usage: \wsembedimage{file}{r|l}{width}{height}
+\usepackage{wrapfig}
+\usepackage{needspace}
+\newcommand{\wsembedimage}[4]{\needspace{#4}\begin{wrapfigure}{#2}{#3}\centering%
+\vspace{-5mm}\includegraphics{#1}\vspace{-1cm}\end{wrapfigure}}
+%
+% adjust page layout
+%
+\setlength{\oddsidemargin}{-0.5cm}
+\setlength{\evensidemargin}{-0.5cm}
+\setlength{\textwidth}{17cm}
+\setlength{\topmargin}{-2.0cm}
+\setlength{\headheight}{1cm}
+\setlength{\headsep}{1.5cm}
+\setlength{\textheight}{25cm}
+\setlength{\footskip}{1cm}
+
+% adjust the toc layout
+\makeatletter
+% \renewcommand*\l@section{\@dottedtocline{2}{1.8em}{4em}}
+ \renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{4em}}
+ \renewcommand*\l@subsubsection{\@dottedtocline{2}{5.5em}{4em}}
+\makeatother
+
+\usepackage{pdfpages}
+\usepackage{bookmark}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\chead{\begin{center}\textbf{Beamer} \end{center}}
+\lhead{\includegraphics{../ZSUPP_Styles/logo.jpg}}
+\rhead{\leftmark}
+\lfoot{Bernhard Weichel}
+\rfoot{\today~2013/05}
+\renewcommand{\footrulewidth}{0.4pt}
+%
+\renewcommand{\familydefault}{\sfdefault}
+%
+% Marginpars shall always be right
+\makeatletter
+   \def\marginparright{\@mparswitchfalse}
+   \def\marginparoutside{\@mparswitchtrue}
+\makeatother
+\marginparright
+%
+%
+\raggedbottom
+%
+
+
+\usepackage{makeidx}
+\makeindex
+
+%
+%\renewcommand{Befehl der Gliederungsebene z.B. \chapter}{\@startsection{Name z.B. chapter}{Ebene z.B. 0}{Einrückung z.B. 0pt}{Abstand zum vorigen Text z.B. 3.5ex plus 1ex minus 0pt\relax}{Abstand zum nachfolgenden Text z.B. 2.5ex plus 0.5ex minus 0pt\relax}{Schrift z.B. \normalfont\Large\bfseries}}
+%
+% \makeatletter%
+% \renewcommand{\chapter}{\@startsection{chapter}{0}{0pt}{3.5ex plus 1ex minus 0pt\relax}{2.5ex plus 0.5ex minus 0pt\relax}{\normalfont\Large\bfseries}}%
+% \makeatother%
+%
+%
+% Wortsammler extensions end here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+
+\clearpage
+
+{
+\hypersetup{linkcolor=black}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+}
+
+\section{Introduction}\label{introduction}
+
+This is a sample document for Wortsammler
+
+\section{Anforderung an
+Dokumentenaufbereiter}\label{anforderung-an-dokumentenaufbereiter}
+
+\begin{itemize}
+\item
+  {[}RS\_Comp\_003{]} \textbf{\hypertarget{RS-Comp-003}{}Steuerung
+  Dokumentenzusammenstellung} \{Dokumentenzusammenstellungen soll über
+  ein manifest {[}\hyperlink{RS-Comp-007}{RS\_Comp\_007}{]} gesteuert
+  werden.
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    Die Manifeste sollen als Laufzeitparameter übergeben werden
+  \item
+    Das Manifest enthält auch die Ausgabedatei
+  \end{itemize}
+
+  \}(\hyperlink{RS-DM-014}{RS\_DM\_014},
+  \hyperlink{RS-DM-010}{RS\_DM\_010},
+  \hyperlink{RS-DM-005}{RS\_DM\_005})
+\item
+  {[}RS\_Comp\_004{]} \textbf{\hypertarget{RS-Comp-004}{}Prozessierung
+  Einzeldokument} \{Soll Dokumente verschiedenen Umfangs erzeugen
+  können:
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    einzelnes Files
+  \item
+    zu Prüfzwecken
+  \end{itemize}
+
+  Steuerung soll über Konfiguration (Manifest) erfolgen
+  {[}\hyperlink{RS-Comp-007}{RS\_Comp\_007}{]}.
+
+  \}()
+\item
+  {[}RS\_Comp\_005{]} \textbf{\hypertarget{RS-Comp-005}{}Erstellung
+  Loseblattsammlung} \{Soll Dokumente verschiedenen Umfangs erzeugen
+  können:
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    kann aus dem Manifest errechnet werden
+    {[}\hyperlink{RS-Comp-007}{RS\_Comp\_007}{]}
+  \end{itemize}
+
+  \}()
+\item
+  {[}RS\_Comp\_006{]} \textbf{\hypertarget{RS-Comp-006}{}Inkrementelle
+  Verarbeitung} \{Soll nur auf geänderte Dokumente reagieren können:
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    ähnlich wie make/rake
+  \end{itemize}
+
+  \}()
+\item
+  {[}RS\_Comp\_007{]} \textbf{\hypertarget{RS-Comp-007}{}Anforderungen
+  an Manifest} \{Folgende Anforderungen gelten für das Manifest
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    einfach bearbeiten - nur liste der Files
+  \item
+    Markdown-lite
+  \item
+    Yaml
+  \end{itemize}
+
+  Inhalte im Manifest sind
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    Name der Konfiguration
+  \item
+    Ausgabeverzeichnis
+  \item
+    Ausgabeformat
+  \item
+    Name des generierten Dokumentes
+  \item
+    Formate in denen das Dokument generiert wird. Werte hierfür ergeben
+    sich aus den Anforderungen an die Aufbereitet
+  \item
+    zu verarbeitende Eingabedateien. Diese werden in der Reihenfolge
+    verarbeitet wie sie aufgeführt sind.
+  \item
+    Optionen für die jeweiligen Formate.
+  \item
+    zu bearbeitende Zielgruppen
+    {[}\hyperlink{RS-Comp-008}{RS\_Comp\_008}{]}
+  \end{itemize}
+
+  Beispiel für ein manifest
+
+\begin{verbatim}
+ -
+   :name:  komplett
+   :outdir: ../ZGEN_Documents
+   :outname: RS_Requirements-Ngopm
+   :format:
+     - pdf
+     - html
+     - rtf
+     - docx
+     - latex
+
+   :lang: german  
+
+   :vars:
+       :lang: german
+
+   :editions:
+     :intern: 
+         :title: Interne Ausgabe
+         :filepart: _intern 
+     :extern: 
+         :title: Externe Ausgabe
+         :filepart: _extern
+     :mieter: 
+         :title: Ausgabe für Mieter
+         :filepart: _mieter
+     :ea: 
+         :title: Ausgabe für ehrenamtliche Mitarbeiter
+         :filepart: _ma-ehrenamtlich
+     :ha: 
+         :title: Ausgabe für hauptamtliche Mitarbeiter
+         :filepart: _ma-hauptamtlich
+     :1: 
+         :title: Ausgabe für erste hauptamtliche Mitarbeiter
+         :filepart: _ma-hauptamtlich-1
+
+   :input: 
+     - ../RS_Process/RS_Process.md 
+     - ../RS_Tooling/RS_Tooling.md 
+     - ../RS_Tooling/RS_MarkdownCleaner.md 
+     - ../RS_Tooling/RS_MarkdownEditor.md 
+     - ../RS_Tooling/RS_DocumentComposer.md  
+     - ../TPL_DirectoryStructure/TPL_DirectoryStructure.md
+     - ../TR_Installation/TR_Installation.md
+     - ../TR_Installation/TR_Proo-Handbuch.md
+     - ../ZGEN_RequirementsTracing/ZGEN_Reqtrace.md
+
+   :snippets:
+     - ../TS_Markdown/TS_Snippets.yaml
+     - ../TS_Markdown/TS_MoreSnippets.yaml
+\end{verbatim}
+
+  \}(\hyperlink{RS-Comp-003}{RS\_Comp\_003})
+\end{itemize}
+
+\subsection{Zielgruppenspezifische
+Ausgaben}\label{zielgruppenspezifische-ausgaben}
+
+Dieser Abschnitt behandelt speziell die Anforderungen an flexible
+Dokumentenausgabe
+
+\begin{itemize}
+\item
+  {[}RS\_Comp\_001{]} \textbf{\hypertarget{RS-Comp-001}{}Flexibler
+  Dokumentumfang} \{Soll Dokumente verschiedenen Umfangs erzeugen
+  können:
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    einzelnes Files
+  \item
+    Zusammengestelltes Dokument
+  \end{itemize}
+
+  \}(\hyperlink{RS-Comp-003}{RS\_Comp\_003})
+\item
+  {[}RS\_Comp\_002{]} \textbf{\hypertarget{RS-Comp-002}{}Flexible
+  Dokumentendarstellung} \{Sollte Dokumente in verschiedener Darstellung
+  erzeugen können:
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    Seitenlayout
+  \item
+    Detaillierungsgrad (z.B. RequirementsMarken ausblenden) \}
+    (RS\_Comp\_003)
+  \end{itemize}
+\item
+  {[}RS\_Comp\_008{]}
+  \textbf{\hypertarget{RS-Comp-008}{}Zielgruppenspezifische Ausgaben
+  (Editionen)} \{ Es soll möglich sein Zielgruppenspezifische Ausgaben
+  zu erstellen.
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    Dabei wird die Zielgruppe durch eine spezifische Zeichenkette
+    umgeschaltet (Durchstreichung), die auch in standard Markdown
+    Programmen eine sinnvolle Ausgabe liefert:
+  \end{itemize}
+\end{itemize}
+
+\end{document}
